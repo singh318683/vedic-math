@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vedic Math — Learn & Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --saffron: #E07B39;
+  --saffron-light: #FDF3EB;
+  --saffron-dark: #B85C1A;
+  --indigo: #3D3480;
+  --indigo-light: #EEEDFE;
+  --indigo-mid: #7F77DD;
+  --green: #1A7A52;
+  --green-light: #E2F5EE;
+  --text: #1A1A2E;
+  --text-2: #5A5A7A;
+  --text-3: #9898B8;
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --border: rgba(60,52,128,0.12);
+  --border-2: rgba(60,52,128,0.22);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.devanagari{font-family:'Noto Sans Devanagari',sans-serif}
+
+/* Header */
+.header{background:var(--indigo);color:#fff;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-symbol{width:32px;height:32px;background:var(--saffron);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;color:#fff}
+.logo-text{font-size:16px;font-weight:600;letter-spacing:0.3px}
+.logo-sub{font-size:11px;opacity:0.65;margin-top:1px}
+.header-score{text-align:right}
+.header-score .xp{font-size:14px;font-weight:600;color:#FAC775}
+.header-score .lv{font-size:11px;opacity:0.65}
+
+/* Tab nav */
+.tab-nav{display:flex;background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem}
+.tab-btn{flex:1;padding:14px 8px;font-size:13px;font-weight:500;color:var(--text-2);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:color 0.15s}
+.tab-btn.active{color:var(--indigo);border-bottom-color:var(--indigo)}
+.tab-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* Pages */
+.page{display:none;padding:1.25rem 1.5rem;max-width:680px;margin:0 auto}
+.page.active{display:block}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:10px}
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:0.3px}
+
+/* Sutra list */
+.sutra-item{display:flex;align-items:center;gap:12px;padding:12px 0;cursor:pointer;border-bottom:1px solid var(--border)}
+.sutra-item:last-child{border-bottom:none}
+.sutra-item:hover{opacity:0.8}
+.s-num{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+.s-info{flex:1;min-width:0}
+.s-name{font-size:14px;font-weight:500;color:var(--text)}
+.s-sk{font-size:12px;color:var(--text-2);margin-top:2px}
+.s-check{width:20px;height:20px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s-check svg{width:12px;height:12px;stroke:var(--green);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* Detail page */
+.detail-back{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-2);cursor:pointer;margin-bottom:1rem;background:none;border:none;padding:0}
+.detail-back svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.detail-header{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
+.step-block{background:var(--bg);border-radius:var(--radius-sm);padding:10px 14px;margin:6px 0;font-size:13px;color:var(--text);line-height:1.7;display:flex;gap:10px}
+.step-n{width:22px;height:22px;border-radius:50%;background:var(--indigo-mid);color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.ex-card{background:var(--saffron-light);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px}
+.ex-q{font-size:16px;font-weight:600;color:var(--saffron-dark);margin-bottom:8px}
+.ex-step{font-size:13px;color:var(--text);padding:3px 0;border-bottom:1px solid rgba(224,123,57,0.15);line-height:1.6}
+.ex-step:last-child{border-bottom:none;font-weight:600;color:var(--saffron-dark)}
+.hl{background:rgba(224,123,57,0.18);color:var(--saffron-dark);padding:1px 5px;border-radius:4px;font-weight:600}
+
+/* Quiz modes */
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.mode-card{border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;text-align:center;transition:border-color 0.15s,background 0.15s}
+.mode-card:hover{background:var(--indigo-light);border-color:var(--indigo-mid)}
+.mode-icon{font-size:24px;margin-bottom:6px;display:block}
+.mode-title{font-size:13px;font-weight:500;color:var(--text)}
+.mode-sub{font-size:11px;color:var(--text-2);margin-top:3px}
+
+/* Quiz active */
+.qz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.qz-label{font-size:12px;font-weight:600;color:var(--indigo);background:var(--indigo-light);padding:4px 12px;border-radius:20px}
+.qz-timer{font-size:16px;font-weight:600;color:var(--text);min-width:32px;text-align:right}
+.timer-track{height:5px;background:var(--border);border-radius:3px;margin-bottom:14px;overflow:hidden}
+.timer-fill{height:100%;background:var(--indigo-mid);border-radius:3px;transition:width 1s linear,background 0.3s}
+.hint-bar{background:var(--saffron-light);border-radius:var(--radius-sm);padding:9px 13px;font-size:12px;color:var(--saffron-dark);margin-bottom:12px;line-height:1.6}
+.hint-bar strong{font-weight:600}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;margin-bottom:14px}
+.q-sutra{font-size:11px;color:var(--text-3);margin-bottom:8px}
+.q-text{font-size:32px;font-weight:600;color:var(--text);letter-spacing:2px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.opt-btn{background:var(--surface);border:1px solid var(--border-2);border-radius:var(--radius-sm);padding:14px;font-size:18px;font-weight:600;cursor:pointer;color:var(--text);transition:background 0.12s,border-color 0.12s;font-family:'Noto Sans',sans-serif}
+.opt-btn:hover:not(:disabled){background:var(--indigo-light);border-color:var(--indigo-mid)}
+.opt-btn.correct{background:var(--green-light);border-color:var(--green);color:var(--green)}
+.opt-btn.wrong{background:#FCEBEB;border-color:#E24B4A;color:#791F1F}
+.opt-btn:disabled{cursor:default}
+.qz-footer{display:flex;justify-content:space-between;align-items:center}
+.dots{display:flex;gap:4px}
+.dot{width:22px;height:5px;border-radius:3px;background:var(--border)}
+.dot.ok{background:var(--green)}
+.dot.no{background:#E24B4A}
+.dot.cur{background:var(--indigo-mid)}
+
+/* Results */
+.result-score{font-size:52px;font-weight:600;color:var(--indigo);text-align:center}
+.result-label{font-size:13px;color:var(--text-2);text-align:center;margin-top:4px}
+.stats-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:1rem 0}
+.stat-box{background:var(--bg);border-radius:var(--radius-sm);padding:12px;text-align:center}
+.stat-v{font-size:20px;font-weight:600;color:var(--text)}
+.stat-l{font-size:11px;color:var(--text-2);margin-top:3px}
+.result-msg{font-size:13px;color:var(--text-2);text-align:center;line-height:1.7;margin-bottom:1rem}
+
+/* Progress */
+.xp-track{height:10px;background:var(--border);border-radius:5px;overflow:hidden;margin-top:8px}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--indigo-mid),var(--saffron));border-radius:5px;transition:width 0.5s}
+.sutra-grid{margin-top:1rem}
+.sg-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px}
+.sg-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.sg-name{flex:1;color:var(--text)}
+.sg-status{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px}
+
+/* Buttons */
+.btn-primary{background:var(--indigo);color:#fff;border:none;border-radius:var(--radius-sm);padding:11px 24px;font-size:14px;font-weight:500;cursor:pointer;font-family:'Noto Sans',sans-serif}
+.btn-primary:hover{background:var(--indigo-dark,#2d2660)}
+.btn-sec{background:transparent;color:var(--text);border:1px solid var(--border-2);border-radius:var(--radius-sm);padding:10px 20px;font-size:13px;cursor:pointer;font-family:'Noto Sans',sans-serif}
+.btn-sec:hover{background:var(--bg)}
+.flex-gap{display:flex;gap:8px;justify-content:center;margin-top:1rem}
+.section-title{font-size:14px;font-weight:600;color:var(--text);margin:1rem 0 8px}
+.loading{text-align:center;padding:2rem;color:var(--text-3);font-size:14px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">
+    <div class="logo-symbol">ॐ</div>
+    <div>
+      <div class="logo-text">Vedic Math</div>
+      <div class="logo-sub">Learn · Practice · Master</div>
+    </div>
+  </div>
+  <div class="header-score">
+    <div class="xp" id="hdr-xp">0 XP</div>
+    <div class="lv" id="hdr-lv">Level 1</div>
+  </div>
+</div>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('learn')" id="tab-learn">
+    <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    Learn
+  </button>
+  <button class="tab-btn" onclick="switchTab('quiz')" id="tab-quiz">
+    <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    Quiz
+  </button>
+  <button class="tab-btn" onclick="switchTab('progress')" id="tab-progress">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    Progress
+  </button>
+</div>
+
+<!-- LEARN PAGE -->
+<div class="page active" id="page-learn">
+  <div id="learn-home">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-top:0.25rem">
+      <div>
+        <div style="font-size:16px;font-weight:600;color:var(--text)">16 Vedic sutras</div>
+        <div style="font-size:12px;color:var(--text-2);margin-top:2px">Tap any sutra to learn with worked examples</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:11px;color:var(--text-2)">Mastered</div>
+        <div style="font-size:18px;font-weight:600;color:var(--indigo)" id="mastered-lbl">0/8</div>
+      </div>
+    </div>
+    <div class="card" style="padding:0 1.25rem" id="sutra-list"><div class="loading">Loading sutras…</div></div>
+  </div>
+
+  <div id="learn-detail" style="display:none">
+    <button class="detail-back" onclick="backToList()">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      All sutras
+    </button>
+    <div id="detail-body"></div>
+  </div>
+</div>
+
+<!-- QUIZ PAGE -->
+<div class="page" id="page-quiz">
+  <div id="quiz-home">
+    <div style="font-size:16px;font-weight:600;margin-bottom:4px;padding-top:0.25rem">Choose quiz mode</div>
+    <div style="font-size:13px;color:var(--text-2);margin-bottom:4px">Study a sutra first to unlock quizzes</div>
+    <div class="mode-grid">
+      <div class="mode-card" onclick="startQuiz('current')">
+        <span class="mode-icon">🎯</span>
+        <div class="mode-title">Current sutra</div>
+        <div class="mode-sub">Practice last lesson</div>
+      </div>
+      <div class="mode-card" onclick="startQuiz('mixed')">
+        <span class="mode-icon">🔀</span>
+        <div class="mode-title">Mixed review</div>
+        <div class="mode-sub">All mastered sutras</div>
+      </div>
+      <div class="mode-card" onclick="startQuiz('speed')">
+        <span class="mode-icon">⚡</span>
+        <div class="mode-title">Speed round</div>
+        <div class="mode-sub">10 questions, 10 sec each</div>
+      </div>
+      <div class="mode-card" onclick="startQuiz('challenge')">
+        <span class="mode-icon">🔥</span>
+        <div class="mode-title">Challenge</div>
+        <div class="mode-sub">No hints, 8 seconds</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="quiz-active" style="display:none;padding-top:0.25rem">
+    <div class="qz-top">
+      <span class="qz-label" id="qz-label">—</span>
+      <span class="qz-timer" id="qz-timer">—</span>
+    </div>
+    <div class="timer-track"><div class="timer-fill" id="qz-timer-fill" style="width:100%"></div></div>
+    <div class="dots" id="qz-dots" style="margin-bottom:12px"></div>
+    <div id="qz-hint"></div>
+    <div class="q-card">
+      <div class="q-sutra" id="qz-sutra-name"></div>
+      <div class="q-text" id="qz-q"></div>
+    </div>
+    <div class="opts" id="qz-opts"></div>
+    <div class="qz-footer">
+      <span style="font-size:13px;color:var(--text-2)">Score: <strong id="qz-score" style="color:var(--text)">0</strong></span>
+      <button class="btn-sec" style="padding:6px 14px;font-size:12px" onclick="showQuizHome()">Quit</button>
+    </div>
+  </div>
+
+  <div id="quiz-result" style="display:none;padding-top:0.5rem">
+    <div class="card" style="padding:1.5rem;margin-bottom:1rem">
+      <div class="result-score" id="res-score">0</div>
+      <div class="result-label">points earned</div>
+      <div class="stats-3" style="margin-top:1rem">
+        <div class="stat-box"><div class="stat-v" id="res-correct">0</div><div class="stat-l">correct</div></div>
+        <div class="stat-box"><div class="stat-v" id="res-streak">0</div><div class="stat-l">best streak</div></div>
+        <div class="stat-box"><div class="stat-v" id="res-xp">+0</div><div class="stat-l">XP gained</div></div>
+      </div>
+    </div>
+    <div class="result-msg" id="res-msg"></div>
+    <div class="flex-gap">
+      <button class="btn-sec" onclick="showQuizHome()">Change mode</button>
+      <button class="btn-primary" onclick="retryQuiz()">Play again</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS PAGE -->
+<div class="page" id="page-progress">
+  <div style="padding-top:0.25rem">
+    <div class="card" style="margin-bottom:1rem">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:15px;font-weight:600">Your journey</div>
+        <div style="font-size:12px;color:var(--text-2)">Level <span id="prog-lv" style="font-weight:600;color:var(--indigo)">1</span></div>
+      </div>
+      <div style="font-size:12px;color:var(--text-2);margin-top:12px;margin-bottom:4px">XP to next level</div>
+      <div class="xp-track"><div class="xp-fill" id="prog-xp-bar" style="width:0%"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:5px">
+        <span style="font-size:11px;color:var(--text-3)" id="prog-xp-lbl">0 / 500 XP</span>
+        <span style="font-size:11px;color:var(--text-3)" id="prog-next-lv">Level 2</span>
+      </div>
+    </div>
+    <div class="stats-3" style="margin-bottom:1rem">
+      <div class="stat-box"><div class="stat-v" id="prog-quizzes">0</div><div class="stat-l">quizzes</div></div>
+      <div class="stat-box"><div class="stat-v" id="prog-acc">—</div><div class="stat-l">accuracy</div></div>
+      <div class="stat-box"><div class="stat-v" id="prog-best">0</div><div class="stat-l">best streak</div></div>
+    </div>
+    <div class="section-title">Sutra mastery</div>
+    <div id="prog-sutra-list"></div>
+  </div>
+</div>
+
+<script>
+let sutras = [];
+let mastered = {};
+let currentSutraId = 0;
+let xp = 0, quizzesDone = 0, totalAnswered = 0, totalCorrect = 0, allBestStreak = 0;
+let qList = [], qIdx = 0, qScore = 0, qCorrect = 0, qStreak = 0, qBestStreak = 0;
+let qTimer = null, qTimerVal = 0, qMaxTime = 20, lastMode = 'current';
+
+async function fetchSutras() {
+  try {
+    const res = await fetch('/api/sutras');
+    sutras = await res.json();
+    renderLearnHome();
+  } catch(e) {
+    document.getElementById('sutra-list').innerHTML = '<div class="loading">Could not load sutras.</div>';
+  }
+}
+
+function switchTab(t) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + t).classList.add('active');
+  document.getElementById('tab-' + t).classList.add('active');
+  if (t === 'progress') renderProgress();
+}
+
+function renderLearnHome() {
+  const list = document.getElementById('sutra-list');
+  const masteredCount = Object.values(mastered).filter(Boolean).length;
+  document.getElementById('mastered-lbl').textContent = masteredCount + '/' + sutras.length;
+  list.innerHTML = sutras.map(s => `
+    <div class="sutra-item" onclick="openSutra(${s.id})">
+      <div class="s-num" style="background:${s.color};color:${s.textColor}">${s.id + 1}</div>
+      <div class="s-info">
+        <div class="s-name">${s.name}</div>
+        <div class="s-sk devanagari">${s.sanskrit} · ${s.meaning}</div>
+      </div>
+      ${mastered[s.id] ? `<div class="s-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>` : `<svg width="16" height="16" stroke="#9898B8" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>`}
+    </div>`).join('');
+}
+
+async function openSutra(id) {
+  currentSutraId = id;
+  try {
+    const res = await fetch('/api/sutras/' + id);
+    const s = await res.json();
+    mastered[id] = true;
+    xp += 20;
+    updateHeader();
+    renderLearnHome();
+
+    const body = document.getElementById('detail-body');
+    body.innerHTML = `
+      <div class="detail-header">
+        <div class="s-num" style="background:${s.color};color:${s.textColor};width:40px;height:40px;font-size:15px">${s.id + 1}</div>
+        <div>
+          <div style="font-size:17px;font-weight:600;color:var(--text)">${s.name}</div>
+          <div class="devanagari" style="font-size:13px;color:var(--text-2)">${s.sanskrit} · ${s.meaning}</div>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--text-2);line-height:1.75;margin-bottom:1rem">${s.desc}</p>
+      <div class="section-title">Step-by-step method</div>
+      ${s.steps.map((st, i) => `<div class="step-block"><div class="step-n">${i+1}</div><div>${st}</div></div>`).join('')}
+      <div class="section-title" style="margin-top:1.25rem">Worked examples</div>
+      ${s.examples.map(ex => `
+        <div class="ex-card">
+          <div class="ex-q">${ex.q}</div>
+          ${ex.steps.map((st, i) => `<div class="ex-step">${i === ex.steps.length - 1 ? '<span class="hl">' + st + '</span>' : st}</div>`).join('')}
+        </div>`).join('')}
+      <div class="flex-gap" style="margin-top:1.25rem;justify-content:flex-start">
+        <button class="btn-primary" onclick="quickQuiz(${s.id})">Quiz this sutra ⚡</button>
+        <button class="btn-sec" onclick="backToList()">Back</button>
+      </div>`;
+
+    document.getElementById('learn-home').style.display = 'none';
+    document.getElementById('learn-detail').style.display = 'block';
+  } catch(e) { console.error(e); }
+}
+
+function backToList() {
+  document.getElementById('learn-home').style.display = 'block';
+  document.getElementById('learn-detail').style.display = 'none';
+}
+
+function quickQuiz(id) {
+  currentSutraId = id;
+  switchTab('quiz');
+  startQuiz('current');
+}
+
+function showQuizHome() {
+  clearInterval(qTimer);
+  document.getElementById('quiz-home').style.display = 'block';
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'none';
+}
+
+async function startQuiz(mode) {
+  if (!Object.values(mastered).some(Boolean)) return;
+  lastMode = mode;
+  qMaxTime = mode === 'speed' ? 10 : mode === 'challenge' ? 8 : 20;
+  qIdx = 0; qScore = 0; qCorrect = 0; qStreak = 0; qBestStreak = 0;
+
+  try {
+    let data;
+    if (mode === 'mixed' || mode === 'speed' || mode === 'challenge') {
+      const res = await fetch('/api/quiz/mixed');
+      data = await res.json();
+      qList = data;
+    } else {
+      const res = await fetch('/api/quiz/' + currentSutraId);
+      const d = await res.json();
+      qList = d.questions.map(q => ({ ...q, sutraName: d.sutra, sutraId: currentSutraId }));
+    }
+    if (mode === 'speed') qList = qList.slice(0, 10);
+    document.getElementById('quiz-home').style.display = 'none';
+    document.getElementById('quiz-result').style.display = 'none';
+    document.getElementById('quiz-active').style.display = 'block';
+    const modeLabels = { current: 'Sutra practice', mixed: 'Mixed review', speed: 'Speed round', challenge: 'Challenge' };
+    document.getElementById('qz-label').textContent = modeLabels[mode];
+    renderQ();
+  } catch(e) { console.error(e); }
+}
+
+function retryQuiz() { startQuiz(lastMode); }
+
+function renderQ() {
+  const q = qList[qIdx];
+  const total = qList.length;
+  document.getElementById('qz-sutra-name').textContent = q.sutraName || '';
+  document.getElementById('qz-q').textContent = q.q;
+  document.getElementById('qz-score').textContent = qScore;
+
+  const dots = document.getElementById('qz-dots');
+  dots.innerHTML = qList.map((_, i) => {
+    let cls = 'dot'; if (i < qIdx) cls += ' ok'; else if (i === qIdx) cls += ' cur';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  const showHint = lastMode !== 'challenge';
+  const hint = document.getElementById('qz-hint');
+  if (showHint && q.sutraId !== undefined) {
+    const s = sutras.find(x => x.id === q.sutraId);
+    hint.innerHTML = s ? `<div class="hint-bar"><strong>${s.name}:</strong> ${s.meaning}</div>` : '';
+  } else { hint.innerHTML = ''; }
+
+  document.getElementById('qz-opts').innerHTML = (q.o || []).map(opt =>
+    `<button class="opt-btn" onclick="pickAns(${opt},${q.a},this)">${opt.toLocaleString()}</button>`).join('');
+
+  clearInterval(qTimer);
+  if (lastMode === 'speed' || lastMode === 'challenge') {
+    let t = qMaxTime;
+    document.getElementById('qz-timer').textContent = t;
+    document.getElementById('qz-timer-fill').style.width = '100%';
+    document.getElementById('qz-timer-fill').style.background = 'var(--indigo-mid)';
+    qTimer = setInterval(() => {
+      t--;
+      document.getElementById('qz-timer').textContent = t;
+      const pct = Math.round((t / qMaxTime) * 100);
+      document.getElementById('qz-timer-fill').style.width = pct + '%';
+      document.getElementById('qz-timer-fill').style.background = t > 5 ? 'var(--indigo-mid)' : t > 2 ? '#EF9F27' : '#E24B4A';
+      if (t <= 0) { clearInterval(qTimer); timeUp(); }
+    }, 1000);
+  } else {
+    document.getElementById('qz-timer').textContent = '—';
+    document.getElementById('qz-timer-fill').style.width = '100%';
+  }
+}
+
+function timeUp() {
+  const q = qList[qIdx];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (parseInt(b.textContent.replace(/,/g, '')) === q.a) b.classList.add('correct');
+  });
+  qStreak = 0; totalAnswered++;
+  setTimeout(advanceQ, 1100);
+}
+
+function pickAns(chosen, correct, btn) {
+  clearInterval(qTimer);
+  document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+  totalAnswered++;
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    qCorrect++; qStreak++; totalCorrect++;
+    if (qStreak > qBestStreak) qBestStreak = qStreak;
+    if (qStreak > allBestStreak) allBestStreak = qStreak;
+    qScore += 100 + (lastMode === 'challenge' ? 50 : 0);
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.opt-btn').forEach(b => {
+      if (parseInt(b.textContent.replace(/,/g, '')) === correct) b.classList.add('correct');
+    });
+    qStreak = 0;
+  }
+  document.getElementById('qz-score').textContent = qScore;
+  setTimeout(advanceQ, 1050);
+}
+
+function advanceQ() {
+  qIdx++;
+  if (qIdx >= qList.length) endQuiz();
+  else renderQ();
+}
+
+function endQuiz() {
+  quizzesDone++;
+  const gained = Math.max(10, Math.round(qScore / 10));
+  xp += gained;
+  updateHeader();
+  document.getElementById('res-score').textContent = qScore;
+  document.getElementById('res-correct').textContent = qCorrect + '/' + qList.length;
+  document.getElementById('res-streak').textContent = qBestStreak;
+  document.getElementById('res-xp').textContent = '+' + gained;
+  const pct = Math.round((qCorrect / qList.length) * 100);
+  const msg = pct === 100 ? 'Perfect score! This sutra is yours.' :
+    pct >= 80 ? 'Excellent — near mastery. One more round and it\'s instinct.' :
+    pct >= 60 ? 'Good progress. Re-read the steps once, then try again.' :
+    'Review the lesson carefully — the pattern will click with repetition.';
+  document.getElementById('res-msg').textContent = msg;
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'block';
+}
+
+function updateHeader() {
+  const level = Math.floor(xp / 500) + 1;
+  document.getElementById('hdr-xp').textContent = xp + ' XP';
+  document.getElementById('hdr-lv').textContent = 'Level ' + level;
+}
+
+function renderProgress() {
+  const level = Math.floor(xp / 500) + 1;
+  const xpInLevel = xp % 500;
+  document.getElementById('prog-lv').textContent = level;
+  document.getElementById('prog-xp-bar').style.width = Math.round((xpInLevel / 500) * 100) + '%';
+  document.getElementById('prog-xp-lbl').textContent = xpInLevel + ' / 500 XP';
+  document.getElementById('prog-next-lv').textContent = 'Level ' + (level + 1);
+  document.getElementById('prog-quizzes').textContent = quizzesDone;
+  document.getElementById('prog-acc').textContent = totalAnswered ? Math.round((totalCorrect / totalAnswered) * 100) + '%' : '—';
+  document.getElementById('prog-best').textContent = allBestStreak;
+  const list = document.getElementById('prog-sutra-list');
+  list.innerHTML = sutras.map(s => {
+    const done = !!mastered[s.id];
+    return `<div class="sg-row">
+      <div class="sg-dot" style="background:${done ? s.dot : 'var(--border)'}"></div>
+      <div class="sg-name" style="color:${done ? 'var(--text)' : 'var(--text-3)'}">${s.name}</div>
+      <span class="sg-status" style="background:${done ? s.color : 'var(--bg)'};color:${done ? s.textColor : 'var(--text-3)'}">${done ? 'learned' : '—'}</span>
+    </div>`;
+  }).join('');
+}
+
+fetchSutras();
+</script>
+</body>
+</html>
