@@ -609,23 +609,177 @@ function renderQ() {
     `<button class="opt-btn" onclick="pickAns(${opt},${q.a},this)">${opt.toLocaleString()}</button>`).join('');
 }
 
+// Generates the exact worked steps for the specific question asked, using the
+// real numbers in q.q — not a generic stored example. Falls back to the
+// sutra's stored example only if a sutra has no dynamic generator (shouldn't happen).
+function generateDynamicSteps(sutraId, qtext) {
+  try {
+    if (sutraId === 0) { // Ekadhikena Purvena: NNN5²
+      const num = parseInt(qtext.replace('²', ''));
+      const a = Math.floor(num / 10);
+      const step2 = a * (a + 1);
+      const ans = step2 * 100 + 25;
+      return [`Tens digit: ${a}`, `${a} × (${a}+1) = ${a} × ${a+1} = ${step2}`, `Append 25 → ${ans.toLocaleString()}`];
+    }
+    if (sutraId === 1) { // Nikhilam: base − num
+      const [baseS, numS] = qtext.split('−').map(s => s.trim());
+      const base = parseInt(baseS), num = parseInt(numS);
+      const digitCount = String(base).length - 1;
+      const digits = String(num).padStart(digitCount, '0').split('').map(Number);
+      const comp = digits.map((d, i) => i === digits.length - 1 ? 10 - d : 9 - d);
+      const ans = base - num;
+      return [`Digits of ${num}: ${digits.join(', ')}`, `Subtract each from 9, last digit from 10: ${comp.join(', ')}`, `Answer: ${ans.toLocaleString()}`];
+    }
+    if (sutraId === 2) { // Urdhva Tiryak: AB × CD
+      const [AS, BS] = qtext.split('×').map(s => s.trim());
+      const A = parseInt(AS), B = parseInt(BS);
+      const a = Math.floor(A/10), b = A%10, c = Math.floor(B/10), d = B%10;
+      const right = b*d, cross = a*d+b*c, left = a*c;
+      const ans = A*B;
+      return [`Right (units × units): ${b}×${d} = ${right}`, `Cross (a×d + b×c): ${a}×${d} + ${b}×${c} = ${cross}`, `Left (tens × tens): ${a}×${c} = ${left}`, `Combine with carries → ${ans.toLocaleString()}`];
+    }
+    if (sutraId === 3) { // Anurupyena: a × m
+      const [aS, mS] = qtext.split('×').map(s => s.trim());
+      const a = parseInt(aS), m = parseInt(mS);
+      const mStr = String(m);
+      const base = mStr[0] === '9' ? Math.pow(10, mStr.length) : Math.pow(10, mStr.length - 1);
+      const diff = base - m;
+      const ans = a*m;
+      if (diff > 0) {
+        return [`${a} × ${base} = ${a*base}`, `Subtract ${a} × ${diff} = ${a*diff}`, `Answer: ${a*base} − ${a*diff} = ${ans.toLocaleString()}`];
+      } else {
+        return [`${a} × ${base} = ${a*base}`, `Add ${a} × ${-diff} = ${a*(-diff)}`, `Answer: ${a*base} + ${a*(-diff)} = ${ans.toLocaleString()}`];
+      }
+    }
+    if (sutraId === 4) { // Vilokanam: a × b equidistant
+      const [AS, BS] = qtext.split('×').map(s => s.trim());
+      const A = parseInt(AS), B = parseInt(BS);
+      const mid = (A+B)/2, dist = (A-B)/2;
+      const ans = mid*mid - dist*dist;
+      return [`Both numbers are ${Math.abs(dist)} away from ${mid}`, `a=${mid}, b=${Math.abs(dist)}`, `${mid}² − ${Math.abs(dist)}² = ${mid*mid} − ${dist*dist} = ${ans.toLocaleString()}`];
+    }
+    if (sutraId === 5) { // Sankalana: x+y=S, x−y=D
+      const m = qtext.match(/x\+y=(\d+), x−y=(\d+) → ([xy])=\?/);
+      const S = parseInt(m[1]), D = parseInt(m[2]), askVar = m[3];
+      const x = (S+D)/2, y = (S-D)/2;
+      if (askVar === 'x') return [`Add the equations: 2x = ${S}+${D} = ${S+D}`, `x = ${S+D}/2 = ${x}`];
+      return [`Subtract the equations: 2y = ${S}−${D} = ${S-D}`, `y = ${S-D}/2 = ${y}`];
+    }
+    if (sutraId === 6) { // ax = b
+      const m = qtext.match(/If (\d+)([xy]) = (\d+), find ([xy])/);
+      const a = parseInt(m[1]), varName = m[2], b = parseInt(m[3]);
+      const ans = b/a;
+      return [`${a}${varName} = ${b}`, `Divide both sides by ${a}`, `${varName} = ${b}/${a} = ${ans}`];
+    }
+    if (sutraId === 7) { // Yavadunam: NNN² near base
+      const num = parseInt(qtext.replace('²', ''));
+      const base = Math.pow(10, Math.round(Math.log10(num)));
+      const dev = num - base;
+      const left = base + 2*dev;
+      const ans = num*num;
+      return [`Deviation from ${base}: ${dev >= 0 ? '+' : ''}${dev}`, `Left part: ${base}+2×${dev} = ${left}`, `Right part: ${dev}² = ${dev*dev}`, `Combine with carries → ${ans.toLocaleString()}`];
+    }
+    if (sutraId === 8) { // Ekanyunena Purvena: a × m (9,99,999)
+      const [aS, mS] = qtext.split('×').map(s => s.trim());
+      const a = parseInt(aS), m = parseInt(mS);
+      const base = m+1;
+      const left = a-1, right = base-a;
+      const ans = a*m;
+      return [`Left: ${a} − 1 = ${left}`, `Right: ${base} − ${a} = ${right}`, `Combine → ${ans.toLocaleString()}`];
+    }
+    if (sutraId === 9) { // cubes — Yaavadunam method works best near base 10; small numbers use direct multiplication
+      const num = parseInt(qtext.replace('³', ''));
+      const ans = num**3;
+      if (num >= 7) {
+        const base = 10, d = num - base;
+        const left = num + 2*d, mid = 3*d*d, right = d*d*d;
+        return [`Deviation from 10: ${d >= 0 ? '+' : ''}${d}`, `Left: ${num}${d>=0?'+':''}2×${d} = ${left}`, `Middle: 3×${d}² = ${mid}`, `Right: ${d}³ = ${right}`, `Combine with carries → ${ans.toLocaleString()}`];
+      } else {
+        return [`For small numbers, cube directly: ${num} × ${num} × ${num}`, `${num} × ${num} = ${num*num}`, `${num*num} × ${num} = ${ans}`];
+      }
+    }
+    if (sutraId === 10) { // x²+bx+c: (x+p)(x+?)
+      const m = qtext.match(/x²\+(\d+)x\+(\d+): \(x\+(\d+)\)\(x\+\?\)/);
+      const b = parseInt(m[1]), c = parseInt(m[2]), p = parseInt(m[3]);
+      const q = c/p;
+      return [`Need two numbers that multiply to ${c} and add to ${b}`, `Given one factor is ${p}, the other is ${c}÷${p} = ${q}`, `Check: ${p}+${q} = ${b} ✓`];
+    }
+    if (sutraId === 11) { // Last digit of A × B
+      const m = qtext.match(/Last digit of (\d+) × (\d+)/);
+      const A = parseInt(m[1]), B = parseInt(m[2]);
+      const a = A%10, b = B%10;
+      const ans = (a*b)%10;
+      return [`Last digits: ${a} and ${b}`, `${a} × ${b} = ${a*b}`, `Last digit: ${ans}`];
+    }
+    if (sutraId === 12) { // Last=X, 2nd-last=Y
+      const m = qtext.match(/Last=(\d+), 2nd-last=(\d+): result\?/);
+      const last = parseInt(m[1]), secondlast = parseInt(m[2]);
+      const ans = last + 2*secondlast;
+      return [`${last} + 2 × ${secondlast}`, `= ${last} + ${2*secondlast}`, `= ${ans}`];
+    }
+    if (sutraId === 13) { // x²−bx+c=0, root=r1
+      const m = qtext.match(/x²−(\d+)x\+(\d+)=0, root=(\d+), other=\?/);
+      const b = parseInt(m[1]), c = parseInt(m[2]), r1 = parseInt(m[3]);
+      const r2 = b - r1;
+      return [`Sum of roots = ${b}`, `Other root = ${b} − ${r1} = ${r2}`, `Check: ${r1} × ${r2} = ${r1*r2} ✓`];
+    }
+    if (sutraId === 14) { // Digit sum
+      const m = qtext.match(/Digit sum of (\d+)/);
+      let cur = parseInt(m[1]);
+      const steps = [];
+      while (cur >= 10) {
+        const digits = String(cur).split('').map(Number);
+        const sum = digits.reduce((a,b) => a+b, 0);
+        steps.push(`${digits.join('+')} = ${sum}`);
+        cur = sum;
+      }
+      steps.push(`Digit sum = ${cur}`);
+      return steps;
+    }
+    if (sutraId === 15) { // AX²+BX+C at x=1
+      const m = qtext.match(/(\d*)x²\+(\d+)x\+(\d+) at x=1/);
+      const a = m[1] ? parseInt(m[1]) : 1, b = parseInt(m[2]), c = parseInt(m[3]);
+      const ans = a+b+c;
+      return [`Substitute x=1: every power of 1 is 1`, `${a}+${b}+${c} = ${ans}`];
+    }
+  } catch (e) {
+    console.error('Dynamic step generation failed', e);
+  }
+  return null;
+}
+
 function showExplanation(q) {
   const s = sutrasFull.find(x => x.id === q.sutraId);
   if (!s) return;
   const box = document.getElementById('qz-explain');
 
-  box.innerHTML = `
-    <div class="wrong-explain">
-      <div class="wrong-explain-title">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        How to solve it — ${s.name}
-      </div>
-      ${s.examples.map(ex => `
-        <div style="margin-top:8px">
-          <div style="font-size:13px;font-weight:600;color:#791F1F;margin-bottom:4px">Example: ${ex.q}</div>
-          ${ex.steps.map((st, i) => `<div class="wrong-explain-step"><b>${i+1}.</b> ${st}</div>`).join('')}
-        </div>`).join('')}
-    </div>`;
+  const dynamicSteps = generateDynamicSteps(q.sutraId, q.q);
+
+  if (dynamicSteps) {
+    box.innerHTML = `
+      <div class="wrong-explain">
+        <div class="wrong-explain-title">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          How to solve it — ${s.name}
+        </div>
+        <div style="font-size:13px;font-weight:600;color:#791F1F;margin:4px 0 6px">${q.q}</div>
+        ${dynamicSteps.map((st, i) => `<div class="wrong-explain-step"><b>${i+1}.</b> ${st}</div>`).join('')}
+      </div>`;
+  } else {
+    // Fallback: show stored examples if dynamic generation isn't available for this sutra
+    box.innerHTML = `
+      <div class="wrong-explain">
+        <div class="wrong-explain-title">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          How to solve it — ${s.name}
+        </div>
+        ${s.examples.map(ex => `
+          <div style="margin-top:8px">
+            <div style="font-size:13px;font-weight:600;color:#791F1F;margin-bottom:4px">Example: ${ex.q}</div>
+            ${ex.steps.map((st, i) => `<div class="wrong-explain-step"><b>${i+1}.</b> ${st}</div>`).join('')}
+          </div>`).join('')}
+      </div>`;
+  }
 }
 
 function pickAns(chosen, correct, btn) {
