@@ -55,15 +55,25 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .pill{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:0.3px}
 
 /* Sutra list */
-.sutra-item{display:flex;align-items:center;gap:12px;padding:12px 0;cursor:pointer;border-bottom:1px solid var(--border)}
-.sutra-item:last-child{border-bottom:none}
-.sutra-item:hover{opacity:0.8}
-.s-num{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
-.s-info{flex:1;min-width:0}
-.s-name{font-size:14px;font-weight:500;color:var(--text)}
-.s-sk{font-size:12px;color:var(--text-2);margin-top:2px}
-.s-check{width:20px;height:20px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.s-check svg{width:12px;height:12px;stroke:var(--green);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.sutra-card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:1.25rem}
+.sutra-tile{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 12px;cursor:pointer;position:relative;transition:transform 0.12s,box-shadow 0.12s,border-color 0.12s;overflow:hidden}
+.sutra-tile:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(60,52,128,0.08);border-color:var(--indigo-mid)}
+.sutra-tile.done{border-color:var(--green)}
+.tile-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:10px}
+.tile-num{position:absolute;top:10px;right:12px;font-size:11px;font-weight:600;color:var(--text-3)}
+.tile-name{font-size:13px;font-weight:600;color:var(--text);line-height:1.35;margin-bottom:3px}
+.tile-sk{font-size:11px;color:var(--text-2);line-height:1.4}
+.tile-check{position:absolute;bottom:10px;right:10px;width:18px;height:18px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center}
+.tile-check svg{width:11px;height:11px;stroke:var(--green);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.tier-header{display:flex;align-items:center;gap:8px;margin:1.25rem 0 10px}
+.tier-header:first-child{margin-top:0}
+.tier-dot{width:8px;height:8px;border-radius:50%}
+.tier-title{font-size:13px;font-weight:600;color:var(--text)}
+.tier-sub{font-size:11px;color:var(--text-3)}
+.hero-progress{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,var(--indigo) 0%,#5648a8 100%);border-radius:var(--radius);padding:1.1rem 1.25rem;margin-bottom:1.25rem}
+.ring-wrap{position:relative;width:56px;height:56px;flex-shrink:0}
+.ring-wrap svg{transform:rotate(-90deg)}
+.ring-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#fff}
 
 /* Detail page */
 .detail-back{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-2);cursor:pointer;margin-bottom:1rem;background:none;border:none;padding:0}
@@ -258,17 +268,20 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 <!-- LEARN PAGE -->
 <div class="page" id="page-learn">
   <div id="learn-home">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-top:0.25rem">
-      <div>
-        <div style="font-size:16px;font-weight:600;color:var(--text)">16 Vedic sutras</div>
-        <div style="font-size:12px;color:var(--text-2);margin-top:2px">Tap any sutra to learn with worked examples</div>
+    <div class="hero-progress" id="hero-progress">
+      <div class="ring-wrap">
+        <svg width="56" height="56" viewBox="0 0 56 56">
+          <circle cx="28" cy="28" r="24" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="6"/>
+          <circle id="ring-fill" cx="28" cy="28" r="24" fill="none" stroke="#FAC775" stroke-width="6" stroke-linecap="round" stroke-dasharray="151" stroke-dashoffset="151"/>
+        </svg>
+        <div class="ring-label" id="ring-label">0/16</div>
       </div>
-      <div style="text-align:right">
-        <div style="font-size:11px;color:var(--text-2)">Mastered</div>
-        <div style="font-size:18px;font-weight:600;color:var(--indigo)" id="mastered-lbl">0/8</div>
+      <div>
+        <div style="font-size:14px;font-weight:600;color:#fff">Your sutra journey</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.75);margin-top:2px" id="hero-sub">Tap a tile below to begin learning</div>
       </div>
     </div>
-    <div class="card" style="padding:0 1.25rem" id="sutra-list"><div class="loading">Loading sutras…</div></div>
+    <div id="tier-container"></div>
   </div>
 
   <div id="learn-detail" style="display:none">
@@ -389,7 +402,7 @@ async function fetchSutras() {
     sutras = sutrasFull.map(s => { const { questions, ...rest } = s; return rest; });
     renderLearnHome();
   } catch(e) {
-    document.getElementById('sutra-list').innerHTML = '<div class="loading">Could not load sutras.</div>';
+    document.getElementById('tier-container').innerHTML = '<div class="loading">Could not load sutras.</div>';
   }
 }
 
@@ -401,19 +414,48 @@ function switchTab(t) {
   if (t === 'progress') renderProgress();
 }
 
+const SUTRA_ICONS = ['🔢','➗','✖️','⚖️','👁️','➕','🎯','📐','🪄','📦','🧩','🔚','🔁','🌳','✅','🔍'];
+
+const TIERS = [
+  { name: 'Beginner', sub: 'Arithmetic shortcuts', dot: '#1D9E75', range: [0, 5] },
+  { name: 'Intermediate', sub: 'Algebra & patterns', dot: '#EF9F27', range: [6, 11] },
+  { name: 'Advanced', sub: 'Roots, factoring & series', dot: '#D85A30', range: [12, 16] }
+];
+
 function renderLearnHome() {
-  const list = document.getElementById('sutra-list');
   const masteredCount = Object.values(mastered).filter(Boolean).length;
-  document.getElementById('mastered-lbl').textContent = masteredCount + '/' + sutras.length;
-  list.innerHTML = sutras.map(s => `
-    <div class="sutra-item" onclick="openSutra(${s.id})">
-      <div class="s-num" style="background:${s.color};color:${s.textColor}">${s.id + 1}</div>
-      <div class="s-info">
-        <div class="s-name">${s.name}</div>
-        <div class="s-sk devanagari">${s.sanskrit} · ${s.meaning}</div>
+  const total = sutras.length || 16;
+  const pct = total ? masteredCount / total : 0;
+  const circumference = 151;
+  document.getElementById('ring-fill').setAttribute('stroke-dashoffset', Math.round(circumference * (1 - pct)));
+  document.getElementById('ring-label').textContent = masteredCount + '/' + total;
+  document.getElementById('hero-sub').textContent = masteredCount === 0
+    ? 'Tap a tile below to begin learning'
+    : masteredCount === total
+      ? 'All sutras mastered — incredible work!'
+      : (total - masteredCount) + ' sutras left to unlock';
+
+  const container = document.getElementById('tier-container');
+  container.innerHTML = TIERS.map(tier => {
+    const tierSutras = sutras.filter(s => s.id >= tier.range[0] && s.id <= tier.range[1]);
+    if (!tierSutras.length) return '';
+    return `
+      <div class="tier-header">
+        <div class="tier-dot" style="background:${tier.dot}"></div>
+        <div class="tier-title">${tier.name}</div>
+        <div class="tier-sub">· ${tier.sub}</div>
       </div>
-      ${mastered[s.id] ? `<div class="s-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>` : `<svg width="16" height="16" stroke="#9898B8" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>`}
-    </div>`).join('');
+      <div class="sutra-card-grid">
+        ${tierSutras.map(s => `
+          <div class="sutra-tile ${mastered[s.id] ? 'done' : ''}" onclick="openSutra(${s.id})">
+            <div class="tile-num">${s.id + 1}</div>
+            <div class="tile-icon" style="background:${s.color}">${SUTRA_ICONS[s.id] || '✨'}</div>
+            <div class="tile-name">${s.name}</div>
+            <div class="tile-sk devanagari">${s.meaning}</div>
+            ${mastered[s.id] ? `<div class="tile-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>` : ''}
+          </div>`).join('')}
+      </div>`;
+  }).join('');
 }
 
 function openSutra(id) {
