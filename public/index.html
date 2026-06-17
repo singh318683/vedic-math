@@ -437,6 +437,9 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
       </div>
     </div>
     <div class="result-msg" id="res-msg"></div>
+    <div class="flex-gap" id="res-next-wrap" style="display:none">
+      <button class="btn-primary" style="width:100%" onclick="goToNextSutra()" id="res-next-btn">Next sutra →</button>
+    </div>
     <div class="flex-gap">
       <button class="btn-sec" onclick="showQuizHome()">Change mode</button>
       <button class="btn-primary" onclick="retryQuiz()">Play again</button>
@@ -905,8 +908,26 @@ function endQuiz() {
     pct >= 60 ? 'Good progress. Re-read the steps once, then try again.' :
     'Review the lesson carefully — the pattern will click with repetition.';
   document.getElementById('res-msg').textContent = msg;
+
+  const nextWrap = document.getElementById('res-next-wrap');
+  const hasNextSutra = lastMode === 'current' && (currentSutraId + 1) < sutras.length;
+  if (hasNextSutra) {
+    const nextSutra = sutras.find(s => s.id === currentSutraId + 1);
+    document.getElementById('res-next-btn').textContent = `Next sutra: ${nextSutra.name} →`;
+    nextWrap.style.display = 'block';
+  } else {
+    nextWrap.style.display = 'none';
+  }
+
   document.getElementById('quiz-active').style.display = 'none';
   document.getElementById('quiz-result').style.display = 'block';
+}
+
+function goToNextSutra() {
+  const nextId = currentSutraId + 1;
+  if (nextId >= sutras.length) return;
+  switchTab('learn');
+  openSutra(nextId);
 }
 
 function updateHeader() {
