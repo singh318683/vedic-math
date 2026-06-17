@@ -82,6 +82,17 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .step-block{background:var(--bg);border-radius:var(--radius-sm);padding:10px 14px;margin:6px 0;font-size:13px;color:var(--text);line-height:1.7;display:flex;gap:10px}
 .step-n{width:22px;height:22px;border-radius:50%;background:var(--indigo-mid);color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 .ex-card{background:var(--saffron-light);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px}
+.proof-toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--indigo-light);border:1px solid rgba(60,52,128,0.15);border-radius:var(--radius-sm);padding:11px 14px;cursor:pointer;margin-top:1.25rem;user-select:none}
+.proof-toggle:hover{background:#E4E2FC}
+.proof-toggle-label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--indigo)}
+.proof-toggle-label svg{width:16px;height:16px;stroke:var(--indigo);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.proof-chevron{width:16px;height:16px;stroke:var(--indigo);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform 0.2s}
+.proof-chevron.open{transform:rotate(180deg)}
+.proof-body{display:none;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius-sm) var(--radius-sm);padding:14px;margin-top:-1px}
+.proof-body.open{display:block}
+.proof-step{font-size:13px;color:var(--text-2);line-height:1.75;padding:7px 0;border-bottom:1px solid var(--border)}
+.proof-step:last-child{border-bottom:none;color:var(--text);font-weight:500}
+.proof-n{display:inline-block;font-size:11px;font-weight:600;color:var(--indigo);margin-right:6px}
 .ex-q{font-size:16px;font-weight:600;color:var(--saffron-dark);margin-bottom:8px}
 .ex-step{font-size:13px;color:var(--text);padding:3px 0;border-bottom:1px solid rgba(224,123,57,0.15);line-height:1.6}
 .ex-step:last-child{border-bottom:none;font-weight:600;color:var(--saffron-dark)}
@@ -485,6 +496,17 @@ function openSutra(id) {
         <div class="ex-q">${ex.q}</div>
         ${ex.steps.map((st, i) => `<div class="ex-step">${i === ex.steps.length - 1 ? '<span class="hl">' + st + '</span>' : st}</div>`).join('')}
       </div>`).join('')}
+    ${s.proof ? `
+    <div class="proof-toggle" onclick="toggleProof(${s.id})">
+      <div class="proof-toggle-label">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 1 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12" y2="17"/></svg>
+        Why this works
+      </div>
+      <svg class="proof-chevron" id="proof-chevron-${s.id}" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="proof-body" id="proof-body-${s.id}">
+      ${s.proof.map((st, i) => `<div class="proof-step"><span class="proof-n">${i+1}.</span>${st}</div>`).join('')}
+    </div>` : ''}
     <div class="flex-gap" style="margin-top:1.25rem;justify-content:flex-start">
       <button class="btn-primary" onclick="quickQuiz(${s.id})">Quiz this sutra ⚡</button>
       <button class="btn-sec" onclick="backToList()">Back</button>
@@ -492,6 +514,13 @@ function openSutra(id) {
 
   document.getElementById('learn-home').style.display = 'none';
   document.getElementById('learn-detail').style.display = 'block';
+}
+
+function toggleProof(id) {
+  const body = document.getElementById('proof-body-' + id);
+  const chevron = document.getElementById('proof-chevron-' + id);
+  body.classList.toggle('open');
+  chevron.classList.toggle('open');
 }
 
 function backToList() {
