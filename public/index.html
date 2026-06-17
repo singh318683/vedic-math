@@ -292,10 +292,14 @@ let xp = 0, quizzesDone = 0, totalAnswered = 0, totalCorrect = 0, allBestStreak 
 let qList = [], qIdx = 0, qScore = 0, qCorrect = 0, qStreak = 0, qBestStreak = 0;
 let qTimer = null, qTimerVal = 0, qMaxTime = 20, lastMode = 'current';
 
+let sutrasFull = []; // includes questions, loaded once
+
 async function fetchSutras() {
   try {
-    const res = await fetch('/api/sutras');
-    sutras = await res.json();
+    const res = await fetch('sutras.json');
+    sutrasFull = await res.json();
+    // public-facing sutras list omits questions array for the home view
+    sutras = sutrasFull.map(s => { const { questions, ...rest } = s; return rest; });
     renderLearnHome();
   } catch(e) {
     document.getElementById('sutra-list').innerHTML = '<div class="loading">Could not load sutras.</div>';
@@ -325,42 +329,40 @@ function renderLearnHome() {
     </div>`).join('');
 }
 
-async function openSutra(id) {
+function openSutra(id) {
   currentSutraId = id;
-  try {
-    const res = await fetch('/api/sutras/' + id);
-    const s = await res.json();
-    mastered[id] = true;
-    xp += 20;
-    updateHeader();
-    renderLearnHome();
+  const s = sutrasFull.find(x => x.id === id);
+  if (!s) return;
+  mastered[id] = true;
+  xp += 20;
+  updateHeader();
+  renderLearnHome();
 
-    const body = document.getElementById('detail-body');
-    body.innerHTML = `
-      <div class="detail-header">
-        <div class="s-num" style="background:${s.color};color:${s.textColor};width:40px;height:40px;font-size:15px">${s.id + 1}</div>
-        <div>
-          <div style="font-size:17px;font-weight:600;color:var(--text)">${s.name}</div>
-          <div class="devanagari" style="font-size:13px;color:var(--text-2)">${s.sanskrit} · ${s.meaning}</div>
-        </div>
+  const body = document.getElementById('detail-body');
+  body.innerHTML = `
+    <div class="detail-header">
+      <div class="s-num" style="background:${s.color};color:${s.textColor};width:40px;height:40px;font-size:15px">${s.id + 1}</div>
+      <div>
+        <div style="font-size:17px;font-weight:600;color:var(--text)">${s.name}</div>
+        <div class="devanagari" style="font-size:13px;color:var(--text-2)">${s.sanskrit} · ${s.meaning}</div>
       </div>
-      <p style="font-size:13px;color:var(--text-2);line-height:1.75;margin-bottom:1rem">${s.desc}</p>
-      <div class="section-title">Step-by-step method</div>
-      ${s.steps.map((st, i) => `<div class="step-block"><div class="step-n">${i+1}</div><div>${st}</div></div>`).join('')}
-      <div class="section-title" style="margin-top:1.25rem">Worked examples</div>
-      ${s.examples.map(ex => `
-        <div class="ex-card">
-          <div class="ex-q">${ex.q}</div>
-          ${ex.steps.map((st, i) => `<div class="ex-step">${i === ex.steps.length - 1 ? '<span class="hl">' + st + '</span>' : st}</div>`).join('')}
-        </div>`).join('')}
-      <div class="flex-gap" style="margin-top:1.25rem;justify-content:flex-start">
-        <button class="btn-primary" onclick="quickQuiz(${s.id})">Quiz this sutra ⚡</button>
-        <button class="btn-sec" onclick="backToList()">Back</button>
-      </div>`;
+    </div>
+    <p style="font-size:13px;color:var(--text-2);line-height:1.75;margin-bottom:1rem">${s.desc}</p>
+    <div class="section-title">Step-by-step method</div>
+    ${s.steps.map((st, i) => `<div class="step-block"><div class="step-n">${i+1}</div><div>${st}</div></div>`).join('')}
+    <div class="section-title" style="margin-top:1.25rem">Worked examples</div>
+    ${s.examples.map(ex => `
+      <div class="ex-card">
+        <div class="ex-q">${ex.q}</div>
+        ${ex.steps.map((st, i) => `<div class="ex-step">${i === ex.steps.length - 1 ? '<span class="hl">' + st + '</span>' : st}</div>`).join('')}
+      </div>`).join('')}
+    <div class="flex-gap" style="margin-top:1.25rem;justify-content:flex-start">
+      <button class="btn-primary" onclick="quickQuiz(${s.id})">Quiz this sutra ⚡</button>
+      <button class="btn-sec" onclick="backToList()">Back</button>
+    </div>`;
 
-    document.getElementById('learn-home').style.display = 'none';
-    document.getElementById('learn-detail').style.display = 'block';
-  } catch(e) { console.error(e); }
+  document.getElementById('learn-home').style.display = 'none';
+  document.getElementById('learn-detail').style.display = 'block';
 }
 
 function backToList() {
@@ -381,31 +383,38 @@ function showQuizHome() {
   document.getElementById('quiz-result').style.display = 'none';
 }
 
-async function startQuiz(mode) {
+function shuffleArr(arr) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
+function startQuiz(mode) {
   if (!Object.values(mastered).some(Boolean)) return;
   lastMode = mode;
   qMaxTime = mode === 'speed' ? 10 : mode === 'challenge' ? 8 : 20;
   qIdx = 0; qScore = 0; qCorrect = 0; qStreak = 0; qBestStreak = 0;
 
-  try {
-    let data;
-    if (mode === 'mixed' || mode === 'speed' || mode === 'challenge') {
-      const res = await fetch('/api/quiz/mixed');
-      data = await res.json();
-      qList = data;
-    } else {
-      const res = await fetch('/api/quiz/' + currentSutraId);
-      const d = await res.json();
-      qList = d.questions.map(q => ({ ...q, sutraName: d.sutra, sutraId: currentSutraId }));
-    }
-    if (mode === 'speed') qList = qList.slice(0, 10);
-    document.getElementById('quiz-home').style.display = 'none';
-    document.getElementById('quiz-result').style.display = 'none';
-    document.getElementById('quiz-active').style.display = 'block';
-    const modeLabels = { current: 'Sutra practice', mixed: 'Mixed review', speed: 'Speed round', challenge: 'Challenge' };
-    document.getElementById('qz-label').textContent = modeLabels[mode];
-    renderQ();
-  } catch(e) { console.error(e); }
+  if (mode === 'mixed' || mode === 'speed' || mode === 'challenge') {
+    let pool = [];
+    sutrasFull.forEach(s => {
+      if (mastered[s.id]) {
+        s.questions.forEach(q => pool.push({ ...q, sutraName: s.name, sutraId: s.id }));
+      }
+    });
+    pool = shuffleArr(pool);
+    qList = mode === 'speed' ? pool.slice(0, 10) : pool.slice(0, 10);
+  } else {
+    const s = sutrasFull.find(x => x.id === currentSutraId);
+    const picked = shuffleArr(s.questions).slice(0, 5);
+    qList = picked.map(q => ({ ...q, sutraName: s.name, sutraId: s.id }));
+  }
+  qList = qList.map(q => ({ ...q, o: shuffleArr(q.o) }));
+
+  document.getElementById('quiz-home').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
+  const modeLabels = { current: 'Sutra practice', mixed: 'Mixed review', speed: 'Speed round', challenge: 'Challenge' };
+  document.getElementById('qz-label').textContent = modeLabels[mode];
+  renderQ();
 }
 
 function retryQuiz() { startQuiz(lastMode); }
