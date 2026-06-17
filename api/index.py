@@ -1,275 +1,638 @@
-from flask import Flask, jsonify, send_from_directory
-import os, random
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vedic Math — Learn & Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --saffron: #E07B39;
+  --saffron-light: #FDF3EB;
+  --saffron-dark: #B85C1A;
+  --indigo: #3D3480;
+  --indigo-light: #EEEDFE;
+  --indigo-mid: #7F77DD;
+  --green: #1A7A52;
+  --green-light: #E2F5EE;
+  --text: #1A1A2E;
+  --text-2: #5A5A7A;
+  --text-3: #9898B8;
+  --bg: #FAFAF8;
+  --surface: #FFFFFF;
+  --border: rgba(60,52,128,0.12);
+  --border-2: rgba(60,52,128,0.22);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.devanagari{font-family:'Noto Sans Devanagari',sans-serif}
 
-app = Flask(__name__, static_folder="../public", static_url_path="")
+/* Header */
+.header{background:var(--indigo);color:#fff;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-symbol{width:32px;height:32px;background:var(--saffron);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;color:#fff}
+.logo-text{font-size:16px;font-weight:600;letter-spacing:0.3px}
+.logo-sub{font-size:11px;opacity:0.65;margin-top:1px}
+.header-score{text-align:right}
+.header-score .xp{font-size:14px;font-weight:600;color:#FAC775}
+.header-score .lv{font-size:11px;opacity:0.65}
 
-SUTRAS = [
-    {
-        "id": 0,
-        "name": "Ekadhikena Purvena",
-        "sanskrit": "एकाधिकेन पूर्वेण",
-        "meaning": "By one more than the previous",
-        "color": "#EEEDFE", "textColor": "#3C3489", "dot": "#7F77DD",
-        "desc": "Square numbers ending in 5, or multiply numbers whose tens digits are equal and units digits sum to 10.",
-        "steps": [
-            "Take the tens digit of the number (ignore the 5).",
-            "Multiply it by (itself + 1).",
-            "Append 25 at the end — that's your answer."
-        ],
-        "examples": [
-            {"q": "35²", "steps": ["Tens digit: 3", "3 × (3+1) = 3 × 4 = 12", "Append 25 → 1225"]},
-            {"q": "75²", "steps": ["Tens digit: 7", "7 × 8 = 56", "Append 25 → 5625"]}
-        ],
-        "questions": [
-            {"q": "35²", "a": 1225, "o": [1025, 1225, 1325, 1125]},
-            {"q": "45²", "a": 2025, "o": [2025, 2225, 1925, 2125]},
-            {"q": "25²", "a": 625,  "o": [525, 725, 625, 825]},
-            {"q": "65²", "a": 4225, "o": [4025, 4225, 4425, 4625]},
-            {"q": "95²", "a": 9025, "o": [8925, 9025, 9125, 9225]},
-            {"q": "15²", "a": 225,  "o": [125, 225, 325, 215]},
-            {"q": "55²", "a": 3025, "o": [2925, 3025, 3125, 3015]},
-            {"q": "85²", "a": 7225, "o": [7125, 7325, 7225, 7215]},
-        ]
-    },
-    {
-        "id": 1,
-        "name": "Nikhilam",
-        "sanskrit": "निखिलम्",
-        "meaning": "All from 9, last from 10",
-        "color": "#E1F5EE", "textColor": "#085041", "dot": "#1D9E75",
-        "desc": "Subtract each digit from 9, and the last digit from 10. Perfect for subtracting from any power of 10.",
-        "steps": [
-            "Identify the power of 10 you're subtracting from (100, 1000, 10000…).",
-            "For each digit of the number, subtract it from 9.",
-            "For the last digit only, subtract from 10 instead."
-        ],
-        "examples": [
-            {"q": "1000 − 764", "steps": ["Digits: 7, 6, 4", "9−7=2, 9−6=3, 10−4=6", "Answer: 236"]},
-            {"q": "100 − 73",   "steps": ["Digits: 7, 3", "9−7=2, 10−3=7", "Answer: 27"]}
-        ],
-        "questions": [
-            {"q": "1000 − 764",   "a": 236,  "o": [236, 246, 226, 256]},
-            {"q": "1000 − 537",   "a": 463,  "o": [453, 463, 473, 443]},
-            {"q": "100 − 73",     "a": 27,   "o": [17, 37, 27, 47]},
-            {"q": "1000 − 291",   "a": 709,  "o": [799, 709, 719, 699]},
-            {"q": "10000 − 3821", "a": 6179, "o": [6179, 6279, 6079, 6189]},
-            {"q": "100 − 48",     "a": 52,   "o": [42, 52, 62, 58]},
-            {"q": "1000 − 109",   "a": 891,  "o": [881, 901, 891, 911]},
-            {"q": "10000 − 5672", "a": 4328, "o": [4228, 4428, 4338, 4328]},
-        ]
-    },
-    {
-        "id": 2,
-        "name": "Urdhva Tiryak",
-        "sanskrit": "ऊर्ध्व तिर्यक्",
-        "meaning": "Vertically and crosswise",
-        "color": "#FAEEDA", "textColor": "#633806", "dot": "#EF9F27",
-        "desc": "The general multiplication sutra. Multiply any two 2-digit numbers using vertical and crosswise products.",
-        "steps": [
-            "Write AB × CD. Right column: B×D (write units digit, carry the tens).",
-            "Cross multiply: A×D + B×C, add any carry (write units, carry tens).",
-            "Left column: A×C plus any carry.",
-            "Read the three results left to right."
-        ],
-        "examples": [
-            {"q": "23 × 14", "steps": ["Right: 3×4=12 → write 2, carry 1", "Cross: 2×4+3×1+1=12 → write 2, carry 1", "Left: 2×1+1=3", "Answer: 322"]},
-            {"q": "32 × 21", "steps": ["Right: 2×1=2", "Cross: 3×1+2×2=7", "Left: 3×2=6", "Answer: 672"]}
-        ],
-        "questions": [
-            {"q": "23 × 14", "a": 322,  "o": [322, 332, 312, 342]},
-            {"q": "32 × 21", "a": 672,  "o": [652, 682, 672, 662]},
-            {"q": "13 × 12", "a": 156,  "o": [146, 166, 156, 136]},
-            {"q": "41 × 32", "a": 1312, "o": [1302, 1322, 1312, 1332]},
-            {"q": "22 × 31", "a": 682,  "o": [672, 692, 682, 662]},
-            {"q": "24 × 13", "a": 312,  "o": [302, 312, 322, 332]},
-            {"q": "33 × 11", "a": 363,  "o": [353, 363, 373, 343]},
-            {"q": "42 × 21", "a": 882,  "o": [872, 892, 882, 862]},
-        ]
-    },
-    {
-        "id": 3,
-        "name": "Anurupyena",
-        "sanskrit": "अनुरूप्येण",
-        "meaning": "Proportionality",
-        "color": "#FAECE7", "textColor": "#712B13", "dot": "#D85A30",
-        "desc": "Scale to a round number, compute, then adjust. Makes ×99, ×101, ×9, ×11 trivially fast.",
-        "steps": [
-            "Round the multiplier to the nearest 10 or 100 (e.g. 99 → 100, 101 → 100).",
-            "Multiply by that round number.",
-            "Subtract (if rounded up) or add (if rounded down) the difference times the other number."
-        ],
-        "examples": [
-            {"q": "47 × 99",  "steps": ["47 × 100 = 4700", "Subtract 47 × 1 = 47", "Answer: 4653"]},
-            {"q": "25 × 101", "steps": ["25 × 100 = 2500", "Add 25 × 1 = 25", "Answer: 2525"]}
-        ],
-        "questions": [
-            {"q": "47 × 99",  "a": 4653, "o": [4653, 4753, 4553, 4643]},
-            {"q": "36 × 99",  "a": 3564, "o": [3464, 3664, 3564, 3574]},
-            {"q": "25 × 101", "a": 2525, "o": [2625, 2425, 2515, 2525]},
-            {"q": "53 × 99",  "a": 5247, "o": [5247, 5347, 5147, 5257]},
-            {"q": "18 × 101", "a": 1818, "o": [1818, 1918, 1718, 1828]},
-            {"q": "62 × 99",  "a": 6138, "o": [6038, 6238, 6138, 6148]},
-            {"q": "44 × 101", "a": 4444, "o": [4344, 4544, 4444, 4434]},
-            {"q": "77 × 99",  "a": 7623, "o": [7523, 7723, 7613, 7623]},
-        ]
-    },
-    {
-        "id": 4,
-        "name": "Vilokanam",
-        "sanskrit": "विलोकनम्",
-        "meaning": "By mere observation",
-        "color": "#EEEDFE", "textColor": "#3C3489", "dot": "#534AB7",
-        "desc": "Spot algebraic patterns like (a+b)(a−b) = a²−b² instantly. Solve by pattern recognition, not calculation.",
-        "steps": [
-            "Check if both numbers are equidistant from a round number.",
-            "That round number is 'a'. The equal distance is 'b'.",
-            "Answer = a² − b². Both values are easy to compute mentally."
-        ],
-        "examples": [
-            {"q": "63 × 57", "steps": ["Both are 3 away from 60", "a=60, b=3", "60²−3² = 3600−9 = 3591"]},
-            {"q": "84 × 76", "steps": ["Both are 4 away from 80", "a=80, b=4", "6400−16 = 6384"]}
-        ],
-        "questions": [
-            {"q": "63 × 57", "a": 3591, "o": [3591, 3691, 3491, 3581]},
-            {"q": "84 × 76", "a": 6384, "o": [6284, 6484, 6384, 6374]},
-            {"q": "45 × 35", "a": 1575, "o": [1475, 1675, 1565, 1575]},
-            {"q": "93 × 87", "a": 8091, "o": [8091, 8191, 7991, 8081]},
-            {"q": "72 × 68", "a": 4896, "o": [4796, 4996, 4886, 4896]},
-            {"q": "51 × 49", "a": 2499, "o": [2399, 2599, 2499, 2489]},
-            {"q": "102 × 98","a": 9996, "o": [9896, 10096, 9986, 9996]},
-            {"q": "65 × 55", "a": 3575, "o": [3475, 3675, 3565, 3575]},
-        ]
-    },
-    {
-        "id": 5,
-        "name": "Sankalana Vyavakalanabhyam",
-        "sanskrit": "सङ्कलन व्यवकलनाभ्यां",
-        "meaning": "By addition and subtraction",
-        "color": "#E1F5EE", "textColor": "#085041", "dot": "#1D9E75",
-        "desc": "Solve simultaneous equations by adding or subtracting them to eliminate one variable instantly.",
-        "steps": [
-            "Add both equations together — one variable cancels out.",
-            "Or subtract one from the other — the other variable cancels.",
-            "Solve the resulting simple single-variable equation.",
-            "Back-substitute to find the second variable."
-        ],
-        "examples": [
-            {"q": "x+y=7, x−y=3", "steps": ["Add: 2x=10 → x=5", "Subtract: 2y=4 → y=2", "Answer: x=5, y=2"]},
-            {"q": "x+y=9, x−y=1", "steps": ["Add: 2x=10 → x=5", "y = 9−5 = 4", "Answer: x=5, y=4"]}
-        ],
-        "questions": [
-            {"q": "x+y=10, x−y=4 → x=?", "a": 7,  "o": [5, 6, 7, 8]},
-            {"q": "x+y=9,  x−y=1 → x=?", "a": 5,  "o": [4, 5, 6, 7]},
-            {"q": "x+y=12, x−y=2 → x=?", "a": 7,  "o": [5, 6, 7, 8]},
-            {"q": "x+y=8,  x−y=2 → y=?", "a": 3,  "o": [2, 3, 4, 5]},
-            {"q": "x+y=15, x−y=5 → y=?", "a": 5,  "o": [4, 5, 6, 7]},
-            {"q": "x+y=20, x−y=4 → x=?", "a": 12, "o": [10, 11, 12, 13]},
-            {"q": "x+y=14, x−y=6 → y=?", "a": 4,  "o": [3, 4, 5, 6]},
-            {"q": "x+y=18, x−y=2 → x=?", "a": 10, "o": [8, 9, 10, 11]},
-        ]
-    },
-    {
-        "id": 6,
-        "name": "Anurupye Shunyam",
-        "sanskrit": "आनुरूप्ये शून्यम्",
-        "meaning": "If proportionate, then zero",
-        "color": "#FAEEDA", "textColor": "#633806", "dot": "#EF9F27",
-        "desc": "When coefficients of one variable are proportional across equations, that variable can be zeroed out to find the other.",
-        "steps": [
-            "Write both equations side by side.",
-            "Check if one variable's coefficients share a common ratio.",
-            "If yes, set that variable to zero and solve for the other.",
-            "Verify by substituting back."
-        ],
-        "examples": [
-            {"q": "2x+3y=6 & 4x+6y=12", "steps": ["Notice 4/2=2, 6/3=2, 12/6=2 — all proportional", "Equations are identical scaled — infinite solutions", "Set x=0: 3y=6 → y=2"]},
-            {"q": "3x=15", "steps": ["Isolate x", "x = 15/3", "x = 5"]}
-        ],
-        "questions": [
-            {"q": "If 2x = 6, find x",   "a": 3, "o": [2, 3, 4, 6]},
-            {"q": "If 3y = 12, find y",  "a": 4, "o": [3, 4, 6, 9]},
-            {"q": "If 5x = 25, find x",  "a": 5, "o": [4, 5, 6, 7]},
-            {"q": "If 4y = 20, find y",  "a": 5, "o": [4, 5, 6, 8]},
-            {"q": "If 6x = 18, find x",  "a": 3, "o": [2, 3, 4, 6]},
-            {"q": "If 7y = 49, find y",  "a": 7, "o": [6, 7, 8, 9]},
-            {"q": "If 9x = 81, find x",  "a": 9, "o": [7, 8, 9, 10]},
-            {"q": "If 8y = 64, find y",  "a": 8, "o": [6, 7, 8, 9]},
-        ]
-    },
-    {
-        "id": 7,
-        "name": "Yavadunam",
-        "sanskrit": "यावदूनम्",
-        "meaning": "By the deficiency",
-        "color": "#FAECE7", "textColor": "#712B13", "dot": "#D85A30",
-        "desc": "Square numbers near a base (10, 100, 1000) by computing the deficiency and applying a simple two-part formula.",
-        "steps": [
-            "Find the deficiency: how far is the number below the base? (e.g. 98 is 2 below 100)",
-            "Left part: subtract the deficiency from the number (98−2=96).",
-            "Right part: square the deficiency (2²=04, use as many digits as zeros in base).",
-            "Concatenate: 9604."
-        ],
-        "examples": [
-            {"q": "98²", "steps": ["Deficiency: 100−98=2", "Left: 98−2=96", "Right: 2²=04", "Answer: 9604"]},
-            {"q": "97²", "steps": ["Deficiency: 100−97=3", "Left: 97−3=94", "Right: 3²=09", "Answer: 9409"]}
-        ],
-        "questions": [
-            {"q": "98²",  "a": 9604,  "o": [9604, 9504, 9704, 9614]},
-            {"q": "97²",  "a": 9409,  "o": [9309, 9509, 9409, 9419]},
-            {"q": "96²",  "a": 9216,  "o": [9116, 9316, 9216, 9206]},
-            {"q": "99²",  "a": 9801,  "o": [9701, 9901, 9801, 9811]},
-            {"q": "995²", "a": 990025,"o": [990025, 989025, 991025, 990035]},
-            {"q": "94²",  "a": 8836,  "o": [8736, 8936, 8836, 8826]},
-            {"q": "93²",  "a": 8649,  "o": [8549, 8749, 8649, 8639]},
-            {"q": "995²", "a": 990025,"o": [990025, 990125, 989925, 990015]},
-        ]
-    },
-]
+/* Tab nav */
+.tab-nav{display:flex;background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem}
+.tab-btn{flex:1;padding:14px 8px;font-size:13px;font-weight:500;color:var(--text-2);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:color 0.15s}
+.tab-btn.active{color:var(--indigo);border-bottom-color:var(--indigo)}
+.tab-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
+/* Pages */
+.page{display:none;padding:1.25rem 1.5rem;max-width:680px;margin:0 auto}
+.page.active{display:block}
 
-@app.route("/")
-def index():
-    return send_from_directory(app.static_folder, "index.html")
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:10px}
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:0.3px}
 
+/* Sutra list */
+.sutra-item{display:flex;align-items:center;gap:12px;padding:12px 0;cursor:pointer;border-bottom:1px solid var(--border)}
+.sutra-item:last-child{border-bottom:none}
+.sutra-item:hover{opacity:0.8}
+.s-num{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+.s-info{flex:1;min-width:0}
+.s-name{font-size:14px;font-weight:500;color:var(--text)}
+.s-sk{font-size:12px;color:var(--text-2);margin-top:2px}
+.s-check{width:20px;height:20px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s-check svg{width:12px;height:12px;stroke:var(--green);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 
-@app.route("/api/sutras")
-def get_sutras():
-    safe = []
-    for s in SUTRAS:
-        safe.append({k: v for k, v in s.items() if k != "questions"})
-    return jsonify(safe)
+/* Detail page */
+.detail-back{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-2);cursor:pointer;margin-bottom:1rem;background:none;border:none;padding:0}
+.detail-back svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.detail-header{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
+.step-block{background:var(--bg);border-radius:var(--radius-sm);padding:10px 14px;margin:6px 0;font-size:13px;color:var(--text);line-height:1.7;display:flex;gap:10px}
+.step-n{width:22px;height:22px;border-radius:50%;background:var(--indigo-mid);color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.ex-card{background:var(--saffron-light);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px}
+.ex-q{font-size:16px;font-weight:600;color:var(--saffron-dark);margin-bottom:8px}
+.ex-step{font-size:13px;color:var(--text);padding:3px 0;border-bottom:1px solid rgba(224,123,57,0.15);line-height:1.6}
+.ex-step:last-child{border-bottom:none;font-weight:600;color:var(--saffron-dark)}
+.hl{background:rgba(224,123,57,0.18);color:var(--saffron-dark);padding:1px 5px;border-radius:4px;font-weight:600}
 
+/* Quiz modes */
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.mode-card{border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;text-align:center;transition:border-color 0.15s,background 0.15s}
+.mode-card:hover{background:var(--indigo-light);border-color:var(--indigo-mid)}
+.mode-icon{font-size:24px;margin-bottom:6px;display:block}
+.mode-title{font-size:13px;font-weight:500;color:var(--text)}
+.mode-sub{font-size:11px;color:var(--text-2);margin-top:3px}
 
-@app.route("/api/sutras/<int:sutra_id>")
-def get_sutra(sutra_id):
-    for s in SUTRAS:
-        if s["id"] == sutra_id:
-            return jsonify(s)
-    return jsonify({"error": "Not found"}), 404
+/* Quiz active */
+.qz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.qz-label{font-size:12px;font-weight:600;color:var(--indigo);background:var(--indigo-light);padding:4px 12px;border-radius:20px}
+.qz-timer{font-size:16px;font-weight:600;color:var(--text);min-width:32px;text-align:right}
+.timer-track{height:5px;background:var(--border);border-radius:3px;margin-bottom:14px;overflow:hidden}
+.timer-fill{height:100%;background:var(--indigo-mid);border-radius:3px;transition:width 1s linear,background 0.3s}
+.hint-bar{background:var(--saffron-light);border-radius:var(--radius-sm);padding:9px 13px;font-size:12px;color:var(--saffron-dark);margin-bottom:12px;line-height:1.6}
+.hint-bar strong{font-weight:600}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;margin-bottom:14px}
+.q-sutra{font-size:11px;color:var(--text-3);margin-bottom:8px}
+.q-text{font-size:32px;font-weight:600;color:var(--text);letter-spacing:2px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.opt-btn{background:var(--surface);border:1px solid var(--border-2);border-radius:var(--radius-sm);padding:14px;font-size:18px;font-weight:600;cursor:pointer;color:var(--text);transition:background 0.12s,border-color 0.12s;font-family:'Noto Sans',sans-serif}
+.opt-btn:hover:not(:disabled){background:var(--indigo-light);border-color:var(--indigo-mid)}
+.opt-btn.correct{background:var(--green-light);border-color:var(--green);color:var(--green)}
+.opt-btn.wrong{background:#FCEBEB;border-color:#E24B4A;color:#791F1F}
+.opt-btn:disabled{cursor:default}
+.qz-footer{display:flex;justify-content:space-between;align-items:center}
+.dots{display:flex;gap:4px}
+.dot{width:22px;height:5px;border-radius:3px;background:var(--border)}
+.dot.ok{background:var(--green)}
+.dot.no{background:#E24B4A}
+.dot.cur{background:var(--indigo-mid)}
 
+/* Results */
+.result-score{font-size:52px;font-weight:600;color:var(--indigo);text-align:center}
+.result-label{font-size:13px;color:var(--text-2);text-align:center;margin-top:4px}
+.stats-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:1rem 0}
+.stat-box{background:var(--bg);border-radius:var(--radius-sm);padding:12px;text-align:center}
+.stat-v{font-size:20px;font-weight:600;color:var(--text)}
+.stat-l{font-size:11px;color:var(--text-2);margin-top:3px}
+.result-msg{font-size:13px;color:var(--text-2);text-align:center;line-height:1.7;margin-bottom:1rem}
 
-@app.route("/api/quiz/<int:sutra_id>")
-def get_quiz(sutra_id):
-    for s in SUTRAS:
-        if s["id"] == sutra_id:
-            qs = random.sample(s["questions"], min(5, len(s["questions"])))
-            for q in qs:
-                q["o"] = random.sample(q["o"], len(q["o"]))
-            return jsonify({"sutra": s["name"], "questions": qs})
-    return jsonify({"error": "Not found"}), 404
+/* Progress */
+.xp-track{height:10px;background:var(--border);border-radius:5px;overflow:hidden;margin-top:8px}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--indigo-mid),var(--saffron));border-radius:5px;transition:width 0.5s}
+.sutra-grid{margin-top:1rem}
+.sg-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px}
+.sg-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.sg-name{flex:1;color:var(--text)}
+.sg-status{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px}
 
+/* Buttons */
+.btn-primary{background:var(--indigo);color:#fff;border:none;border-radius:var(--radius-sm);padding:11px 24px;font-size:14px;font-weight:500;cursor:pointer;font-family:'Noto Sans',sans-serif}
+.btn-primary:hover{background:var(--indigo-dark,#2d2660)}
+.btn-sec{background:transparent;color:var(--text);border:1px solid var(--border-2);border-radius:var(--radius-sm);padding:10px 20px;font-size:13px;cursor:pointer;font-family:'Noto Sans',sans-serif}
+.btn-sec:hover{background:var(--bg)}
+.flex-gap{display:flex;gap:8px;justify-content:center;margin-top:1rem}
+.section-title{font-size:14px;font-weight:600;color:var(--text);margin:1rem 0 8px}
+.loading{text-align:center;padding:2rem;color:var(--text-3);font-size:14px}
+</style>
+</head>
+<body>
 
-@app.route("/api/quiz/mixed")
-def get_mixed_quiz():
-    pool = []
-    for s in SUTRAS:
-        for q in s["questions"]:
-            pool.append({**q, "sutraName": s["name"], "sutraId": s["id"]})
-    selected = random.sample(pool, min(10, len(pool)))
-    for q in selected:
-        q["o"] = random.sample(q["o"], len(q["o"]))
-    return jsonify(selected)
+<div class="header">
+  <div class="logo">
+    <div>
+      <div class="logo-text">Vedic Math</div>
+      <div class="logo-sub">Learn · Practice · Master</div>
+    </div>
+  </div>
+  <div class="header-score">
+    <div class="xp" id="hdr-xp">0 XP</div>
+    <div class="lv" id="hdr-lv">Level 1</div>
+  </div>
+</div>
 
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('about')" id="tab-about">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    About
+  </button>
+  <button class="tab-btn" onclick="switchTab('learn')" id="tab-learn">
+    <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    Learn
+  </button>
+  <button class="tab-btn" onclick="switchTab('quiz')" id="tab-quiz">
+    <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+    Quiz
+  </button>
+  <button class="tab-btn" onclick="switchTab('progress')" id="tab-progress">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    Progress
+  </button>
+</div>
 
-if __name__ == "__main__":
-    app.run(debug=True)
+<!-- ABOUT PAGE -->
+<div class="page active" id="page-about">
+  <div style="padding-top:0.25rem">
+    <div class="card" style="margin-bottom:12px;background:linear-gradient(135deg,var(--indigo) 0%,#5648a8 100%);border:none;padding:1.5rem 1.25rem">
+      <div style="font-size:20px;font-weight:600;color:#fff;margin-bottom:8px;line-height:1.4">Welcome to the world of Vedic Math</div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:12px">
+        What if you could square a two-digit number faster than someone typing it into a calculator? Or multiply
+        97 × 98 in your head in under five seconds? That's not a party trick — it's a 3,000-year-old system of
+        mental math hiding sixteen elegant shortcuts, and you're about to learn all of them.
+      </p>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:20px;font-weight:600;color:#FAC775">16</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.7)">sutras to master</div>
+        </div>
+        <div>
+          <div style="font-size:20px;font-weight:600;color:#FAC775">8</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.7)">questions per quiz</div>
+        </div>
+        <div>
+          <div style="font-size:20px;font-weight:600;color:#FAC775">0</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.7)">calculators needed</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div style="font-size:18px;font-weight:600;color:var(--text);margin-bottom:8px">What is Vedic Math?</div>
+      <p style="font-size:13px;color:var(--text-2);line-height:1.8">
+        Vedic Mathematics is a collection of mental calculation techniques and shortcuts derived from ancient Indian texts.
+        It is built on 16 core formulas, called sutras, and a number of sub-formulas, called sub-sutras, that simplify
+        arithmetic, algebra, geometry, and calculus into fast, intuitive mental steps. The methods are designed to be
+        solved largely in one's head — often faster than reaching for a calculator — once the underlying pattern is recognized.
+      </p>
+    </div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div style="font-size:18px;font-weight:600;color:var(--text);margin-bottom:8px">A brief history</div>
+      <p style="font-size:13px;color:var(--text-2);line-height:1.8">
+        The word "Vedic" refers to the Vedas, the ancient body of Sanskrit texts that form the foundation of Hindu
+        philosophy and tradition, composed over a long period beginning more than three thousand years ago. While
+        the Vedas themselves are primarily spiritual and ritual texts, later scholars identified within them — and
+        within associated texts — patterns and formulas that could be applied to mathematics. These techniques were
+        largely passed down through oral tradition for generations, often used by scholars and merchants for quick
+        calculation long before modern arithmetic notation became widespread in India.
+      </p>
+      <p style="font-size:13px;color:var(--text-2);line-height:1.8;margin-top:10px">
+        The system as it is taught and practiced today was compiled and popularized in the twentieth century,
+        reconstructing and systematizing these scattered techniques into the structured set of 16 sutras used in
+        this app.
+      </p>
+    </div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div>
+          <div style="font-size:16px;font-weight:600;color:var(--text)">Swami Bharati Krishna Tirtha</div>
+          <div style="font-size:12px;color:var(--text-2)">1884 – 1960</div>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--text-2);line-height:1.8">
+        Swami Bharati Krishna Tirtha was a Hindu monk and scholar who served as the Shankaracharya — the head of a
+        major monastic order — of Govardhana Math in Puri, India, from 1925 until his passing in 1960. Before
+        renouncing worldly life, he was known for prodigious academic achievement across subjects including
+        Sanskrit, philosophy, English, mathematics, and science.
+      </p>
+      <p style="font-size:13px;color:var(--text-2);line-height:1.8;margin-top:10px">
+        He spent years studying ancient Sanskrit texts known as the Parishishta, or appendix portions, of the
+        Atharvaveda, and claimed to have reconstructed sixteen mathematical sutras from them. He later compiled his
+        findings and teaching method into a single manuscript. The material was published posthumously in 1965 as
+        the book <em>Vedic Mathematics</em>, which today remains the foundational text behind the system taught
+        in schools, workshops, and apps like this one around the world.
+      </p>
+    </div>
+
+    <div class="card" style="background:var(--saffron-light);border-color:rgba(224,123,57,0.25)">
+      <div style="font-size:13px;color:var(--saffron-dark);line-height:1.8">
+        Ready to try it yourself? Head to the <strong>Learn</strong> tab to start with the first sutra, complete with
+        step-by-step methods and worked examples.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LEARN PAGE -->
+<div class="page" id="page-learn">
+  <div id="learn-home">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-top:0.25rem">
+      <div>
+        <div style="font-size:16px;font-weight:600;color:var(--text)">16 Vedic sutras</div>
+        <div style="font-size:12px;color:var(--text-2);margin-top:2px">Tap any sutra to learn with worked examples</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:11px;color:var(--text-2)">Mastered</div>
+        <div style="font-size:18px;font-weight:600;color:var(--indigo)" id="mastered-lbl">0/8</div>
+      </div>
+    </div>
+    <div class="card" style="padding:0 1.25rem" id="sutra-list"><div class="loading">Loading sutras…</div></div>
+  </div>
+
+  <div id="learn-detail" style="display:none">
+    <button class="detail-back" onclick="backToList()">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      All sutras
+    </button>
+    <div id="detail-body"></div>
+  </div>
+</div>
+
+<!-- QUIZ PAGE -->
+<div class="page" id="page-quiz">
+  <div id="quiz-home">
+    <div style="font-size:16px;font-weight:600;margin-bottom:4px;padding-top:0.25rem">Choose quiz mode</div>
+    <div style="font-size:13px;color:var(--text-2);margin-bottom:4px">Study a sutra first to unlock quizzes</div>
+    <div class="mode-grid">
+      <div class="mode-card" onclick="startQuiz('current')">
+        <span class="mode-icon">🎯</span>
+        <div class="mode-title">Current sutra</div>
+        <div class="mode-sub">Practice last lesson</div>
+      </div>
+      <div class="mode-card" onclick="startQuiz('mixed')">
+        <span class="mode-icon">🔀</span>
+        <div class="mode-title">Mixed review</div>
+        <div class="mode-sub">All mastered sutras</div>
+      </div>
+      <div class="mode-card" onclick="startQuiz('speed')">
+        <span class="mode-icon">⚡</span>
+        <div class="mode-title">Speed round</div>
+        <div class="mode-sub">10 questions, 10 sec each</div>
+      </div>
+      <div class="mode-card" onclick="startQuiz('challenge')">
+        <span class="mode-icon">🔥</span>
+        <div class="mode-title">Challenge</div>
+        <div class="mode-sub">No hints, 8 seconds</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="quiz-active" style="display:none;padding-top:0.25rem">
+    <div class="qz-top">
+      <span class="qz-label" id="qz-label">—</span>
+      <span class="qz-timer" id="qz-timer">—</span>
+    </div>
+    <div class="timer-track"><div class="timer-fill" id="qz-timer-fill" style="width:100%"></div></div>
+    <div class="dots" id="qz-dots" style="margin-bottom:12px"></div>
+    <div id="qz-hint"></div>
+    <div class="q-card">
+      <div class="q-sutra" id="qz-sutra-name"></div>
+      <div class="q-text" id="qz-q"></div>
+    </div>
+    <div class="opts" id="qz-opts"></div>
+    <div class="qz-footer">
+      <span style="font-size:13px;color:var(--text-2)">Score: <strong id="qz-score" style="color:var(--text)">0</strong></span>
+      <button class="btn-sec" style="padding:6px 14px;font-size:12px" onclick="showQuizHome()">Quit</button>
+    </div>
+  </div>
+
+  <div id="quiz-result" style="display:none;padding-top:0.5rem">
+    <div class="card" style="padding:1.5rem;margin-bottom:1rem">
+      <div class="result-score" id="res-score">0</div>
+      <div class="result-label">points earned</div>
+      <div class="stats-3" style="margin-top:1rem">
+        <div class="stat-box"><div class="stat-v" id="res-correct">0</div><div class="stat-l">correct</div></div>
+        <div class="stat-box"><div class="stat-v" id="res-streak">0</div><div class="stat-l">best streak</div></div>
+        <div class="stat-box"><div class="stat-v" id="res-xp">+0</div><div class="stat-l">XP gained</div></div>
+      </div>
+    </div>
+    <div class="result-msg" id="res-msg"></div>
+    <div class="flex-gap">
+      <button class="btn-sec" onclick="showQuizHome()">Change mode</button>
+      <button class="btn-primary" onclick="retryQuiz()">Play again</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS PAGE -->
+<div class="page" id="page-progress">
+  <div style="padding-top:0.25rem">
+    <div class="card" style="margin-bottom:1rem">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:15px;font-weight:600">Your journey</div>
+        <div style="font-size:12px;color:var(--text-2)">Level <span id="prog-lv" style="font-weight:600;color:var(--indigo)">1</span></div>
+      </div>
+      <div style="font-size:12px;color:var(--text-2);margin-top:12px;margin-bottom:4px">XP to next level</div>
+      <div class="xp-track"><div class="xp-fill" id="prog-xp-bar" style="width:0%"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:5px">
+        <span style="font-size:11px;color:var(--text-3)" id="prog-xp-lbl">0 / 500 XP</span>
+        <span style="font-size:11px;color:var(--text-3)" id="prog-next-lv">Level 2</span>
+      </div>
+    </div>
+    <div class="stats-3" style="margin-bottom:1rem">
+      <div class="stat-box"><div class="stat-v" id="prog-quizzes">0</div><div class="stat-l">quizzes</div></div>
+      <div class="stat-box"><div class="stat-v" id="prog-acc">—</div><div class="stat-l">accuracy</div></div>
+      <div class="stat-box"><div class="stat-v" id="prog-best">0</div><div class="stat-l">best streak</div></div>
+    </div>
+    <div class="section-title">Sutra mastery</div>
+    <div id="prog-sutra-list"></div>
+  </div>
+</div>
+
+<script>
+let sutras = [];
+let mastered = {};
+let currentSutraId = 0;
+let xp = 0, quizzesDone = 0, totalAnswered = 0, totalCorrect = 0, allBestStreak = 0;
+let qList = [], qIdx = 0, qScore = 0, qCorrect = 0, qStreak = 0, qBestStreak = 0;
+let qTimer = null, qTimerVal = 0, qMaxTime = 20, lastMode = 'current';
+
+let sutrasFull = []; // includes questions, loaded once
+
+async function fetchSutras() {
+  try {
+    const res = await fetch('sutras.json');
+    sutrasFull = await res.json();
+    // public-facing sutras list omits questions array for the home view
+    sutras = sutrasFull.map(s => { const { questions, ...rest } = s; return rest; });
+    renderLearnHome();
+  } catch(e) {
+    document.getElementById('sutra-list').innerHTML = '<div class="loading">Could not load sutras.</div>';
+  }
+}
+
+function switchTab(t) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + t).classList.add('active');
+  document.getElementById('tab-' + t).classList.add('active');
+  if (t === 'progress') renderProgress();
+}
+
+function renderLearnHome() {
+  const list = document.getElementById('sutra-list');
+  const masteredCount = Object.values(mastered).filter(Boolean).length;
+  document.getElementById('mastered-lbl').textContent = masteredCount + '/' + sutras.length;
+  list.innerHTML = sutras.map(s => `
+    <div class="sutra-item" onclick="openSutra(${s.id})">
+      <div class="s-num" style="background:${s.color};color:${s.textColor}">${s.id + 1}</div>
+      <div class="s-info">
+        <div class="s-name">${s.name}</div>
+        <div class="s-sk devanagari">${s.sanskrit} · ${s.meaning}</div>
+      </div>
+      ${mastered[s.id] ? `<div class="s-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>` : `<svg width="16" height="16" stroke="#9898B8" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>`}
+    </div>`).join('');
+}
+
+function openSutra(id) {
+  currentSutraId = id;
+  const s = sutrasFull.find(x => x.id === id);
+  if (!s) return;
+  mastered[id] = true;
+  xp += 20;
+  updateHeader();
+  renderLearnHome();
+
+  const body = document.getElementById('detail-body');
+  body.innerHTML = `
+    <div class="detail-header">
+      <div class="s-num" style="background:${s.color};color:${s.textColor};width:40px;height:40px;font-size:15px">${s.id + 1}</div>
+      <div>
+        <div style="font-size:17px;font-weight:600;color:var(--text)">${s.name}</div>
+        <div class="devanagari" style="font-size:13px;color:var(--text-2)">${s.sanskrit} · ${s.meaning}</div>
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--text-2);line-height:1.75;margin-bottom:1rem">${s.desc}</p>
+    <div class="section-title">Step-by-step method</div>
+    ${s.steps.map((st, i) => `<div class="step-block"><div class="step-n">${i+1}</div><div>${st}</div></div>`).join('')}
+    <div class="section-title" style="margin-top:1.25rem">Worked examples</div>
+    ${s.examples.map(ex => `
+      <div class="ex-card">
+        <div class="ex-q">${ex.q}</div>
+        ${ex.steps.map((st, i) => `<div class="ex-step">${i === ex.steps.length - 1 ? '<span class="hl">' + st + '</span>' : st}</div>`).join('')}
+      </div>`).join('')}
+    <div class="flex-gap" style="margin-top:1.25rem;justify-content:flex-start">
+      <button class="btn-primary" onclick="quickQuiz(${s.id})">Quiz this sutra ⚡</button>
+      <button class="btn-sec" onclick="backToList()">Back</button>
+    </div>`;
+
+  document.getElementById('learn-home').style.display = 'none';
+  document.getElementById('learn-detail').style.display = 'block';
+}
+
+function backToList() {
+  document.getElementById('learn-home').style.display = 'block';
+  document.getElementById('learn-detail').style.display = 'none';
+}
+
+function quickQuiz(id) {
+  currentSutraId = id;
+  switchTab('quiz');
+  startQuiz('current');
+}
+
+function showQuizHome() {
+  clearInterval(qTimer);
+  document.getElementById('quiz-home').style.display = 'block';
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'none';
+}
+
+function shuffleArr(arr) {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
+
+function startQuiz(mode) {
+  if (!Object.values(mastered).some(Boolean)) return;
+  lastMode = mode;
+  qMaxTime = mode === 'speed' ? 10 : mode === 'challenge' ? 8 : 20;
+  qIdx = 0; qScore = 0; qCorrect = 0; qStreak = 0; qBestStreak = 0;
+
+  if (mode === 'mixed' || mode === 'speed' || mode === 'challenge') {
+    let pool = [];
+    sutrasFull.forEach(s => {
+      if (mastered[s.id]) {
+        s.questions.forEach(q => pool.push({ ...q, sutraName: s.name, sutraId: s.id }));
+      }
+    });
+    pool = shuffleArr(pool);
+    qList = mode === 'speed' ? pool.slice(0, 10) : pool.slice(0, 10);
+  } else {
+    const s = sutrasFull.find(x => x.id === currentSutraId);
+    const picked = shuffleArr(s.questions).slice(0, 5);
+    qList = picked.map(q => ({ ...q, sutraName: s.name, sutraId: s.id }));
+  }
+  qList = qList.map(q => ({ ...q, o: shuffleArr(q.o) }));
+
+  document.getElementById('quiz-home').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
+  const modeLabels = { current: 'Sutra practice', mixed: 'Mixed review', speed: 'Speed round', challenge: 'Challenge' };
+  document.getElementById('qz-label').textContent = modeLabels[mode];
+  renderQ();
+}
+
+function retryQuiz() { startQuiz(lastMode); }
+
+function renderQ() {
+  const q = qList[qIdx];
+  const total = qList.length;
+  document.getElementById('qz-sutra-name').textContent = q.sutraName || '';
+  document.getElementById('qz-q').textContent = q.q;
+  document.getElementById('qz-score').textContent = qScore;
+
+  const dots = document.getElementById('qz-dots');
+  dots.innerHTML = qList.map((_, i) => {
+    let cls = 'dot'; if (i < qIdx) cls += ' ok'; else if (i === qIdx) cls += ' cur';
+    return `<div class="${cls}"></div>`;
+  }).join('');
+
+  const showHint = lastMode !== 'challenge';
+  const hint = document.getElementById('qz-hint');
+  if (showHint && q.sutraId !== undefined) {
+    const s = sutras.find(x => x.id === q.sutraId);
+    hint.innerHTML = s ? `<div class="hint-bar"><strong>${s.name}:</strong> ${s.meaning}</div>` : '';
+  } else { hint.innerHTML = ''; }
+
+  document.getElementById('qz-opts').innerHTML = (q.o || []).map(opt =>
+    `<button class="opt-btn" onclick="pickAns(${opt},${q.a},this)">${opt.toLocaleString()}</button>`).join('');
+
+  clearInterval(qTimer);
+  if (lastMode === 'speed' || lastMode === 'challenge') {
+    let t = qMaxTime;
+    document.getElementById('qz-timer').textContent = t;
+    document.getElementById('qz-timer-fill').style.width = '100%';
+    document.getElementById('qz-timer-fill').style.background = 'var(--indigo-mid)';
+    qTimer = setInterval(() => {
+      t--;
+      document.getElementById('qz-timer').textContent = t;
+      const pct = Math.round((t / qMaxTime) * 100);
+      document.getElementById('qz-timer-fill').style.width = pct + '%';
+      document.getElementById('qz-timer-fill').style.background = t > 5 ? 'var(--indigo-mid)' : t > 2 ? '#EF9F27' : '#E24B4A';
+      if (t <= 0) { clearInterval(qTimer); timeUp(); }
+    }, 1000);
+  } else {
+    document.getElementById('qz-timer').textContent = '—';
+    document.getElementById('qz-timer-fill').style.width = '100%';
+  }
+}
+
+function timeUp() {
+  const q = qList[qIdx];
+  document.querySelectorAll('.opt-btn').forEach(b => {
+    b.disabled = true;
+    if (parseInt(b.textContent.replace(/,/g, '')) === q.a) b.classList.add('correct');
+  });
+  qStreak = 0; totalAnswered++;
+  setTimeout(advanceQ, 1100);
+}
+
+function pickAns(chosen, correct, btn) {
+  clearInterval(qTimer);
+  document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+  totalAnswered++;
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    qCorrect++; qStreak++; totalCorrect++;
+    if (qStreak > qBestStreak) qBestStreak = qStreak;
+    if (qStreak > allBestStreak) allBestStreak = qStreak;
+    qScore += 100 + (lastMode === 'challenge' ? 50 : 0);
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.opt-btn').forEach(b => {
+      if (parseInt(b.textContent.replace(/,/g, '')) === correct) b.classList.add('correct');
+    });
+    qStreak = 0;
+  }
+  document.getElementById('qz-score').textContent = qScore;
+  setTimeout(advanceQ, 1050);
+}
+
+function advanceQ() {
+  qIdx++;
+  if (qIdx >= qList.length) endQuiz();
+  else renderQ();
+}
+
+function endQuiz() {
+  quizzesDone++;
+  const gained = Math.max(10, Math.round(qScore / 10));
+  xp += gained;
+  updateHeader();
+  document.getElementById('res-score').textContent = qScore;
+  document.getElementById('res-correct').textContent = qCorrect + '/' + qList.length;
+  document.getElementById('res-streak').textContent = qBestStreak;
+  document.getElementById('res-xp').textContent = '+' + gained;
+  const pct = Math.round((qCorrect / qList.length) * 100);
+  const msg = pct === 100 ? 'Perfect score! This sutra is yours.' :
+    pct >= 80 ? 'Excellent — near mastery. One more round and it\'s instinct.' :
+    pct >= 60 ? 'Good progress. Re-read the steps once, then try again.' :
+    'Review the lesson carefully — the pattern will click with repetition.';
+  document.getElementById('res-msg').textContent = msg;
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'block';
+}
+
+function updateHeader() {
+  const level = Math.floor(xp / 500) + 1;
+  document.getElementById('hdr-xp').textContent = xp + ' XP';
+  document.getElementById('hdr-lv').textContent = 'Level ' + level;
+}
+
+function renderProgress() {
+  const level = Math.floor(xp / 500) + 1;
+  const xpInLevel = xp % 500;
+  document.getElementById('prog-lv').textContent = level;
+  document.getElementById('prog-xp-bar').style.width = Math.round((xpInLevel / 500) * 100) + '%';
+  document.getElementById('prog-xp-lbl').textContent = xpInLevel + ' / 500 XP';
+  document.getElementById('prog-next-lv').textContent = 'Level ' + (level + 1);
+  document.getElementById('prog-quizzes').textContent = quizzesDone;
+  document.getElementById('prog-acc').textContent = totalAnswered ? Math.round((totalCorrect / totalAnswered) * 100) + '%' : '—';
+  document.getElementById('prog-best').textContent = allBestStreak;
+  const list = document.getElementById('prog-sutra-list');
+  list.innerHTML = sutras.map(s => {
+    const done = !!mastered[s.id];
+    return `<div class="sg-row">
+      <div class="sg-dot" style="background:${done ? s.dot : 'var(--border)'}"></div>
+      <div class="sg-name" style="color:${done ? 'var(--text)' : 'var(--text-3)'}">${s.name}</div>
+      <span class="sg-status" style="background:${done ? s.color : 'var(--bg)'};color:${done ? s.textColor : 'var(--text-3)'}">${done ? 'learned' : '—'}</span>
+    </div>`;
+  }).join('');
+}
+
+fetchSutras();
+</script>
+</body>
+</html>
