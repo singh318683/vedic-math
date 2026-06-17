@@ -328,13 +328,13 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
       </div>
       <div class="mode-card" onclick="startQuiz('speed')">
         <span class="mode-icon">⚡</span>
-        <div class="mode-title">Speed round</div>
-        <div class="mode-sub">10 questions, 10 sec each</div>
+        <div class="mode-title">Extended round</div>
+        <div class="mode-sub">10 questions, all sutras</div>
       </div>
       <div class="mode-card" onclick="startQuiz('challenge')">
         <span class="mode-icon">🔥</span>
         <div class="mode-title">Challenge</div>
-        <div class="mode-sub">No hints, 8 seconds</div>
+        <div class="mode-sub">No hints, bonus points</div>
       </div>
     </div>
   </div>
@@ -342,9 +342,7 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
   <div id="quiz-active" style="display:none;padding-top:0.25rem">
     <div class="qz-top">
       <span class="qz-label" id="qz-label">—</span>
-      <span class="qz-timer" id="qz-timer">—</span>
     </div>
-    <div class="timer-track"><div class="timer-fill" id="qz-timer-fill" style="width:100%"></div></div>
     <div class="dots" id="qz-dots" style="margin-bottom:12px"></div>
     <div id="qz-hint"></div>
     <div class="q-card">
@@ -353,7 +351,10 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
     </div>
     <div class="opts" id="qz-opts"></div>
     <div id="qz-explain"></div>
-    <div class="qz-footer">
+    <div id="qz-next-row" style="display:none;margin-top:12px">
+      <button class="btn-primary" style="width:100%" onclick="advanceQ()" id="qz-next-btn">Next question →</button>
+    </div>
+    <div class="qz-footer" style="margin-top:12px">
       <span style="font-size:13px;color:var(--text-2)">Score: <strong id="qz-score" style="color:var(--text)">0</strong></span>
       <button class="btn-sec" style="padding:6px 14px;font-size:12px" onclick="showQuizHome()">Quit</button>
     </div>
@@ -408,7 +409,7 @@ let mastered = {};
 let currentSutraId = 0;
 let xp = 0, quizzesDone = 0, totalAnswered = 0, totalCorrect = 0, allBestStreak = 0;
 let qList = [], qIdx = 0, qScore = 0, qCorrect = 0, qStreak = 0, qBestStreak = 0;
-let qTimer = null, qTimerVal = 0, qMaxTime = 20, lastMode = 'current';
+let lastMode = 'current';
 
 let sutrasFull = []; // includes questions, loaded once
 
@@ -542,7 +543,6 @@ function quickQuiz(id) {
 }
 
 function showQuizHome() {
-  clearInterval(qTimer);
   document.getElementById('quiz-home').style.display = 'block';
   document.getElementById('quiz-active').style.display = 'none';
   document.getElementById('quiz-result').style.display = 'none';
@@ -555,7 +555,6 @@ function shuffleArr(arr) {
 function startQuiz(mode) {
   if (!Object.values(mastered).some(Boolean)) return;
   lastMode = mode;
-  qMaxTime = mode === 'speed' ? 10 : mode === 'challenge' ? 8 : 20;
   qIdx = 0; qScore = 0; qCorrect = 0; qStreak = 0; qBestStreak = 0;
 
   if (mode === 'mixed' || mode === 'speed' || mode === 'challenge') {
@@ -591,6 +590,7 @@ function renderQ() {
   document.getElementById('qz-q').textContent = q.q;
   document.getElementById('qz-score').textContent = qScore;
   document.getElementById('qz-explain').innerHTML = '';
+  document.getElementById('qz-next-row').style.display = 'none';
 
   const dots = document.getElementById('qz-dots');
   dots.innerHTML = qList.map((_, i) => {
@@ -607,54 +607,28 @@ function renderQ() {
 
   document.getElementById('qz-opts').innerHTML = (q.o || []).map(opt =>
     `<button class="opt-btn" onclick="pickAns(${opt},${q.a},this)">${opt.toLocaleString()}</button>`).join('');
-
-  clearInterval(qTimer);
-  if (lastMode === 'speed' || lastMode === 'challenge') {
-    let t = qMaxTime;
-    document.getElementById('qz-timer').textContent = t;
-    document.getElementById('qz-timer-fill').style.width = '100%';
-    document.getElementById('qz-timer-fill').style.background = 'var(--indigo-mid)';
-    qTimer = setInterval(() => {
-      t--;
-      document.getElementById('qz-timer').textContent = t;
-      const pct = Math.round((t / qMaxTime) * 100);
-      document.getElementById('qz-timer-fill').style.width = pct + '%';
-      document.getElementById('qz-timer-fill').style.background = t > 5 ? 'var(--indigo-mid)' : t > 2 ? '#EF9F27' : '#E24B4A';
-      if (t <= 0) { clearInterval(qTimer); timeUp(); }
-    }, 1000);
-  } else {
-    document.getElementById('qz-timer').textContent = '—';
-    document.getElementById('qz-timer-fill').style.width = '100%';
-  }
 }
 
 function showExplanation(q) {
   const s = sutrasFull.find(x => x.id === q.sutraId);
   if (!s) return;
   const box = document.getElementById('qz-explain');
+
   box.innerHTML = `
     <div class="wrong-explain">
       <div class="wrong-explain-title">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        How to solve it: ${s.name}
+        How to solve it — ${s.name}
       </div>
-      ${s.steps.map((st, i) => `<div class="wrong-explain-step"><b>${i+1}.</b> ${st}</div>`).join('')}
+      ${s.examples.map(ex => `
+        <div style="margin-top:8px">
+          <div style="font-size:13px;font-weight:600;color:#791F1F;margin-bottom:4px">Example: ${ex.q}</div>
+          ${ex.steps.map((st, i) => `<div class="wrong-explain-step"><b>${i+1}.</b> ${st}</div>`).join('')}
+        </div>`).join('')}
     </div>`;
 }
 
-function timeUp() {
-  const q = qList[qIdx];
-  document.querySelectorAll('.opt-btn').forEach(b => {
-    b.disabled = true;
-    if (parseInt(b.textContent.replace(/,/g, '')) === q.a) b.classList.add('correct');
-  });
-  qStreak = 0; totalAnswered++;
-  showExplanation(q);
-  setTimeout(advanceQ, 3200);
-}
-
 function pickAns(chosen, correct, btn) {
-  clearInterval(qTimer);
   document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
   totalAnswered++;
   const q = qList[qIdx];
@@ -665,7 +639,6 @@ function pickAns(chosen, correct, btn) {
     if (qStreak > allBestStreak) allBestStreak = qStreak;
     qScore += 100 + (lastMode === 'challenge' ? 50 : 0);
     document.getElementById('qz-score').textContent = qScore;
-    setTimeout(advanceQ, 1050);
   } else {
     btn.classList.add('wrong');
     document.querySelectorAll('.opt-btn').forEach(b => {
@@ -674,8 +647,9 @@ function pickAns(chosen, correct, btn) {
     qStreak = 0;
     document.getElementById('qz-score').textContent = qScore;
     showExplanation(q);
-    setTimeout(advanceQ, 3200);
   }
+  document.getElementById('qz-next-row').style.display = 'block';
+  document.getElementById('qz-next-btn').textContent = (qIdx + 1 >= qList.length) ? 'See results →' : 'Next question →';
 }
 
 function advanceQ() {
