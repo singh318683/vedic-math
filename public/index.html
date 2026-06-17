@@ -162,10 +162,76 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .flex-gap{display:flex;gap:8px;justify-content:center;margin-top:1rem}
 .section-title{font-size:14px;font-weight:600;color:var(--text);margin:1rem 0 8px}
 .loading{text-align:center;padding:2rem;color:var(--text-3);font-size:14px}
+
+/* HOOK / LANDING SCREEN */
+.hook-screen{min-height:100vh;background:linear-gradient(160deg,var(--indigo) 0%,#4a3f96 55%,#5648a8 100%);display:flex;flex-direction:column;color:#fff;padding:2rem 1.5rem 2.5rem}
+.hook-wrap{max-width:480px;margin:0 auto;width:100%;flex:1;display:flex;flex-direction:column}
+.hook-tag{font-size:12px;font-weight:600;letter-spacing:0.5px;color:#FAC775;text-transform:uppercase;text-align:center;margin-bottom:14px}
+.hook-question{font-size:19px;font-weight:600;text-align:center;line-height:1.4;margin-bottom:1.5rem}
+.hook-card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:var(--radius);padding:1.75rem 1.25rem;text-align:center;margin-bottom:1.5rem}
+.hook-problem{font-size:13px;color:rgba(255,255,255,0.65);margin-bottom:10px}
+.hook-num{font-size:42px;font-weight:600;letter-spacing:1px}
+.hook-timer-hint{font-size:12px;color:rgba(255,255,255,0.55);margin-top:10px}
+.hook-reveal{display:none;background:rgba(255,255,255,0.1);border-radius:var(--radius-sm);padding:14px;margin-top:14px;text-align:left;font-size:13px;line-height:1.7;color:rgba(255,255,255,0.9)}
+.hook-reveal.show{display:block}
+.hook-reveal b{color:#FAC775}
+.hook-btn-row{display:flex;gap:10px;justify-content:center;margin-top:6px}
+.hook-reveal-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;border-radius:var(--radius-sm);padding:9px 18px;font-size:13px;cursor:pointer;font-family:'Noto Sans',sans-serif}
+.hook-reveal-btn:hover{background:rgba(255,255,255,0.22)}
+.hook-pitch{margin-top:auto}
+.hook-pitch-title{font-size:17px;font-weight:600;text-align:center;margin-bottom:6px}
+.hook-pitch-sub{font-size:13px;color:rgba(255,255,255,0.75);text-align:center;line-height:1.6;margin-bottom:1.25rem}
+.hook-features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.5rem}
+.hook-feature{background:rgba(255,255,255,0.08);border-radius:var(--radius-sm);padding:12px;text-align:center}
+.hook-feature-icon{font-size:20px;margin-bottom:6px;display:block}
+.hook-feature-text{font-size:11.5px;color:rgba(255,255,255,0.85);line-height:1.4}
+.hook-cta{background:#FAC775;color:#3D3480;border:none;border-radius:var(--radius-sm);padding:14px;font-size:15px;font-weight:600;cursor:pointer;width:100%;font-family:'Noto Sans',sans-serif}
+.hook-cta:hover{background:#f9bc5a}
+.hook-skip{text-align:center;margin-top:12px;font-size:12px;color:rgba(255,255,255,0.6);cursor:pointer;text-decoration:underline}
+#main-app{display:none}
 </style>
 </head>
 <body>
 
+<!-- HOOK / LANDING SCREEN -->
+<div class="hook-screen" id="hook-screen">
+  <div class="hook-wrap">
+    <div class="hook-tag">A 3,000-year-old mental math system</div>
+    <div class="hook-question">Can you solve this without a calculator?</div>
+    <div class="hook-card">
+      <div class="hook-problem">Square this number:</div>
+      <div class="hook-num">961²</div>
+      <div class="hook-timer-hint" id="hook-timer-hint">Most people need 30+ seconds and a calculator</div>
+      <div class="hook-reveal" id="hook-reveal">
+        Here's the Vedic shortcut, using the <b>Yavadunam</b> sutra for numbers near a round base:<br><br>
+        961 is 39 below 1000 (its deviation).<br>
+        <b>Step 1:</b> 1000 + 2×(−39) = 922<br>
+        <b>Step 2:</b> 39² = 1,521<br>
+        <b>Step 3:</b> Add the overflow: 922 + 1 (carried) = 923, remainder 521<br>
+        <b>Answer:</b> 923,521 ✓<br><br>
+        Once you know the pattern, this becomes a 10-second mental calculation — no calculator, no long multiplication.
+      </div>
+      <div class="hook-btn-row">
+        <button class="hook-reveal-btn" onclick="toggleHookReveal()" id="hook-reveal-btn">Show me how</button>
+      </div>
+    </div>
+
+    <div class="hook-pitch">
+      <div class="hook-pitch-title">This is Vedic Math</div>
+      <div class="hook-pitch-sub">16 ancient sutras that turn intimidating arithmetic into fast, confident mental calculation — taught step by step, with real explanations for every wrong answer.</div>
+      <div class="hook-features">
+        <div class="hook-feature"><span class="hook-feature-icon">📐</span><div class="hook-feature-text">16 sutras, beginner to advanced</div></div>
+        <div class="hook-feature"><span class="hook-feature-icon">🧠</span><div class="hook-feature-text">Step-by-step lessons, not just answers</div></div>
+        <div class="hook-feature"><span class="hook-feature-icon">🎯</span><div class="hook-feature-text">800+ practice questions</div></div>
+        <div class="hook-feature"><span class="hook-feature-icon">✅</span><div class="hook-feature-text">Real explanations when you're wrong</div></div>
+      </div>
+      <button class="hook-cta" onclick="enterApp()">Start learning — it's free</button>
+      <div class="hook-skip" onclick="enterApp()">Skip intro</div>
+    </div>
+  </div>
+</div>
+
+<div id="main-app">
 <div class="header">
   <div class="logo">
     <div>
@@ -402,8 +468,20 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
     <div id="prog-sutra-list"></div>
   </div>
 </div>
+</div>
 
 <script>
+function toggleHookReveal() {
+  const reveal = document.getElementById('hook-reveal');
+  const btn = document.getElementById('hook-reveal-btn');
+  const isOpen = reveal.classList.toggle('show');
+  btn.textContent = isOpen ? 'Hide solution' : 'Show me how';
+}
+
+function enterApp() {
+  document.getElementById('hook-screen').style.display = 'none';
+  document.getElementById('main-app').style.display = 'block';
+}
 let sutras = [];
 let mastered = {};
 let currentSutraId = 0;
