@@ -532,6 +532,13 @@
           223439
         ]
       }
+    ],
+    "proof": [
+      "Any number ending in 5 can be written as 10a + 5, where a is the tens digit (and everything before it).",
+      "Square it: (10a + 5)² = 100a² + 100a + 25 — using the binomial expansion (x+y)² = x²+2xy+y².",
+      "Factor the first two terms: 100a² + 100a = 100·a·(a+1).",
+      "So (10a+5)² = 100·[a(a+1)] + 25. The '×100' shifts a(a+1) two places left, and +25 fills exactly those two digits.",
+      "That's the whole trick: 'multiply tens digit by one more than itself, append 25' is just this identity written in words."
     ]
   },
   {
@@ -1067,6 +1074,13 @@
           3239
         ]
       }
+    ],
+    "proof": [
+      "We want base − N, where base is a power of 10 (like 1000) and N has the same number of digits.",
+      "Write base = N + (base − N). We can find (base − N) digit-by-digit without borrowing if we use 9's and 10's complements.",
+      "For every digit except the last, 9 − digit gives the correct result because borrowing from the next column always leaves a 9 to subtract from.",
+      "For the last digit, there's no further borrow needed, so it's 10 − digit instead.",
+      "This is just long subtraction with the borrowing pre-computed — the sutra skips the borrow chain entirely."
     ]
   },
   {
@@ -1605,6 +1619,13 @@
           591
         ]
       }
+    ],
+    "proof": [
+      "Let the two 2-digit numbers be (10a+b) and (10c+d), where a,c are tens digits and b,d are units digits.",
+      "Multiply directly: (10a+b)(10c+d) = 100ac + 10ad + 10bc + bd = 100ac + 10(ad+bc) + bd.",
+      "The three terms map exactly to the three steps: bd is the 'right' (units) product, (ad+bc) is the 'cross' product, and ac is the 'left' (hundreds) product.",
+      "Vertically-and-crosswise just names this expansion: right = vertical product of units, cross = the two diagonal products added, left = vertical product of tens.",
+      "Carrying between the three groups is identical to carrying in any column-based multiplication."
     ]
   },
   {
@@ -2140,6 +2161,13 @@
           2150
         ]
       }
+    ],
+    "proof": [
+      "To multiply a × m where m is close to a round number (like 99 close to 100), write m = base − k for a small k.",
+      "Then a × m = a × (base − k) = a×base − a×k, using the distributive law.",
+      "a×base is trivial (just append zeros), and a×k is a small subtraction since k is small.",
+      "For 47×99: base=100, k=1, so 47×99 = 4700 − 47 = 4653.",
+      "The same idea works in reverse for m = base + k (like 101): a×m = a×base + a×k."
     ]
   },
   {
@@ -2675,6 +2703,13 @@
           1551
         ]
       }
+    ],
+    "proof": [
+      "If two numbers are equally spaced around a central value, write them as (a+b) and (a−b).",
+      "Multiply: (a+b)(a−b) = a² − b², a classic algebraic identity (difference of squares).",
+      "Both a² and b² are usually easy to compute mentally since a is a round number and b is small.",
+      "For 63×57: a=60 (the midpoint), b=3 (the distance), so 63×57 = 60²−3² = 3600−9 = 3591.",
+      "This sutra is really just 'recognize the difference-of-squares pattern' applied to ordinary multiplication."
     ]
   },
   {
@@ -3211,6 +3246,13 @@
           15
         ]
       }
+    ],
+    "proof": [
+      "Given two equations x+y = S and x−y = D, we want x and y without full substitution.",
+      "Add the equations: (x+y)+(x−y) = S+D, which simplifies to 2x = S+D, so x = (S+D)/2.",
+      "Subtract the equations: (x+y)−(x−y) = S−D, which simplifies to 2y = S−D, so y = (S−D)/2.",
+      "Both unknowns drop out independently because adding cancels y and subtracting cancels x.",
+      "This is the standard elimination method for simultaneous equations, just framed as a quick mental shortcut."
     ]
   },
   {
@@ -3747,6 +3789,12 @@
           7
         ]
       }
+    ],
+    "proof": [
+      "For an equation like ax = b, we want x directly.",
+      "Divide both sides by a: x = b/a. This is just the definition of division — undoing multiplication.",
+      "The sutra's name, 'if proportionate, then zero,' refers to a more general case in two-equation systems: if every coefficient of y is proportional to the corresponding coefficient of x across two equations, the y-terms cancel out entirely, leaving a single-variable equation in x — effectively 'zeroing' y from the system.",
+      "In the simplified single-equation form used in this app's quiz, the proportional case collapses to ordinary division."
     ]
   },
   {
@@ -4285,6 +4333,13 @@
           1056510
         ]
       }
+    ],
+    "proof": [
+      "Let the number be (base − d), where d is how far below the round 'base' (10, 100, 1000...) it sits.",
+      "Square it: (base−d)² = base² − 2·base·d + d², by binomial expansion.",
+      "Group the first two terms: base² − 2·base·d = base·(base − 2d).",
+      "So (base−d)² = base·(base−2d) + d². Since base is a power of 10, multiplying by it just shifts digits — so 'base−2d' becomes the left part, and d² becomes the right part appended after it.",
+      "For 98²: base=100, d=2 → 100×(100−4) + 4 = 9600 + 4 = 9604, matching the digit-shift trick exactly."
     ]
   },
   {
@@ -4821,6 +4876,13 @@
           495
         ]
       }
+    ],
+    "proof": [
+      "We want a × m where m is a string of 9s, like 99 or 999 — equivalently m = base − 1 (base=100 or 1000).",
+      "a × (base − 1) = a×base − a, again using the distributive law.",
+      "Rewrite a×base − a as (a−1)×base + (base − a): since a×base = (a−1)×base + base, subtracting a from both sides gives (a−1)×base + (base−a).",
+      "The left chunk (a−1) and right chunk (base−a) sit in separate digit groups because base is a power of 10.",
+      "For 63×99: base=100, so (63−1)=62 and (100−63)=37, concatenated as 6237 — exactly 63×99=6237."
     ]
   },
   {
@@ -5362,6 +5424,13 @@
           130023
         ]
       }
+    ],
+    "proof": [
+      "Let the number be (base + d), where d is the deviation from a round base (commonly 10).",
+      "Cube it using the binomial expansion: (base+d)³ = base³ + 3·base²·d + 3·base·d² + d³.",
+      "Group cleverly: this equals base²·(base+3d) + d²·(3·base+d), but the sutra uses an equivalent simpler regrouping.",
+      "Define left = (base+d)+2d, middle = 3d², right = d³. These three pieces, placed in base-10 columns with carries, reconstruct the full expansion exactly.",
+      "For 12³ (base=10, d=2): left=12+4=16, middle=3×4=12, right=8 → combining with carries (16|12|8) gives 1728, matching 12³=1728."
     ]
   },
   {
@@ -5897,6 +5966,13 @@
           13
         ]
       }
+    ],
+    "proof": [
+      "We want to factor x² + bx + c into (x+p)(x+q).",
+      "Expanding (x+p)(x+q) = x² + (p+q)x + pq.",
+      "Matching coefficients: b = p+q and c = pq.",
+      "So factoring is just 'find two numbers that add to b and multiply to c' — which is exactly the sutra's method, just renamed.",
+      "Once one factor is known, the other follows immediately from either equation."
     ]
   },
   {
@@ -6432,6 +6508,13 @@
           9
         ]
       }
+    ],
+    "proof": [
+      "The last digit of any product A×B depends only on the last digits of A and B — every other digit only affects the tens place and higher.",
+      "Formally, if A = 10A' + a and B = 10B' + b, then A×B = 100A'B' + 10A'b + 10aB' + ab.",
+      "Every term except ab is a multiple of 10, so it can't affect the last digit.",
+      "Therefore the last digit of A×B equals the last digit of a×b — the product of the last digits alone.",
+      "This is why you can find the last digit of even huge products just by multiplying the last digits and ignoring everything else."
     ]
   },
   {
@@ -6967,6 +7050,12 @@
           13
         ]
       }
+    ],
+    "proof": [
+      "This sutra encodes a recurring pattern seen in chains of fractions or sequences where each term relates to the one before it plus twice the one before that.",
+      "Formally: if a term T relates to its neighbors as T = (last term) + 2×(second-to-last term), this is just a linear recurrence relation.",
+      "Such recurrences appear in specific algebraic identities the original sutra was designed to shortcut — particularly chains of reciprocals in arithmetic progressions.",
+      "The 'twice the penultimate' weighting comes directly from the coefficient structure of the underlying recurrence equation."
     ]
   },
   {
@@ -7502,6 +7591,12 @@
           5
         ]
       }
+    ],
+    "proof": [
+      "For a quadratic x² − (sum)x + (product) = 0, if one root is r1, the other root r2 satisfies r1+r2 = sum and r1×r2 = product.",
+      "Both relations come directly from expanding (x−r1)(x−r2) = x² − (r1+r2)x + r1·r2 and matching coefficients with the original equation.",
+      "If r1 is known, r2 = sum − r1 directly from the first relation — no need to factor or use the quadratic formula.",
+      "This works because a quadratic's coefficients are entirely determined by the sum and product of its two roots — a direct consequence of Vieta's formulas."
     ]
   },
   {
@@ -8039,6 +8134,12 @@
           7
         ]
       }
+    ],
+    "proof": [
+      "The digit sum of a number, repeated until a single digit remains, is called its 'digital root', and it equals the number mod 9 (with 9 itself instead of 0).",
+      "This works because 10 ≡ 1 (mod 9), so every power of 10 is also ≡ 1 (mod 9) — meaning a number's value mod 9 only depends on the sum of its digits, not their position.",
+      "Since digital roots respect multiplication — digitalRoot(A×B) = digitalRoot(digitalRoot(A) × digitalRoot(B)) — you can verify a multiplication by checking that the digital roots multiply consistently.",
+      "If they don't match, the original multiplication has an error somewhere — a fast mental checksum."
     ]
   },
   {
@@ -8574,6 +8675,12 @@
           7
         ]
       }
+    ],
+    "proof": [
+      "For any polynomial expression, substituting x=1 makes every term just equal its coefficient, since any power of 1 is still 1.",
+      "So evaluating the original expression at x=1 gives the sum of all its coefficients directly.",
+      "If the expression is correctly factored into (x+p)(x+q)(...), substituting x=1 into the factored form must give the identical number, since both forms represent the same polynomial.",
+      "If the two values don't match, the factorization has an error — this gives an instant verification check without re-expanding anything."
     ]
   }
 ]
