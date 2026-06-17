@@ -93,6 +93,12 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .proof-step{font-size:13px;color:var(--text-2);line-height:1.75;padding:7px 0;border-bottom:1px solid var(--border)}
 .proof-step:last-child{border-bottom:none;color:var(--text);font-weight:500}
 .proof-n{display:inline-block;font-size:11px;font-weight:600;color:var(--indigo);margin-right:6px}
+.wrong-explain{background:#FCEBEB;border:1px solid rgba(226,75,74,0.25);border-radius:var(--radius-sm);padding:12px 14px;margin-top:12px;animation:fadeIn 0.25s ease-out}
+.wrong-explain-title{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:#791F1F;margin-bottom:8px}
+.wrong-explain-title svg{width:15px;height:15px;stroke:#791F1F;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.wrong-explain-step{font-size:12.5px;color:#5A3030;line-height:1.65;padding:3px 0}
+.wrong-explain-step b{font-weight:600;color:#791F1F}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
 .ex-q{font-size:16px;font-weight:600;color:var(--saffron-dark);margin-bottom:8px}
 .ex-step{font-size:13px;color:var(--text);padding:3px 0;border-bottom:1px solid rgba(224,123,57,0.15);line-height:1.6}
 .ex-step:last-child{border-bottom:none;font-weight:600;color:var(--saffron-dark)}
@@ -346,6 +352,7 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
       <div class="q-text" id="qz-q"></div>
     </div>
     <div class="opts" id="qz-opts"></div>
+    <div id="qz-explain"></div>
     <div class="qz-footer">
       <span style="font-size:13px;color:var(--text-2)">Score: <strong id="qz-score" style="color:var(--text)">0</strong></span>
       <button class="btn-sec" style="padding:6px 14px;font-size:12px" onclick="showQuizHome()">Quit</button>
@@ -583,6 +590,7 @@ function renderQ() {
   document.getElementById('qz-sutra-name').textContent = q.sutraName || '';
   document.getElementById('qz-q').textContent = q.q;
   document.getElementById('qz-score').textContent = qScore;
+  document.getElementById('qz-explain').innerHTML = '';
 
   const dots = document.getElementById('qz-dots');
   dots.innerHTML = qList.map((_, i) => {
@@ -620,6 +628,20 @@ function renderQ() {
   }
 }
 
+function showExplanation(q) {
+  const s = sutrasFull.find(x => x.id === q.sutraId);
+  if (!s) return;
+  const box = document.getElementById('qz-explain');
+  box.innerHTML = `
+    <div class="wrong-explain">
+      <div class="wrong-explain-title">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        How to solve it: ${s.name}
+      </div>
+      ${s.steps.map((st, i) => `<div class="wrong-explain-step"><b>${i+1}.</b> ${st}</div>`).join('')}
+    </div>`;
+}
+
 function timeUp() {
   const q = qList[qIdx];
   document.querySelectorAll('.opt-btn').forEach(b => {
@@ -627,28 +649,33 @@ function timeUp() {
     if (parseInt(b.textContent.replace(/,/g, '')) === q.a) b.classList.add('correct');
   });
   qStreak = 0; totalAnswered++;
-  setTimeout(advanceQ, 1100);
+  showExplanation(q);
+  setTimeout(advanceQ, 3200);
 }
 
 function pickAns(chosen, correct, btn) {
   clearInterval(qTimer);
   document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
   totalAnswered++;
+  const q = qList[qIdx];
   if (chosen === correct) {
     btn.classList.add('correct');
     qCorrect++; qStreak++; totalCorrect++;
     if (qStreak > qBestStreak) qBestStreak = qStreak;
     if (qStreak > allBestStreak) allBestStreak = qStreak;
     qScore += 100 + (lastMode === 'challenge' ? 50 : 0);
+    document.getElementById('qz-score').textContent = qScore;
+    setTimeout(advanceQ, 1050);
   } else {
     btn.classList.add('wrong');
     document.querySelectorAll('.opt-btn').forEach(b => {
       if (parseInt(b.textContent.replace(/,/g, '')) === correct) b.classList.add('correct');
     });
     qStreak = 0;
+    document.getElementById('qz-score').textContent = qScore;
+    showExplanation(q);
+    setTimeout(advanceQ, 3200);
   }
-  document.getElementById('qz-score').textContent = qScore;
-  setTimeout(advanceQ, 1050);
 }
 
 function advanceQ() {
