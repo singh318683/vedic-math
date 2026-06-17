@@ -1,0 +1,1859 @@
+[
+  {
+    "id": 0,
+    "name": "Ekadhikena Purvena",
+    "sanskrit": "एकाधिकेन पूर्वेण",
+    "meaning": "By one more than the previous",
+    "color": "#EEEDFE",
+    "textColor": "#3C3489",
+    "dot": "#7F77DD",
+    "desc": "Square numbers ending in 5, or multiply numbers whose tens digits are equal and units digits sum to 10.",
+    "steps": [
+      "Take the tens digit of the number (ignore the 5).",
+      "Multiply it by (itself + 1).",
+      "Append 25 at the end — that's your answer."
+    ],
+    "examples": [
+      {
+        "q": "35²",
+        "steps": [
+          "Tens digit: 3",
+          "3 × (3+1) = 3 × 4 = 12",
+          "Append 25 → 1225"
+        ]
+      },
+      {
+        "q": "75²",
+        "steps": [
+          "Tens digit: 7",
+          "7 × 8 = 56",
+          "Append 25 → 5625"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "q": "35²",
+        "a": 1225,
+        "o": [
+          1025,
+          1225,
+          1325,
+          1125
+        ]
+      },
+      {
+        "q": "45²",
+        "a": 2025,
+        "o": [
+          2025,
+          2225,
+          1925,
+          2125
+        ]
+      },
+      {
+        "q": "25²",
+        "a": 625,
+        "o": [
+          525,
+          725,
+          625,
+          825
+        ]
+      },
+      {
+        "q": "65²",
+        "a": 4225,
+        "o": [
+          4025,
+          4225,
+          4425,
+          4625
+        ]
+      },
+      {
+        "q": "95²",
+        "a": 9025,
+        "o": [
+          8925,
+          9025,
+          9125,
+          9225
+        ]
+      },
+      {
+        "q": "15²",
+        "a": 225,
+        "o": [
+          125,
+          225,
+          325,
+          215
+        ]
+      },
+      {
+        "q": "55²",
+        "a": 3025,
+        "o": [
+          2925,
+          3025,
+          3125,
+          3015
+        ]
+      },
+      {
+        "q": "85²",
+        "a": 7225,
+        "o": [
+          7125,
+          7325,
+          7225,
+          7215
+        ]
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "name": "Nikhilam",
+    "sanskrit": "निखिलम्",
+    "meaning": "All from 9, last from 10",
+    "color": "#E1F5EE",
+    "textColor": "#085041",
+    "dot": "#1D9E75",
+    "desc": "Subtract each digit from 9, and the last digit from 10. Perfect for subtracting from any power of 10.",
+    "steps": [
+      "Identify the power of 10 you are subtracting from (100, 1000, 10000...).",
+      "For each digit of the number, subtract it from 9.",
+      "For the last digit only, subtract from 10 instead."
+    ],
+    "examples": [
+      {
+        "q": "1000 - 764",
+        "steps": [
+          "Digits: 7, 6, 4",
+          "9-7=2, 9-6=3, 10-4=6",
+          "Answer: 236"
+        ]
+      },
+      {
+        "q": "100 - 73",
+        "steps": [
+          "Digits: 7, 3",
+          "9-7=2, 10-3=7",
+          "Answer: 27"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "q": "1000 - 764",
+        "a": 236,
+        "o": [
+          236,
+          246,
+          226,
+          256
+        ]
+      },
+      {
+        "q": "1000 - 537",
+        "a": 463,
+        "o": [
+          453,
+          463,
+          473,
+          443
+        ]
+      },
+      {
+        "q": "100 - 73",
+        "a": 27,
+        "o": [
+          17,
+          37,
+          27,
+          47
+        ]
+      },
+      {
+        "q": "1000 - 291",
+        "a": 709,
+        "o": [
+          799,
+          709,
+          719,
+          699
+        ]
+      },
+      {
+        "q": "10000 - 3821",
+        "a": 6179,
+        "o": [
+          6179,
+          6279,
+          6079,
+          6189
+        ]
+      },
+      {
+        "q": "100 - 48",
+        "a": 52,
+        "o": [
+          42,
+          52,
+          62,
+          58
+        ]
+      },
+      {
+        "q": "1000 - 109",
+        "a": 891,
+        "o": [
+          881,
+          901,
+          891,
+          911
+        ]
+      },
+      {
+        "q": "10000 - 5672",
+        "a": 4328,
+        "o": [
+          4228,
+          4428,
+          4338,
+          4328
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Urdhva Tiryak",
+    "sanskrit": "ऊर्ध्व तिर्यक्",
+    "meaning": "Vertically and crosswise",
+    "color": "#FAEEDA",
+    "textColor": "#633806",
+    "dot": "#EF9F27",
+    "desc": "The general multiplication sutra. Multiply any two 2-digit numbers using vertical and crosswise products.",
+    "steps": [
+      "Write AB x CD. Right column: B x D (write units digit, carry the tens).",
+      "Cross multiply: A x D + B x C, add any carry (write units, carry tens).",
+      "Left column: A x C plus any carry.",
+      "Read the three results left to right."
+    ],
+    "examples": [
+      {
+        "q": "23 x 14",
+        "steps": [
+          "Right: 3x4=12 write 2, carry 1",
+          "Cross: 2x4+3x1+1=12 write 2, carry 1",
+          "Left: 2x1+1=3",
+          "Answer: 322"
+        ]
+      },
+      {
+        "q": "32 x 21",
+        "steps": [
+          "Right: 2x1=2",
+          "Cross: 3x1+2x2=7",
+          "Left: 3x2=6",
+          "Answer: 672"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "q": "23 x 14",
+        "a": 322,
+        "o": [
+          322,
+          332,
+          312,
+          342
+        ]
+      },
+      {
+        "q": "32 x 21",
+        "a": 672,
+        "o": [
+          652,
+          682,
+          672,
+          662
+        ]
+      },
+      {
+        "q": "13 x 12",
+        "a": 156,
+        "o": [
+          146,
+          166,
+          156,
+          136
+        ]
+      },
+      {
+        "q": "41 x 32",
+        "a": 1312,
+        "o": [
+          1302,
+          1322,
+          1312,
+          1332
+        ]
+      },
+      {
+        "q": "22 x 31",
+        "a": 682,
+        "o": [
+          672,
+          692,
+          682,
+          662
+        ]
+      },
+      {
+        "q": "24 x 13",
+        "a": 312,
+        "o": [
+          302,
+          312,
+          322,
+          332
+        ]
+      },
+      {
+        "q": "33 x 11",
+        "a": 363,
+        "o": [
+          353,
+          363,
+          373,
+          343
+        ]
+      },
+      {
+        "q": "42 x 21",
+        "a": 882,
+        "o": [
+          872,
+          892,
+          882,
+          862
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Anurupyena",
+    "sanskrit": "अनुरूप्येण",
+    "meaning": "Proportionality",
+    "color": "#FAECE7",
+    "textColor": "#712B13",
+    "dot": "#D85A30",
+    "desc": "Scale to a round number, compute, then adjust. Makes x99, x101, x9, x11 trivially fast.",
+    "steps": [
+      "Round the multiplier to the nearest 10 or 100 (e.g. 99 to 100, 101 to 100).",
+      "Multiply by that round number.",
+      "Subtract (if rounded up) or add (if rounded down) the difference times the other number."
+    ],
+    "examples": [
+      {
+        "q": "47 x 99",
+        "steps": [
+          "47 x 100 = 4700",
+          "Subtract 47 x 1 = 47",
+          "Answer: 4653"
+        ]
+      },
+      {
+        "q": "25 x 101",
+        "steps": [
+          "25 x 100 = 2500",
+          "Add 25 x 1 = 25",
+          "Answer: 2525"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "q": "47 x 99",
+        "a": 4653,
+        "o": [
+          4653,
+          4753,
+          4553,
+          4643
+        ]
+      },
+      {
+        "q": "36 x 99",
+        "a": 3564,
+        "o": [
+          3464,
+          3664,
+          3564,
+          3574
+        ]
+      },
+      {
+        "q": "25 x 101",
+        "a": 2525,
+        "o": [
+          2625,
+          2425,
+          2515,
+          2525
+        ]
+      },
+      {
+        "q": "53 x 99",
+        "a": 5247,
+        "o": [
+          5247,
+          5347,
+          5147,
+          5257
+        ]
+      },
+      {
+        "q": "18 x 101",
+        "a": 1818,
+        "o": [
+          1818,
+          1918,
+          1718,
+          1828
+        ]
+      },
+      {
+        "q": "62 x 99",
+        "a": 6138,
+        "o": [
+          6038,
+          6238,
+          6138,
+          6148
+        ]
+      },
+      {
+        "q": "44 x 101",
+        "a": 4444,
+        "o": [
+          4344,
+          4544,
+          4444,
+          4434
+        ]
+      },
+      {
+        "q": "77 x 99",
+        "a": 7623,
+        "o": [
+          7523,
+          7723,
+          7613,
+          7623
+        ]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Vilokanam",
+    "sanskrit": "विलोकनम्",
+    "meaning": "By mere observation",
+    "color": "#EEEDFE",
+    "textColor": "#3C3489",
+    "dot": "#534AB7",
+    "desc": "Spot algebraic patterns like (a+b)(a-b) = a2-b2 instantly. Solve by pattern recognition, not calculation.",
+    "steps": [
+      "Check if both numbers are equidistant from a round number.",
+      "That round number is 'a'. The equal distance is 'b'.",
+      "Answer = a squared minus b squared. Both values are easy to compute mentally."
+    ],
+    "examples": [
+      {
+        "q": "63 x 57",
+        "steps": [
+          "Both are 3 away from 60",
+          "a=60, b=3",
+          "3600-9 = 3591"
+        ]
+      },
+      {
+        "q": "84 x 76",
+        "steps": [
+          "Both are 4 away from 80",
+          "a=80, b=4",
+          "6400-16 = 6384"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "q": "63 x 57",
+        "a": 3591,
+        "o": [
+          3591,
+          3691,
+          3491,
+          3581
+        ]
+      },
+      {
+        "q": "84 x 76",
+        "a": 6384,
+        "o": [
+          6284,
+          6484,
+          6384,
+          6374
+        ]
+      },
+      {
+        "q": "45 x 35",
+        "a": 1575,
+        "o": [
+          1475,
+          1675,
+          1565,
+          1575
+        ]
+      },
+      {
+        "q": "93 x 87",
+        "a": 8091,
+        "o": [
+          8091,
+          8191,
+          7991,
+          8081
+        ]
+      },
+      {
+        "q": "72 x 68",
+        "a": 4896,
+        "o": [
+          4796,
+          4996,
+          4886,
+          4896
+        ]
+      },
+      {
+        "q": "51 x 49",
+        "a": 2499,
+        "o": [
+          2399,
+          2599,
+          2499,
+          2489
+        ]
+      },
+      {
+        "q": "102 x 98",
+        "a": 9996,
+        "o": [
+          9896,
+          10096,
+          9986,
+          9996
+        ]
+      },
+      {
+        "q": "65 x 55",
+        "a": 3575,
+        "o": [
+          3475,
+          3675,
+          3565,
+          3575
+        ]
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Sankalana Vyavakalanabhyam",
+    "sanskrit": "सङ्कलन व्यवकलनाभ्यां",
+    "meaning": "By addition and subtraction",
+    "color": "#E1F5EE",
+    "textColor": "#085041",
+    "dot": "#1D9E75",
+    "desc": "Solve simultaneous equations by adding or subtracting them to eliminate one variable instantly.",
+    "steps": [
+      "Add both equations together — one variable cancels out.",
+      "Or subtract one from the other — the other variable cancels.",
+      "Solve the resulting simple single-variable equation.",
+      "Back-substitute to find the second variable."
+    ],
+    "examples": [
+      {
+        "q": "x+y=7, x-y=3",
+        "steps": [
+          "Add: 2x=10 so x=5",
+          "Subtract: 2y=4 so y=2",
+          "Answer: x=5, y=2"
+        ]
+      },
+      {
+        "q": "x+y=9, x-y=1",
+        "steps": [
+          "Add: 2x=10 so x=5",
+          "y = 9-5 = 4",
+          "Answer: x=5, y=4"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "q": "x+y=10, x-y=4, find x",
+        "a": 7,
+        "o": [
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "q": "x+y=9,  x-y=1, find x",
+        "a": 5,
+        "o": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      {
+        "q": "x+y=12, x-y=2, find x",
+        "a": 7,
+        "o": [
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "q": "x+y=8,  x-y=2, find y",
+        "a": 3,
+        "o": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "q": "x+y=15, x-y=5, find y",
+        "a": 5,
+        "o": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      {
+        "q": "x+y=20, x-y=4, find x",
+        "a": 12,
+        "o": [
+          10,
+          11,
+          12,
+          13
+        ]
+      },
+      {
+        "q": "x+y=14, x-y=6, find y",
+        "a": 4,
+        "o": [
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "q": "x+y=18, x-y=2, find x",
+        "a": 10,
+        "o": [
+          8,
+          9,
+          10,
+          11
+        ]
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Anurupye Shunyam",
+    "sanskrit": "आनुरूप्ये शून्यम्",
+    "meaning": "If proportionate, then zero",
+    "color": "#FAEEDA",
+    "textColor": "#633806",
+    "dot": "#EF9F27",
+    "desc": "When coefficients of one variable are proportional across equations, that variable can be zeroed out to find the other.",
+    "steps": [
+      "Write both equations side by side.",
+      "Check if one variable's coefficients share a common ratio.",
+      "If yes, set that variable to zero and solve for the other.",
+      "Verify by substituting back."
+    ],
+    "examples": [
+      {
+        "q": "2x+3y=6 and 4x+6y=12",
+        "steps": [
+          "Notice 4/2=2, 6/3=2, 12/6=2 all proportional",
+          "Equations are identical scaled",
+          "Set x=0: 3y=6 so y=2"
+        ]
+      },
+      {
+        "q": "3x=15",
+        "steps": [
+          "Isolate x",
+          "x = 15/3",
+          "x = 5"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "q": "If 2x = 6, find x",
+        "a": 3,
+        "o": [
+          2,
+          3,
+          4,
+          6
+        ]
+      },
+      {
+        "q": "If 3y = 12, find y",
+        "a": 4,
+        "o": [
+          3,
+          4,
+          6,
+          9
+        ]
+      },
+      {
+        "q": "If 5x = 25, find x",
+        "a": 5,
+        "o": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      {
+        "q": "If 4y = 20, find y",
+        "a": 5,
+        "o": [
+          4,
+          5,
+          6,
+          8
+        ]
+      },
+      {
+        "q": "If 6x = 18, find x",
+        "a": 3,
+        "o": [
+          2,
+          3,
+          4,
+          6
+        ]
+      },
+      {
+        "q": "If 7y = 49, find y",
+        "a": 7,
+        "o": [
+          6,
+          7,
+          8,
+          9
+        ]
+      },
+      {
+        "q": "If 9x = 81, find x",
+        "a": 9,
+        "o": [
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      {
+        "q": "If 8y = 64, find y",
+        "a": 8,
+        "o": [
+          6,
+          7,
+          8,
+          9
+        ]
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Yavadunam",
+    "sanskrit": "यावदूनम्",
+    "meaning": "By the deficiency",
+    "color": "#FAECE7",
+    "textColor": "#712B13",
+    "dot": "#D85A30",
+    "desc": "Square numbers near a base (10, 100, 1000) using a two-part formula based on the deviation.",
+    "steps": [
+      "Find the deficiency: how far is the number below the base? (e.g. 98 is 2 below 100)",
+      "Left part: subtract the deficiency from the number (98-2=96).",
+      "Right part: square the deficiency (2 squared=04, use as many digits as zeros in base).",
+      "Concatenate: 9604."
+    ],
+    "examples": [
+      {
+        "q": "98 squared",
+        "steps": [
+          "Deficiency: 100-98=2",
+          "Left: 98-2=96",
+          "Right: 2 squared=04",
+          "Answer: 9604"
+        ]
+      },
+      {
+        "q": "97 squared",
+        "steps": [
+          "Deficiency: 100-97=3",
+          "Left: 97-3=94",
+          "Right: 3 squared=09",
+          "Answer: 9409"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "q": "98 squared",
+        "a": 9604,
+        "o": [
+          9604,
+          9504,
+          9704,
+          9614
+        ]
+      },
+      {
+        "q": "97 squared",
+        "a": 9409,
+        "o": [
+          9309,
+          9509,
+          9409,
+          9419
+        ]
+      },
+      {
+        "q": "96 squared",
+        "a": 9216,
+        "o": [
+          9116,
+          9316,
+          9216,
+          9206
+        ]
+      },
+      {
+        "q": "99 squared",
+        "a": 9801,
+        "o": [
+          9701,
+          9901,
+          9801,
+          9811
+        ]
+      },
+      {
+        "q": "94 squared",
+        "a": 8836,
+        "o": [
+          8736,
+          8936,
+          8836,
+          8826
+        ]
+      },
+      {
+        "q": "93 squared",
+        "a": 8649,
+        "o": [
+          8549,
+          8749,
+          8649,
+          8639
+        ]
+      },
+      {
+        "q": "92 squared",
+        "a": 8464,
+        "o": [
+          8364,
+          8564,
+          8464,
+          8454
+        ]
+      },
+      {
+        "q": "91 squared",
+        "a": 8281,
+        "o": [
+          8181,
+          8381,
+          8281,
+          8271
+        ]
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Ekanyunena Purvena",
+    "sanskrit": "एकन्यूनेन पूर्वेण",
+    "meaning": "By one less than the previous",
+    "color": "#EEEDFE",
+    "textColor": "#3C3489",
+    "dot": "#7F77DD",
+    "desc": "Multiply any number by 9, 99, 999, 9999 instantly. The answer splits into two neat parts.",
+    "steps": [
+      "To multiply N by a string of 9s (e.g. 99, 999):",
+      "Left part: N minus 1",
+      "Right part: complement of N to the base (e.g. 100 - N for x99)",
+      "Write them together — that is your answer."
+    ],
+    "examples": [
+      {
+        "q": "63 x 99",
+        "steps": [
+          "Left: 63 - 1 = 62",
+          "Right: 100 - 63 = 37",
+          "Answer: 6237"
+        ]
+      },
+      {
+        "q": "7 x 999",
+        "steps": [
+          "Left: 7 - 1 = 6",
+          "Right: 1000 - 7 = 993",
+          "Answer: 6993"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "q": "63 x 99",
+        "a": 6237,
+        "o": [
+          6237,
+          6337,
+          6137,
+          6247
+        ]
+      },
+      {
+        "q": "7 x 999",
+        "a": 6993,
+        "o": [
+          6993,
+          6893,
+          7093,
+          6983
+        ]
+      },
+      {
+        "q": "45 x 99",
+        "a": 4455,
+        "o": [
+          4355,
+          4555,
+          4455,
+          4445
+        ]
+      },
+      {
+        "q": "12 x 999",
+        "a": 11988,
+        "o": [
+          11988,
+          12088,
+          11888,
+          11978
+        ]
+      },
+      {
+        "q": "8 x 99",
+        "a": 792,
+        "o": [
+          782,
+          792,
+          802,
+          702
+        ]
+      },
+      {
+        "q": "27 x 99",
+        "a": 2673,
+        "o": [
+          2573,
+          2773,
+          2663,
+          2673
+        ]
+      },
+      {
+        "q": "34 x 99",
+        "a": 3366,
+        "o": [
+          3266,
+          3466,
+          3356,
+          3366
+        ]
+      },
+      {
+        "q": "56 x 99",
+        "a": 5544,
+        "o": [
+          5444,
+          5644,
+          5534,
+          5544
+        ]
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Yaavadunam Tavadunam",
+    "sanskrit": "यावदूनं तावदूनं",
+    "meaning": "Whatever the deficiency, lessen it further",
+    "color": "#E1F5EE",
+    "textColor": "#085041",
+    "dot": "#1D9E75",
+    "desc": "Find the cube of numbers near a base (10, 100) using a 3-part formula based on the deviation.",
+    "steps": [
+      "Find deviation d = number minus base (e.g. 12 - 10 = 2).",
+      "Left part: number + 2d",
+      "Middle part: 3 times d squared",
+      "Right part: d cubed",
+      "Combine carefully with carries."
+    ],
+    "examples": [
+      {
+        "q": "12 cubed",
+        "steps": [
+          "d = 12-10 = 2",
+          "Left: 12+2x2 = 16",
+          "Mid: 3x4 = 12",
+          "Right: 8",
+          "16|12|8 with carry = 1728"
+        ]
+      },
+      {
+        "q": "11 cubed",
+        "steps": [
+          "d = 1",
+          "Left: 11+2 = 13",
+          "Mid: 3x1 = 3",
+          "Right: 1",
+          "Answer: 1331"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "q": "11 cubed",
+        "a": 1331,
+        "o": [
+          1331,
+          1221,
+          1441,
+          1321
+        ]
+      },
+      {
+        "q": "12 cubed",
+        "a": 1728,
+        "o": [
+          1628,
+          1828,
+          1728,
+          1718
+        ]
+      },
+      {
+        "q": "13 cubed",
+        "a": 2197,
+        "o": [
+          2097,
+          2297,
+          2197,
+          2187
+        ]
+      },
+      {
+        "q": "9 cubed",
+        "a": 729,
+        "o": [
+          619,
+          729,
+          839,
+          719
+        ]
+      },
+      {
+        "q": "8 cubed",
+        "a": 512,
+        "o": [
+          412,
+          612,
+          512,
+          502
+        ]
+      },
+      {
+        "q": "14 cubed",
+        "a": 2744,
+        "o": [
+          2644,
+          2844,
+          2744,
+          2734
+        ]
+      },
+      {
+        "q": "7 cubed",
+        "a": 343,
+        "o": [
+          243,
+          443,
+          343,
+          333
+        ]
+      },
+      {
+        "q": "15 cubed",
+        "a": 3375,
+        "o": [
+          3275,
+          3475,
+          3375,
+          3365
+        ]
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Vyashtisamashti",
+    "sanskrit": "व्यष्टिसमष्टि",
+    "meaning": "Individual and total",
+    "color": "#FAEEDA",
+    "textColor": "#633806",
+    "dot": "#EF9F27",
+    "desc": "Factor quadratic expressions by finding two numbers that multiply to the constant and add to the middle coefficient.",
+    "steps": [
+      "For x squared + bx + c, find two numbers p and q such that p times q = c and p + q = b.",
+      "The factors are (x + p)(x + q).",
+      "Check by expanding back to verify."
+    ],
+    "examples": [
+      {
+        "q": "x squared + 5x + 6",
+        "steps": [
+          "Need p x q=6, p+q=5",
+          "p=2, q=3",
+          "Factors: (x+2)(x+3)"
+        ]
+      },
+      {
+        "q": "x squared + 7x + 12",
+        "steps": [
+          "Need p x q=12, p+q=7",
+          "p=3, q=4",
+          "Factors: (x+3)(x+4)"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "q": "x2+5x+6: (x+2)(x+?)",
+        "a": 3,
+        "o": [
+          2,
+          3,
+          4,
+          6
+        ]
+      },
+      {
+        "q": "x2+7x+12: (x+3)(x+?)",
+        "a": 4,
+        "o": [
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "q": "x2+6x+8: (x+2)(x+?)",
+        "a": 4,
+        "o": [
+          2,
+          4,
+          6,
+          8
+        ]
+      },
+      {
+        "q": "x2+9x+18: (x+3)(x+?)",
+        "a": 6,
+        "o": [
+          3,
+          6,
+          9,
+          18
+        ]
+      },
+      {
+        "q": "x2+8x+15: (x+3)(x+?)",
+        "a": 5,
+        "o": [
+          3,
+          5,
+          7,
+          15
+        ]
+      },
+      {
+        "q": "x2+10x+21: (x+3)(x+?)",
+        "a": 7,
+        "o": [
+          3,
+          6,
+          7,
+          10
+        ]
+      },
+      {
+        "q": "x2+11x+28: (x+4)(x+?)",
+        "a": 7,
+        "o": [
+          4,
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "q": "x2+12x+35: (x+5)(x+?)",
+        "a": 7,
+        "o": [
+          5,
+          6,
+          7,
+          12
+        ]
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Shesanyankena Charamena",
+    "sanskrit": "शेषाण्येन चरमेण",
+    "meaning": "The remainders by the last digit",
+    "color": "#FAECE7",
+    "textColor": "#712B13",
+    "dot": "#D85A30",
+    "desc": "Find the last digit of any product instantly by multiplying only the last digits of the numbers.",
+    "steps": [
+      "Look only at the last digit of each number.",
+      "Multiply those last digits together.",
+      "The last digit of that product is the last digit of the full answer."
+    ],
+    "examples": [
+      {
+        "q": "Last digit of 7 x 8",
+        "steps": [
+          "Last digits: 7 and 8",
+          "7 x 8 = 56",
+          "Last digit: 6"
+        ]
+      },
+      {
+        "q": "Last digit of 13 x 17",
+        "steps": [
+          "Last digits: 3 and 7",
+          "3 x 7 = 21",
+          "Last digit: 1"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "q": "Last digit of 7 x 8",
+        "a": 6,
+        "o": [
+          2,
+          4,
+          6,
+          8
+        ]
+      },
+      {
+        "q": "Last digit of 9 x 9",
+        "a": 1,
+        "o": [
+          1,
+          8,
+          9,
+          0
+        ]
+      },
+      {
+        "q": "Last digit of 7 x 7",
+        "a": 9,
+        "o": [
+          4,
+          7,
+          9,
+          1
+        ]
+      },
+      {
+        "q": "Last digit of 13 x 17",
+        "a": 1,
+        "o": [
+          1,
+          3,
+          7,
+          9
+        ]
+      },
+      {
+        "q": "Last digit of 6 x 6",
+        "a": 6,
+        "o": [
+          2,
+          4,
+          6,
+          8
+        ]
+      },
+      {
+        "q": "Last digit of 8 x 8",
+        "a": 4,
+        "o": [
+          2,
+          4,
+          6,
+          8
+        ]
+      },
+      {
+        "q": "Last digit of 4 x 9",
+        "a": 6,
+        "o": [
+          2,
+          4,
+          6,
+          8
+        ]
+      },
+      {
+        "q": "Last digit of 12 x 13",
+        "a": 6,
+        "o": [
+          2,
+          4,
+          6,
+          8
+        ]
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Sopaantyadvayamantyam",
+    "sanskrit": "सोपान्त्यद्वयमन्त्यम्",
+    "meaning": "The ultimate and twice the penultimate",
+    "color": "#EEEDFE",
+    "textColor": "#3C3489",
+    "dot": "#7F77DD",
+    "desc": "A quick formula for combining the last and second-to-last terms: last + 2 times second-to-last.",
+    "steps": [
+      "Identify the last term (ultimate) and the second-to-last term (penultimate).",
+      "Apply: ultimate + 2 times penultimate.",
+      "This gives the combined value for certain equation types."
+    ],
+    "examples": [
+      {
+        "q": "Last=2, second-last=3",
+        "steps": [
+          "2 + 2 x 3",
+          "= 2 + 6",
+          "= 8"
+        ]
+      },
+      {
+        "q": "Last=5, second-last=4",
+        "steps": [
+          "5 + 2 x 4",
+          "= 5 + 8",
+          "= 13"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "q": "Last=2, 2nd-last=3: result?",
+        "a": 8,
+        "o": [
+          6,
+          7,
+          8,
+          10
+        ]
+      },
+      {
+        "q": "Last=5, 2nd-last=4: result?",
+        "a": 13,
+        "o": [
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      {
+        "q": "Last=7, 2nd-last=6: result?",
+        "a": 19,
+        "o": [
+          17,
+          18,
+          19,
+          20
+        ]
+      },
+      {
+        "q": "Last=3, 2nd-last=5: result?",
+        "a": 13,
+        "o": [
+          11,
+          12,
+          13,
+          16
+        ]
+      },
+      {
+        "q": "Last=10, 2nd-last=7: result?",
+        "a": 24,
+        "o": [
+          22,
+          23,
+          24,
+          27
+        ]
+      },
+      {
+        "q": "Last=4, 2nd-last=9: result?",
+        "a": 22,
+        "o": [
+          20,
+          21,
+          22,
+          26
+        ]
+      },
+      {
+        "q": "Last=6, 2nd-last=8: result?",
+        "a": 22,
+        "o": [
+          20,
+          21,
+          22,
+          28
+        ]
+      },
+      {
+        "q": "Last=11, 2nd-last=12: result?",
+        "a": 35,
+        "o": [
+          33,
+          34,
+          35,
+          46
+        ]
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Chalana Kalanabhyam",
+    "sanskrit": "चलन कलनाभ्यां",
+    "meaning": "Differences and similarities",
+    "color": "#E1F5EE",
+    "textColor": "#085041",
+    "dot": "#1D9E75",
+    "desc": "Find both roots of a quadratic using the sum and product of roots relationship — without fully factoring.",
+    "steps": [
+      "For ax squared + bx + c = 0, sum of roots = -b/a, product of roots = c/a.",
+      "If you know one root, find the other: other root = sum minus known root.",
+      "Verify: product of both roots must equal c/a."
+    ],
+    "examples": [
+      {
+        "q": "x2-5x+6=0, one root=2",
+        "steps": [
+          "Sum of roots = 5",
+          "Other root = 5 - 2 = 3",
+          "Check: 2 x 3 = 6 correct"
+        ]
+      },
+      {
+        "q": "x2-7x+12=0, one root=3",
+        "steps": [
+          "Sum = 7",
+          "Other = 7 - 3 = 4",
+          "Check: 3 x 4=12 correct"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "q": "x2-5x+6=0, root=2, other=?",
+        "a": 3,
+        "o": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "q": "x2-7x+12=0, root=3, other=?",
+        "a": 4,
+        "o": [
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "q": "x2-9x+20=0, root=4, other=?",
+        "a": 5,
+        "o": [
+          4,
+          5,
+          6,
+          9
+        ]
+      },
+      {
+        "q": "x2-11x+30=0, root=5, other=?",
+        "a": 6,
+        "o": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      {
+        "q": "x2-6x+8=0, root=2, other=?",
+        "a": 4,
+        "o": [
+          2,
+          3,
+          4,
+          6
+        ]
+      },
+      {
+        "q": "x2-8x+15=0, root=3, other=?",
+        "a": 5,
+        "o": [
+          3,
+          4,
+          5,
+          8
+        ]
+      },
+      {
+        "q": "x2-10x+24=0, root=4, other=?",
+        "a": 6,
+        "o": [
+          4,
+          5,
+          6,
+          10
+        ]
+      },
+      {
+        "q": "x2-13x+42=0, root=6, other=?",
+        "a": 7,
+        "o": [
+          6,
+          7,
+          8,
+          13
+        ]
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Gunitasamuchyah",
+    "sanskrit": "गुणितसमुच्चयः",
+    "meaning": "The product of the sum is the sum of the products",
+    "color": "#FAEEDA",
+    "textColor": "#633806",
+    "dot": "#EF9F27",
+    "desc": "Verify multiplication results instantly using digit sums. A powerful self-checking tool.",
+    "steps": [
+      "Find the digit sum of the first number (add all digits, repeat until single digit).",
+      "Find the digit sum of the second number.",
+      "Multiply these digit sums and reduce to a single digit.",
+      "Compare with digit sum of your answer — they must match."
+    ],
+    "examples": [
+      {
+        "q": "Check: 123 x 45 = 5535",
+        "steps": [
+          "Digit sum 123: 1+2+3=6",
+          "Digit sum 45: 4+5=9",
+          "6 x 9=54 then 5+4=9",
+          "Digit sum 5535: 5+5+3+5=18 then 1+8=9 correct"
+        ]
+      },
+      {
+        "q": "Digit sum of 789",
+        "steps": [
+          "7+8+9=24",
+          "2+4=6",
+          "Digit sum = 6"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "q": "Digit sum of 789",
+        "a": 6,
+        "o": [
+          5,
+          6,
+          7,
+          8
+        ]
+      },
+      {
+        "q": "Digit sum of 456",
+        "a": 6,
+        "o": [
+          4,
+          5,
+          6,
+          15
+        ]
+      },
+      {
+        "q": "Digit sum of 999",
+        "a": 9,
+        "o": [
+          7,
+          8,
+          9,
+          27
+        ]
+      },
+      {
+        "q": "Digit sum of 1234",
+        "a": 1,
+        "o": [
+          1,
+          10,
+          9,
+          4
+        ]
+      },
+      {
+        "q": "Digit sum of 5678",
+        "a": 8,
+        "o": [
+          6,
+          7,
+          8,
+          26
+        ]
+      },
+      {
+        "q": "Digit sum of 369",
+        "a": 9,
+        "o": [
+          6,
+          8,
+          9,
+          18
+        ]
+      },
+      {
+        "q": "Digit sum of 2468",
+        "a": 2,
+        "o": [
+          2,
+          11,
+          20,
+          8
+        ]
+      },
+      {
+        "q": "Digit sum of 8888",
+        "a": 5,
+        "o": [
+          4,
+          5,
+          8,
+          32
+        ]
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Gunakasamuchyah",
+    "sanskrit": "गुणकसमुच्चयः",
+    "meaning": "The factors of the sum equal the sum of the factors",
+    "color": "#FAECE7",
+    "textColor": "#712B13",
+    "dot": "#D85A30",
+    "desc": "Verify factorization by substituting x=1. The original expression and the factored form must give the same value.",
+    "steps": [
+      "Substitute x=1 into the original expression to get the sum of coefficients.",
+      "Substitute x=1 into each factor and multiply the results.",
+      "If both values match, your factorization is correct."
+    ],
+    "examples": [
+      {
+        "q": "Verify (x+2)(x+3) = x2+5x+6",
+        "steps": [
+          "x=1 in original: 1+5+6=12",
+          "x=1 in factors: (1+2)x(1+3)=3x4=12",
+          "12=12 correct"
+        ]
+      },
+      {
+        "q": "Sum of coefficients: 2x2+3x+1",
+        "steps": [
+          "Substitute x=1",
+          "2+3+1=6",
+          "Sum = 6"
+        ]
+      }
+    ],
+    "questions": [
+      {
+        "q": "2x2+3x+1 at x=1",
+        "a": 6,
+        "o": [
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      {
+        "q": "x2+4x+4 at x=1",
+        "a": 9,
+        "o": [
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      {
+        "q": "3x2+2x+1 at x=1",
+        "a": 6,
+        "o": [
+          4,
+          5,
+          6,
+          8
+        ]
+      },
+      {
+        "q": "x2+6x+9 at x=1",
+        "a": 16,
+        "o": [
+          14,
+          15,
+          16,
+          18
+        ]
+      },
+      {
+        "q": "(x+1)(x+2) at x=1",
+        "a": 6,
+        "o": [
+          4,
+          5,
+          6,
+          8
+        ]
+      },
+      {
+        "q": "(x+2)(x+3) at x=1",
+        "a": 12,
+        "o": [
+          10,
+          11,
+          12,
+          15
+        ]
+      },
+      {
+        "q": "(x+1)(x+4) at x=1",
+        "a": 10,
+        "o": [
+          8,
+          9,
+          10,
+          12
+        ]
+      },
+      {
+        "q": "(2x+1)(x+3) at x=1",
+        "a": 12,
+        "o": [
+          9,
+          10,
+          11,
+          12
+        ]
+      }
+    ]
+  }
+]
