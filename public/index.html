@@ -39,6 +39,18 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .header-score{text-align:right}
 .header-score .xp{font-size:14px;font-weight:600;color:#FAC775}
 .header-score .lv{font-size:11px;opacity:0.65}
+.about-info-btn{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;padding:0}
+.about-info-btn:hover{background:rgba(255,255,255,0.2)}
+.about-info-btn svg{width:17px;height:17px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.about-modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,26,46,0.55);z-index:200;align-items:flex-start;justify-content:center;padding:0;overflow-y:auto}
+.about-modal-overlay.open{display:flex}
+.about-modal{background:var(--bg);max-width:680px;width:100%;min-height:100vh;position:relative}
+.about-modal-close{position:sticky;top:0;z-index:5;display:flex;justify-content:flex-end;padding:14px 18px 0;background:linear-gradient(to bottom, var(--bg) 60%, transparent)}
+.about-modal-close-btn{width:34px;height:34px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.about-modal-close-btn:hover{background:var(--bg)}
+.about-modal-close-btn svg{width:17px;height:17px;stroke:var(--text);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.about-modal-body{padding:0 1.5rem 2rem}
 
 /* Tab nav */
 .tab-nav{display:flex;background:var(--surface);border-bottom:1px solid var(--border);padding:0 1.5rem}
@@ -241,18 +253,19 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
       <div class="logo-sub">Learn · Practice · Master</div>
     </div>
   </div>
-  <div class="header-score">
-    <div class="xp" id="hdr-xp">0 XP</div>
-    <div class="lv" id="hdr-lv">Level 1</div>
+  <div style="display:flex;align-items:center;gap:14px">
+    <button class="about-info-btn" onclick="openAboutModal()" aria-label="About Vedic Math">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    </button>
+    <div class="header-score">
+      <div class="xp" id="hdr-xp">0 XP</div>
+      <div class="lv" id="hdr-lv">Level 1</div>
+    </div>
   </div>
 </div>
 
 <div class="tab-nav">
-  <button class="tab-btn active" onclick="switchTab('about')" id="tab-about">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-    About
-  </button>
-  <button class="tab-btn" onclick="switchTab('learn')" id="tab-learn">
+  <button class="tab-btn active" onclick="switchTab('learn')" id="tab-learn">
     <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
     Learn
   </button>
@@ -266,92 +279,93 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
   </button>
 </div>
 
-<!-- ABOUT PAGE -->
-<div class="page active" id="page-about">
-  <div style="padding-top:0.25rem">
-    <div class="card" style="margin-bottom:12px;background:linear-gradient(135deg,var(--indigo) 0%,#5648a8 100%);border:none;padding:1.5rem 1.25rem">
-      <div style="font-size:20px;font-weight:600;color:#fff;margin-bottom:8px;line-height:1.4">Welcome to the world of Vedic Math</div>
-      <p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:12px">
-        What if you could square a two-digit number faster than someone typing it into a calculator? Or multiply
-        97 × 98 in your head in under five seconds? That's not a party trick — it's a 3,000-year-old system of
-        mental math hiding sixteen elegant shortcuts, and you're about to learn all of them.
-      </p>
-      <div style="display:flex;gap:16px;flex-wrap:wrap">
-        <div>
-          <div style="font-size:20px;font-weight:600;color:#FAC775">16</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.7)">sutras to master</div>
-        </div>
-        <div>
-          <div style="font-size:20px;font-weight:600;color:#FAC775">8</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.7)">questions per quiz</div>
-        </div>
-        <div>
-          <div style="font-size:20px;font-weight:600;color:#FAC775">0</div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.7)">calculators needed</div>
-        </div>
-      </div>
+<!-- ABOUT PAGE (not a tab — opened via header info button as an overlay) -->
+<!-- ABOUT MODAL (opened via header info button, not a tab) -->
+<div class="about-modal-overlay" id="about-modal-overlay">
+  <div class="about-modal">
+    <div class="about-modal-close">
+      <button class="about-modal-close-btn" onclick="closeAboutModal()" aria-label="Close">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
-
-    <div class="card" style="margin-bottom:12px">
-      <div style="font-size:18px;font-weight:600;color:var(--text);margin-bottom:8px">What is Vedic Math?</div>
-      <p style="font-size:13px;color:var(--text-2);line-height:1.8">
-        Vedic Mathematics is a collection of mental calculation techniques and shortcuts derived from ancient Indian texts.
-        It is built on 16 core formulas, called sutras, and a number of sub-formulas, called sub-sutras, that simplify
-        arithmetic, algebra, geometry, and calculus into fast, intuitive mental steps. The methods are designed to be
-        solved largely in one's head — often faster than reaching for a calculator — once the underlying pattern is recognized.
-      </p>
-    </div>
-
-    <div class="card" style="margin-bottom:12px">
-      <div style="font-size:18px;font-weight:600;color:var(--text);margin-bottom:8px">A brief history</div>
-      <p style="font-size:13px;color:var(--text-2);line-height:1.8">
-        The word "Vedic" refers to the Vedas, the ancient body of Sanskrit texts that form the foundation of Hindu
-        philosophy and tradition, composed over a long period beginning more than three thousand years ago. While
-        the Vedas themselves are primarily spiritual and ritual texts, later scholars identified within them — and
-        within associated texts — patterns and formulas that could be applied to mathematics. These techniques were
-        largely passed down through oral tradition for generations, often used by scholars and merchants for quick
-        calculation long before modern arithmetic notation became widespread in India.
-      </p>
-      <p style="font-size:13px;color:var(--text-2);line-height:1.8;margin-top:10px">
-        The system as it is taught and practiced today was compiled and popularized in the twentieth century,
-        reconstructing and systematizing these scattered techniques into the structured set of 16 sutras used in
-        this app.
-      </p>
-    </div>
-
-    <div class="card" style="margin-bottom:12px">
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
-        <div>
-          <div style="font-size:16px;font-weight:600;color:var(--text)">Swami Bharati Krishna Tirtha</div>
-          <div style="font-size:12px;color:var(--text-2)">1884 – 1960</div>
+    <div class="about-modal-body">
+      <div class="card" style="margin-bottom:12px;background:linear-gradient(135deg,var(--indigo) 0%,#5648a8 100%);border:none;padding:1.5rem 1.25rem">
+        <div style="font-size:20px;font-weight:600;color:#fff;margin-bottom:8px;line-height:1.4">Welcome to the world of Vedic Math</div>
+        <p style="font-size:13px;color:rgba(255,255,255,0.85);line-height:1.8;margin-bottom:12px">
+          What if you could square a two-digit number faster than someone typing it into a calculator? Or multiply
+          97 × 98 in your head in under five seconds? That's not a party trick — it's a 3,000-year-old system of
+          mental math hiding sixteen elegant shortcuts, and you're about to learn all of them.
+        </p>
+        <div style="display:flex;gap:16px;flex-wrap:wrap">
+          <div>
+            <div style="font-size:20px;font-weight:600;color:#FAC775">16</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.7)">sutras to master</div>
+          </div>
+          <div>
+            <div style="font-size:20px;font-weight:600;color:#FAC775">50</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.7)">questions per sutra</div>
+          </div>
+          <div>
+            <div style="font-size:20px;font-weight:600;color:#FAC775">0</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.7)">calculators needed</div>
+          </div>
         </div>
       </div>
-      <p style="font-size:13px;color:var(--text-2);line-height:1.8">
-        Swami Bharati Krishna Tirtha was a Hindu monk and scholar who served as the Shankaracharya — the head of a
-        major monastic order — of Govardhana Math in Puri, India, from 1925 until his passing in 1960. Before
-        renouncing worldly life, he was known for prodigious academic achievement across subjects including
-        Sanskrit, philosophy, English, mathematics, and science.
-      </p>
-      <p style="font-size:13px;color:var(--text-2);line-height:1.8;margin-top:10px">
-        He spent years studying ancient Sanskrit texts known as the Parishishta, or appendix portions, of the
-        Atharvaveda, and claimed to have reconstructed sixteen mathematical sutras from them. He later compiled his
-        findings and teaching method into a single manuscript. The material was published posthumously in 1965 as
-        the book <em>Vedic Mathematics</em>, which today remains the foundational text behind the system taught
-        in schools, workshops, and apps like this one around the world.
-      </p>
-    </div>
 
-    <div class="card" style="background:var(--saffron-light);border-color:rgba(224,123,57,0.25)">
-      <div style="font-size:13px;color:var(--saffron-dark);line-height:1.8">
-        Ready to try it yourself? Head to the <strong>Learn</strong> tab to start with the first sutra, complete with
-        step-by-step methods and worked examples.
+      <div class="card" style="margin-bottom:12px">
+        <div style="font-size:18px;font-weight:600;color:var(--text);margin-bottom:8px">What is Vedic Math?</div>
+        <p style="font-size:13px;color:var(--text-2);line-height:1.8">
+          Vedic Mathematics is a collection of mental calculation techniques and shortcuts derived from ancient Indian texts.
+          It is built on 16 core formulas, called sutras, and a number of sub-formulas, called sub-sutras, that simplify
+          arithmetic, algebra, geometry, and calculus into fast, intuitive mental steps. The methods are designed to be
+          solved largely in one's head — often faster than reaching for a calculator — once the underlying pattern is recognized.
+        </p>
+      </div>
+
+      <div class="card" style="margin-bottom:12px">
+        <div style="font-size:18px;font-weight:600;color:var(--text);margin-bottom:8px">A brief history</div>
+        <p style="font-size:13px;color:var(--text-2);line-height:1.8">
+          The word "Vedic" refers to the Vedas, the ancient body of Sanskrit texts that form the foundation of Hindu
+          philosophy and tradition, composed over a long period beginning more than three thousand years ago. While
+          the Vedas themselves are primarily spiritual and ritual texts, later scholars identified within them — and
+          within associated texts — patterns and formulas that could be applied to mathematics. These techniques were
+          largely passed down through oral tradition for generations, often used by scholars and merchants for quick
+          calculation long before modern arithmetic notation became widespread in India.
+        </p>
+        <p style="font-size:13px;color:var(--text-2);line-height:1.8;margin-top:10px">
+          The system as it is taught and practiced today was compiled and popularized in the twentieth century,
+          reconstructing and systematizing these scattered techniques into the structured set of 16 sutras used in
+          this app.
+        </p>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+          <div>
+            <div style="font-size:16px;font-weight:600;color:var(--text)">Swami Bharati Krishna Tirtha</div>
+            <div style="font-size:12px;color:var(--text-2)">1884 – 1960</div>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--text-2);line-height:1.8">
+          Swami Bharati Krishna Tirtha was a Hindu monk and scholar who served as the Shankaracharya — the head of a
+          major monastic order — of Govardhana Math in Puri, India, from 1925 until his passing in 1960. Before
+          renouncing worldly life, he was known for prodigious academic achievement across subjects including
+          Sanskrit, philosophy, English, mathematics, and science.
+        </p>
+        <p style="font-size:13px;color:var(--text-2);line-height:1.8;margin-top:10px">
+          He spent years studying ancient Sanskrit texts known as the Parishishta, or appendix portions, of the
+          Atharvaveda, and claimed to have reconstructed sixteen mathematical sutras from them. He later compiled his
+          findings and teaching method into a single manuscript. The material was published posthumously in 1965 as
+          the book <em>Vedic Mathematics</em>, which today remains the foundational text behind the system taught
+          in schools, workshops, and apps like this one around the world.
+        </p>
       </div>
     </div>
   </div>
 </div>
 
 <!-- LEARN PAGE -->
-<div class="page" id="page-learn">
+<div class="page active" id="page-learn">
   <div id="learn-home">
     <div class="hero-progress" id="hero-progress">
       <div class="ring-wrap">
@@ -514,6 +528,16 @@ function switchTab(t) {
   document.getElementById('page-' + t).classList.add('active');
   document.getElementById('tab-' + t).classList.add('active');
   if (t === 'progress') renderProgress();
+}
+
+function openAboutModal() {
+  document.getElementById('about-modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAboutModal() {
+  document.getElementById('about-modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
 }
 
 const SUTRA_ICONS = ['🔢','➗','✖️','⚖️','👁️','➕','🎯','📐','🪄','📦','🧩','🔚','🔁','🌳','✅','🔍'];
