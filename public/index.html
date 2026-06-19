@@ -123,6 +123,20 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .mode-icon{font-size:24px;margin-bottom:6px;display:block}
 .mode-title{font-size:13px;font-weight:500;color:var(--text)}
 .mode-sub{font-size:11px;color:var(--text-2);margin-top:3px}
+.survival-card{border-color:rgba(226,75,74,0.3);background:#FCEBEB}
+.survival-card:hover{background:#FADADA;border-color:#E24B4A}
+.survival-card .mode-title{color:#791F1F}
+.survival-card .mode-sub{color:#A32D2D}
+.survival-banner{background:linear-gradient(135deg,#791F1F 0%,#A32D2D 100%);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;color:#fff}
+.survival-streak{display:flex;align-items:center;gap:8px}
+.survival-streak-num{font-size:28px;font-weight:600}
+.survival-streak-label{font-size:11px;color:rgba(255,255,255,0.75)}
+.survival-best{font-size:11px;color:rgba(255,255,255,0.75);text-align:right}
+.survival-best-num{font-size:15px;font-weight:600;color:#FAC775}
+.survival-end-card{background:#FCEBEB;border:1px solid rgba(226,75,74,0.25);border-radius:var(--radius);padding:1.5rem;text-align:center;margin-bottom:1rem}
+.survival-end-num{font-size:48px;font-weight:600;color:#791F1F}
+.survival-end-label{font-size:13px;color:#A32D2D;margin-top:2px}
+.survival-new-best{display:inline-block;margin-top:10px;font-size:12px;font-weight:600;color:#085041;background:#E1F5EE;padding:4px 12px;border-radius:20px}
 
 /* Quiz active */
 .qz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
@@ -133,6 +147,10 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .hint-bar{background:var(--saffron-light);border-radius:var(--radius-sm);padding:9px 13px;font-size:12px;color:var(--saffron-dark);margin-bottom:12px;line-height:1.6}
 .hint-bar strong{font-weight:600}
 .q-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;margin-bottom:14px}
+.answer-comment{font-size:13px;font-weight:500;text-align:center;padding:10px 14px;border-radius:var(--radius-sm);margin-bottom:12px;animation:commentPop 0.25s ease-out}
+.answer-comment.correct-comment{background:var(--green-light);color:var(--green)}
+.answer-comment.wrong-comment{background:#FCEBEB;color:#A32D2D}
+@keyframes commentPop{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
 .q-sutra{font-size:11px;color:var(--text-3);margin-bottom:8px}
 .q-text{font-size:32px;font-weight:600;color:var(--text);letter-spacing:2px}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
@@ -419,11 +437,25 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
         <div class="mode-sub">No hints, bonus points</div>
       </div>
     </div>
+    <div class="mode-card survival-card" onclick="startQuiz('survival')" style="margin-top:10px">
+      <span class="mode-icon">💀</span>
+      <div class="mode-title">Survival</div>
+      <div class="mode-sub">One mistake ends it. How far can you go?</div>
+    </div>
   </div>
 
   <div id="quiz-active" style="display:none;padding-top:0.25rem">
     <div class="qz-top">
       <span class="qz-label" id="qz-label">—</span>
+    </div>
+    <div class="survival-banner" id="survival-banner" style="display:none">
+      <div class="survival-streak">
+        <div class="survival-streak-num" id="survival-current">0</div>
+        <div class="survival-streak-label">correct<br>in a row</div>
+      </div>
+      <div class="survival-best">
+        Best run<br><span class="survival-best-num" id="survival-best-display">0</span>
+      </div>
     </div>
     <div class="dots" id="qz-dots" style="margin-bottom:12px"></div>
     <div id="qz-hint"></div>
@@ -432,6 +464,7 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
       <div class="q-text" id="qz-q"></div>
     </div>
     <div class="opts" id="qz-opts"></div>
+    <div id="qz-comment"></div>
     <div id="qz-explain"></div>
     <div id="qz-next-row" style="display:none;margin-top:12px">
       <button class="btn-primary" style="width:100%" onclick="advanceQ()" id="qz-next-btn">Next question →</button>
@@ -443,7 +476,12 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
   </div>
 
   <div id="quiz-result" style="display:none;padding-top:0.5rem">
-    <div class="card" style="padding:1.5rem;margin-bottom:1rem">
+    <div class="survival-end-card" id="survival-end-card" style="display:none">
+      <div class="survival-end-num" id="survival-end-num">0</div>
+      <div class="survival-end-label">correct answers in a row</div>
+      <div id="survival-new-best-badge"></div>
+    </div>
+    <div class="card" style="padding:1.5rem;margin-bottom:1rem" id="normal-result-card">
       <div class="result-score" id="res-score">0</div>
       <div class="result-label">points earned</div>
       <div class="stats-3" style="margin-top:1rem">
@@ -501,12 +539,43 @@ function enterApp() {
   document.getElementById('hook-screen').style.display = 'none';
   document.getElementById('main-app').style.display = 'block';
 }
+const CORRECT_COMMENTS = [
+  "Nice work!", "You got it!", "Excellent!", "Sharp thinking!", "That's right!",
+  "Great job!", "Spot on!", "You nailed it!", "Awesome!", "Well done!",
+  "Brilliant!", "Perfect!", "You're on a roll!", "Fantastic!", "Right on!",
+  "Super!", "Way to go!", "Correct — nicely done!", "You're getting good at this!", "Math champ!"
+];
+
+const WRONG_COMMENTS = [
+  "Not quite — let's see why.", "Close, but not this time.", "Almost! Check the steps below.",
+  "Good try — here's the trick.", "Not this one — let's break it down.",
+  "Keep going — here's how it works.", "So close! Here's the method.",
+  "Nice attempt — let's walk through it.", "That's okay — practice makes perfect.",
+  "Not quite right — but you'll get the next one.", "Try again next time — here's the method.",
+  "Mistakes help us learn — here's how to solve it."
+];
+
+function getAnswerComment(isCorrect) {
+  const list = isCorrect ? CORRECT_COMMENTS : WRONG_COMMENTS;
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+function showAnswerComment(isCorrect) {
+  const box = document.getElementById('qz-comment');
+  const text = getAnswerComment(isCorrect);
+  const cls = isCorrect ? 'correct-comment' : 'wrong-comment';
+  box.innerHTML = `<div class="answer-comment ${cls}">${text}</div>`;
+}
+
 let sutras = [];
 let mastered = {};
 let currentSutraId = 0;
 let xp = 0, quizzesDone = 0, totalAnswered = 0, totalCorrect = 0, allBestStreak = 0;
 let qList = [], qIdx = 0, qScore = 0, qCorrect = 0, qStreak = 0, qBestStreak = 0;
 let lastMode = 'current';
+let survivalBest = 0;
+let survivalPool = [];
+let survivalIdx = 0;
 
 let sutrasFull = []; // includes questions, loaded once
 
@@ -653,10 +722,22 @@ function showQuizHome() {
   document.getElementById('quiz-home').style.display = 'block';
   document.getElementById('quiz-active').style.display = 'none';
   document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('normal-result-card').style.display = 'block';
+  document.getElementById('survival-end-card').style.display = 'none';
 }
 
 function shuffleArr(arr) {
   return [...arr].sort(() => Math.random() - 0.5);
+}
+
+function buildSurvivalPool() {
+  let pool = [];
+  sutrasFull.forEach(s => {
+    if (mastered[s.id]) {
+      s.questions.forEach(q => pool.push({ ...q, sutraName: s.name, sutraId: s.id }));
+    }
+  });
+  return shuffleArr(pool).map(q => ({ ...q, o: shuffleArr(q.o) }));
 }
 
 function startQuiz(mode) {
@@ -664,7 +745,15 @@ function startQuiz(mode) {
   lastMode = mode;
   qIdx = 0; qScore = 0; qCorrect = 0; qStreak = 0; qBestStreak = 0;
 
-  if (mode === 'mixed' || mode === 'speed' || mode === 'challenge') {
+  document.getElementById('survival-banner').style.display = mode === 'survival' ? 'flex' : 'none';
+  document.getElementById('qz-dots').style.display = mode === 'survival' ? 'none' : 'flex';
+
+  if (mode === 'survival') {
+    survivalPool = buildSurvivalPool();
+    survivalIdx = 0;
+    document.getElementById('survival-current').textContent = '0';
+    document.getElementById('survival-best-display').textContent = survivalBest;
+  } else if (mode === 'mixed' || mode === 'speed' || mode === 'challenge') {
     let pool = [];
     sutrasFull.forEach(s => {
       if (mastered[s.id]) {
@@ -673,19 +762,20 @@ function startQuiz(mode) {
     });
     pool = shuffleArr(pool);
     qList = mode === 'speed' ? pool.slice(0, 10) : pool.slice(0, 10);
+    qList = qList.map(q => ({ ...q, o: shuffleArr(q.o) }));
   } else {
     const s = sutrasFull.find(x => x.id === currentSutraId);
     const picked = shuffleArr(s.questions).slice(0, 5);
     qList = picked.map(q => ({ ...q, sutraName: s.name, sutraId: s.id }));
+    qList = qList.map(q => ({ ...q, o: shuffleArr(q.o) }));
   }
-  qList = qList.map(q => ({ ...q, o: shuffleArr(q.o) }));
 
   document.getElementById('quiz-home').style.display = 'none';
   document.getElementById('quiz-result').style.display = 'none';
   document.getElementById('quiz-active').style.display = 'block';
-  const modeLabels = { current: 'Sutra practice', mixed: 'Mixed review', speed: 'Speed round', challenge: 'Challenge' };
+  const modeLabels = { current: 'Sutra practice', mixed: 'Mixed review', speed: 'Speed round', challenge: 'Challenge', survival: 'Survival mode' };
   document.getElementById('qz-label').textContent = modeLabels[mode];
-  renderQ();
+  if (mode === 'survival') renderSurvivalQ(); else renderQ();
 }
 
 function retryQuiz() { startQuiz(lastMode); }
@@ -697,7 +787,9 @@ function renderQ() {
   document.getElementById('qz-q').textContent = q.q;
   document.getElementById('qz-score').textContent = qScore;
   document.getElementById('qz-explain').innerHTML = '';
+  document.getElementById('qz-comment').innerHTML = '';
   document.getElementById('qz-next-row').style.display = 'none';
+  document.getElementById('qz-next-btn').onclick = advanceQ;
 
   const dots = document.getElementById('qz-dots');
   dots.innerHTML = qList.map((_, i) => {
@@ -714,6 +806,90 @@ function renderQ() {
 
   document.getElementById('qz-opts').innerHTML = (q.o || []).map(opt =>
     `<button class="opt-btn" onclick="pickAns(${opt},${q.a},this)">${opt.toLocaleString()}</button>`).join('');
+}
+
+function ensureSurvivalSupply() {
+  if (survivalIdx >= survivalPool.length - 3) {
+    survivalPool = survivalPool.concat(buildSurvivalPool());
+  }
+}
+
+function renderSurvivalQ() {
+  ensureSurvivalSupply();
+  const q = survivalPool[survivalIdx];
+  document.getElementById('qz-sutra-name').textContent = q.sutraName || '';
+  document.getElementById('qz-q').textContent = q.q;
+  document.getElementById('qz-explain').innerHTML = '';
+  document.getElementById('qz-comment').innerHTML = '';
+  document.getElementById('qz-next-row').style.display = 'none';
+  document.getElementById('survival-current').textContent = qStreak;
+  document.getElementById('survival-best-display').textContent = Math.max(survivalBest, qStreak);
+
+  const hint = document.getElementById('qz-hint');
+  const s = sutras.find(x => x.id === q.sutraId);
+  hint.innerHTML = s ? `<div class="hint-bar"><strong>${s.name}:</strong> ${s.meaning}</div>` : '';
+
+  document.getElementById('qz-opts').innerHTML = (q.o || []).map(opt =>
+    `<button class="opt-btn" onclick="pickSurvivalAns(${opt},${q.a},this)">${opt.toLocaleString()}</button>`).join('');
+}
+
+function pickSurvivalAns(chosen, correct, btn) {
+  document.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+  const q = survivalPool[survivalIdx];
+  totalAnswered++;
+
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    qCorrect++; qStreak++; totalCorrect++;
+    if (qStreak > allBestStreak) allBestStreak = qStreak;
+    document.getElementById('survival-current').textContent = qStreak;
+    document.getElementById('survival-best-display').textContent = Math.max(survivalBest, qStreak);
+    showAnswerComment(true);
+    document.getElementById('qz-next-row').style.display = 'block';
+    document.getElementById('qz-next-btn').textContent = 'Next question →';
+    document.getElementById('qz-next-btn').onclick = advanceSurvival;
+  } else {
+    btn.classList.add('wrong');
+    document.querySelectorAll('.opt-btn').forEach(b => {
+      if (parseInt(b.textContent.replace(/,/g, '')) === correct) b.classList.add('correct');
+    });
+    showAnswerComment(false);
+    showExplanation(q);
+    document.getElementById('qz-next-row').style.display = 'block';
+    document.getElementById('qz-next-btn').textContent = 'See results →';
+    document.getElementById('qz-next-btn').onclick = endSurvival;
+  }
+}
+
+function advanceSurvival() {
+  survivalIdx++;
+  renderSurvivalQ();
+}
+
+function endSurvival() {
+  quizzesDone++;
+  const isNewBest = qStreak > survivalBest;
+  if (isNewBest) survivalBest = qStreak;
+  const gained = Math.max(5, qStreak * 5);
+  xp += gained;
+  updateHeader();
+
+  document.getElementById('normal-result-card').style.display = 'none';
+  document.getElementById('survival-end-card').style.display = 'block';
+  document.getElementById('survival-end-num').textContent = qStreak;
+  document.getElementById('survival-new-best-badge').innerHTML = isNewBest
+    ? `<div class="survival-new-best">New personal best!</div>`
+    : `<div style="font-size:12px;color:var(--text-2);margin-top:8px">Best run: ${survivalBest}</div>`;
+
+  const msg = qStreak === 0 ? 'Missed the very first one — every sutra has its trick, review and try again.' :
+    qStreak < 5 ? 'A solid start. Review the sutras you slipped on and go again.' :
+    qStreak < 15 ? 'Great run! You clearly know your sutras.' :
+    'Outstanding streak — you have real command of these methods.';
+  document.getElementById('res-msg').textContent = msg;
+  document.getElementById('res-next-wrap').style.display = 'none';
+
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'block';
 }
 
 // Generates the exact worked steps for the specific question asked, using the
@@ -900,6 +1076,7 @@ function pickAns(chosen, correct, btn) {
     if (qStreak > allBestStreak) allBestStreak = qStreak;
     qScore += 100 + (lastMode === 'challenge' ? 50 : 0);
     document.getElementById('qz-score').textContent = qScore;
+    showAnswerComment(true);
   } else {
     btn.classList.add('wrong');
     document.querySelectorAll('.opt-btn').forEach(b => {
@@ -907,6 +1084,7 @@ function pickAns(chosen, correct, btn) {
     });
     qStreak = 0;
     document.getElementById('qz-score').textContent = qScore;
+    showAnswerComment(false);
     showExplanation(q);
   }
   document.getElementById('qz-next-row').style.display = 'block';
@@ -924,6 +1102,8 @@ function endQuiz() {
   const gained = Math.max(10, Math.round(qScore / 10));
   xp += gained;
   updateHeader();
+  document.getElementById('normal-result-card').style.display = 'block';
+  document.getElementById('survival-end-card').style.display = 'none';
   document.getElementById('res-score').textContent = qScore;
   document.getElementById('res-correct').textContent = qCorrect + '/' + qList.length;
   document.getElementById('res-streak').textContent = qBestStreak;
