@@ -27,7 +27,7 @@
   --radius-sm: 8px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Noto Sans',sans-serif;background-color:var(--bg);background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22220%22%20height%3D%22220%22%20viewBox%3D%220%200%20220%20220%22%3E%0A%3Crect%20width%3D%22220%22%20height%3D%22220%22%20fill%3D%22none%22/%3E%0A%3Cg%20stroke%3D%22%233D3480%22%20stroke-opacity%3D%220.030%22%20stroke-width%3D%221%22%3E%0A%3Cline%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%22220%22%20y2%3D%220%22/%3E%0A%3Cline%20x1%3D%220%22%20y1%3D%2255%22%20x2%3D%22220%22%20y2%3D%2255%22/%3E%0A%3Cline%20x1%3D%220%22%20y1%3D%22110%22%20x2%3D%22220%22%20y2%3D%22110%22/%3E%0A%3Cline%20x1%3D%220%22%20y1%3D%22165%22%20x2%3D%22220%22%20y2%3D%22165%22/%3E%0A%3Cline%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%220%22%20y2%3D%22220%22/%3E%0A%3Cline%20x1%3D%2255%22%20y1%3D%220%22%20x2%3D%2255%22%20y2%3D%22220%22/%3E%0A%3Cline%20x1%3D%22110%22%20y1%3D%220%22%20x2%3D%22110%22%20y2%3D%22220%22/%3E%0A%3Cline%20x1%3D%22165%22%20y1%3D%220%22%20x2%3D%22165%22%20y2%3D%22220%22/%3E%0A%3C/g%3E%0A%3Ctext%20x%3D%2218%22%20y%3D%2238%22%20font-family%3D%22sans-serif%22%20font-size%3D%2222%22%20fill%3D%22%23E07B39%22%20fill-opacity%3D%220.035%22%20font-weight%3D%22600%22%3Ex%3C/text%3E%0A%3Ctext%20x%3D%22138%22%20y%3D%2238%22%20font-family%3D%22sans-serif%22%20font-size%3D%2220%22%20fill%3D%22%233D3480%22%20fill-opacity%3D%220.030%22%20font-weight%3D%22600%22%3E37%3C/text%3E%0A%3Ctext%20x%3D%2278%22%20y%3D%2295%22%20font-family%3D%22sans-serif%22%20font-size%3D%2224%22%20fill%3D%22%233D3480%22%20fill-opacity%3D%220.028%22%20font-weight%3D%22600%22%3E2%3C/text%3E%0A%3Ctext%20x%3D%2220%22%20y%3D%22148%22%20font-family%3D%22sans-serif%22%20font-size%3D%2218%22%20fill%3D%22%23E07B39%22%20fill-opacity%3D%220.030%22%20font-weight%3D%22600%22%3E99%3C/text%3E%0A%3Ctext%20x%3D%22160%22%20y%3D%22105%22%20font-family%3D%22sans-serif%22%20font-size%3D%2222%22%20fill%3D%22%233D3480%22%20fill-opacity%3D%220.025%22%20font-weight%3D%22600%22%3E%2B%3C/text%3E%0A%3Ctext%20x%3D%22100%22%20y%3D%22195%22%20font-family%3D%22sans-serif%22%20font-size%3D%2220%22%20fill%3D%22%23E07B39%22%20fill-opacity%3D%220.030%22%20font-weight%3D%22600%22%3E5%3C/text%3E%0A%3Ctext%20x%3D%22170%22%20y%3D%22180%22%20font-family%3D%22sans-serif%22%20font-size%3D%2218%22%20fill%3D%22%233D3480%22%20fill-opacity%3D%220.025%22%20font-weight%3D%22600%22%3Ex%3C/text%3E%0A%3Ctext%20x%3D%2245%22%20y%3D%22200%22%20font-family%3D%22sans-serif%22%20font-size%3D%2216%22%20fill%3D%22%233D3480%22%20fill-opacity%3D%220.022%22%20font-weight%3D%22600%22%3E%E2%88%92%3C/text%3E%0A%3C/svg%3E");background-attachment:fixed;background-repeat:repeat;color:var(--text);min-height:100vh}
+body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 .devanagari{font-family:'Noto Sans Devanagari',sans-serif}
 
 /* Header */
@@ -124,6 +124,19 @@ body{font-family:'Noto Sans',sans-serif;background-color:var(--bg);background-im
 .mode-title{font-size:13px;font-weight:500;color:var(--text)}
 .mode-sub{font-size:11px;color:var(--text-2);margin-top:3px}
 .survival-card{border-color:rgba(226,75,74,0.3);background:#FCEBEB}
+.tier-back-btn{background:none;border:none;color:var(--text-2);font-size:13px;cursor:pointer;padding:0;margin-bottom:6px}
+.tier-back-btn:hover{color:var(--text)}
+.tier-grid{display:flex;flex-direction:column;gap:10px}
+.tier-card{border-radius:var(--radius);padding:1rem 1.1rem;cursor:pointer;border:1px solid var(--border);background:var(--surface);transition:transform 0.1s}
+.tier-card:hover{transform:translateY(-1px)}
+.tier-label{font-size:15px;font-weight:600;margin-bottom:2px}
+.tier-desc{font-size:12px;color:var(--text-2)}
+.tier-easy{border-color:rgba(26,122,82,0.25);background:var(--green-light)}
+.tier-easy .tier-label{color:var(--green)}
+.tier-medium{border-color:rgba(224,123,57,0.3);background:var(--saffron-light)}
+.tier-medium .tier-label{color:var(--saffron-dark)}
+.tier-hard{border-color:rgba(121,31,31,0.25);background:#FCEBEB}
+.tier-hard .tier-label{color:#791F1F}
 .survival-card:hover{background:#FADADA;border-color:#E24B4A}
 .survival-card .mode-title{color:#791F1F}
 .survival-card .mode-sub{color:#A32D2D}
@@ -416,7 +429,7 @@ body{font-family:'Noto Sans',sans-serif;background-color:var(--bg);background-im
     <div style="font-size:16px;font-weight:600;margin-bottom:4px;padding-top:0.25rem">Choose quiz mode</div>
     <div style="font-size:13px;color:var(--text-2);margin-bottom:4px">Study a sutra first to unlock quizzes</div>
     <div class="mode-grid">
-      <div class="mode-card" onclick="startQuiz('current')">
+      <div class="mode-card" onclick="handleCurrentSutraClick()">
         <span class="mode-icon">🎯</span>
         <div class="mode-title">Current sutra</div>
         <div class="mode-sub">Practice last lesson</div>
@@ -441,6 +454,26 @@ body{font-family:'Noto Sans',sans-serif;background-color:var(--bg);background-im
       <span class="mode-icon">💀</span>
       <div class="mode-title">Survival</div>
       <div class="mode-sub">One mistake ends it. How far can you go?</div>
+    </div>
+  </div>
+
+  <div id="tier-picker" style="display:none">
+    <button class="tier-back-btn" onclick="showQuizHome()">← Back</button>
+    <div style="font-size:16px;font-weight:600;margin-bottom:4px;padding-top:0.5rem" id="tier-picker-title">Choose difficulty</div>
+    <div style="font-size:13px;color:var(--text-2);margin-bottom:14px" id="tier-picker-sub"></div>
+    <div class="tier-grid">
+      <div class="tier-card tier-easy" onclick="startQuiz('current','easy')">
+        <div class="tier-label">Easy</div>
+        <div class="tier-desc">Smaller numbers, gentler start</div>
+      </div>
+      <div class="tier-card tier-medium" onclick="startQuiz('current','medium')">
+        <div class="tier-label">Medium</div>
+        <div class="tier-desc">A solid step up in size</div>
+      </div>
+      <div class="tier-card tier-hard" onclick="startQuiz('current','hard')">
+        <div class="tier-label">Hard</div>
+        <div class="tier-desc">Bigger numbers, real challenge</div>
+      </div>
     </div>
   </div>
 
@@ -573,11 +606,25 @@ let currentSutraId = 0;
 let xp = 0, quizzesDone = 0, totalAnswered = 0, totalCorrect = 0, allBestStreak = 0;
 let qList = [], qIdx = 0, qScore = 0, qCorrect = 0, qStreak = 0, qBestStreak = 0;
 let lastMode = 'current';
+let lastTier = null;
 let survivalBest = 0;
 let survivalPool = [];
 let survivalIdx = 0;
 
 let sutrasFull = []; // includes questions, loaded once
+
+// Sutras 0-2 have a flat questions array; sutras 3+ have {easy,medium,hard} tiers.
+// This normalizes either shape into a flat array, optionally filtered by tier.
+function getQuestionPool(sutra, tier) {
+  if (Array.isArray(sutra.questions)) return sutra.questions;
+  if (tier && sutra.questions[tier]) return sutra.questions[tier];
+  // no tier specified for a tiered sutra: combine all tiers
+  return [].concat(sutra.questions.easy || [], sutra.questions.medium || [], sutra.questions.hard || []);
+}
+
+function sutraHasTiers(sutra) {
+  return !Array.isArray(sutra.questions);
+}
 
 async function fetchSutras() {
   try {
@@ -720,10 +767,25 @@ function quickQuiz(id) {
 
 function showQuizHome() {
   document.getElementById('quiz-home').style.display = 'block';
+  document.getElementById('tier-picker').style.display = 'none';
   document.getElementById('quiz-active').style.display = 'none';
   document.getElementById('quiz-result').style.display = 'none';
   document.getElementById('normal-result-card').style.display = 'block';
   document.getElementById('survival-end-card').style.display = 'none';
+}
+
+function handleCurrentSutraClick() {
+  if (!Object.values(mastered).some(Boolean)) return;
+  const s = sutrasFull.find(x => x.id === currentSutraId);
+  if (!s) return;
+  if (sutraHasTiers(s)) {
+    document.getElementById('tier-picker-title').textContent = `${s.name} — choose difficulty`;
+    document.getElementById('tier-picker-sub').textContent = s.meaning || '';
+    document.getElementById('quiz-home').style.display = 'none';
+    document.getElementById('tier-picker').style.display = 'block';
+  } else {
+    startQuiz('current');
+  }
 }
 
 function shuffleArr(arr) {
@@ -734,15 +796,16 @@ function buildSurvivalPool() {
   let pool = [];
   sutrasFull.forEach(s => {
     if (mastered[s.id]) {
-      s.questions.forEach(q => pool.push({ ...q, sutraName: s.name, sutraId: s.id }));
+      getQuestionPool(s).forEach(q => pool.push({ ...q, sutraName: s.name, sutraId: s.id }));
     }
   });
   return shuffleArr(pool).map(q => ({ ...q, o: shuffleArr(q.o) }));
 }
 
-function startQuiz(mode) {
+function startQuiz(mode, tier) {
   if (!Object.values(mastered).some(Boolean)) return;
   lastMode = mode;
+  lastTier = tier || null;
   qIdx = 0; qScore = 0; qCorrect = 0; qStreak = 0; qBestStreak = 0;
 
   document.getElementById('survival-banner').style.display = mode === 'survival' ? 'flex' : 'none';
@@ -757,7 +820,7 @@ function startQuiz(mode) {
     let pool = [];
     sutrasFull.forEach(s => {
       if (mastered[s.id]) {
-        s.questions.forEach(q => pool.push({ ...q, sutraName: s.name, sutraId: s.id }));
+        getQuestionPool(s).forEach(q => pool.push({ ...q, sutraName: s.name, sutraId: s.id }));
       }
     });
     pool = shuffleArr(pool);
@@ -765,20 +828,23 @@ function startQuiz(mode) {
     qList = qList.map(q => ({ ...q, o: shuffleArr(q.o) }));
   } else {
     const s = sutrasFull.find(x => x.id === currentSutraId);
-    const picked = shuffleArr(s.questions).slice(0, 5);
+    const pool = getQuestionPool(s, tier);
+    const picked = shuffleArr(pool).slice(0, 5);
     qList = picked.map(q => ({ ...q, sutraName: s.name, sutraId: s.id }));
     qList = qList.map(q => ({ ...q, o: shuffleArr(q.o) }));
   }
 
   document.getElementById('quiz-home').style.display = 'none';
+  document.getElementById('tier-picker').style.display = 'none';
   document.getElementById('quiz-result').style.display = 'none';
   document.getElementById('quiz-active').style.display = 'block';
-  const modeLabels = { current: 'Sutra practice', mixed: 'Mixed review', speed: 'Speed round', challenge: 'Challenge', survival: 'Survival mode' };
+  const tierLabel = tier ? ` — ${tier[0].toUpperCase()}${tier.slice(1)}` : '';
+  const modeLabels = { current: 'Sutra practice' + tierLabel, mixed: 'Mixed review', speed: 'Speed round', challenge: 'Challenge', survival: 'Survival mode' };
   document.getElementById('qz-label').textContent = modeLabels[mode];
   if (mode === 'survival') renderSurvivalQ(); else renderQ();
 }
 
-function retryQuiz() { startQuiz(lastMode); }
+function retryQuiz() { startQuiz(lastMode, lastTier); }
 
 function renderQ() {
   const q = qList[qIdx];
@@ -976,7 +1042,7 @@ function generateDynamicSteps(sutraId, qtext) {
       if (num >= 7) {
         const base = 10, d = num - base;
         const left = num + 2*d, mid = 3*d*d, right = d*d*d;
-        return [`Deviation from 10: ${d >= 0 ? '+' : ''}${d}`, `Left: ${num}${d>=0?'+':''}2×${d} = ${left}`, `Middle: 3×${d}² = ${mid}`, `Right: ${d}³ = ${right}`, `Combine with carries → ${ans.toLocaleString()}`];
+        return [`Deviation from 10: ${d >= 0 ? '+' : ''}${d}`, `Left: ${num} ${d>=0?'+':'−'} 2×${Math.abs(d)} = ${left}`, `Middle: 3×${d}² = ${mid}`, `Right: ${d}³ = ${right}`, `Combine with carries → ${ans.toLocaleString()}`];
       } else {
         return [`For small numbers, cube directly: ${num} × ${num} × ${num}`, `${num} × ${num} = ${num*num}`, `${num*num} × ${num} = ${ans}`];
       }
