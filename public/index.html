@@ -8,33 +8,36 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --saffron: #E07B39;
-  --saffron-light: #FDF3EB;
-  --saffron-dark: #B85C1A;
-  --indigo: #3D3480;
-  --indigo-light: #EEEDFE;
-  --indigo-mid: #7F77DD;
-  --green: #1A7A52;
-  --green-light: #E2F5EE;
+  --saffron: #FF8A3D;
+  --saffron-light: #FFEEDD;
+  --saffron-dark: #E0641A;
+  --indigo: #5B4FE0;
+  --indigo-light: #ECE9FF;
+  --indigo-mid: #8B7FF5;
+  --green: #1FA866;
+  --green-light: #DEF7EA;
   --text: #1A1A2E;
   --text-2: #5A5A7A;
   --text-3: #9898B8;
-  --bg: #FAFAF8;
+  --bg: #FFF9F0;
   --surface: #FFFFFF;
-  --border: rgba(60,52,128,0.12);
-  --border-2: rgba(60,52,128,0.22);
-  --radius: 16px;
-  --radius-sm: 12px;
+  --border: rgba(91,79,224,0.14);
+  --border-2: rgba(91,79,224,0.28);
+  --radius: 18px;
+  --radius-sm: 14px;
+  --pink: #FF5C8A;
+  --pink-light: #FFE5ED;
+  --yellow: #FFC93C;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 .devanagari{font-family:'Noto Sans Devanagari',sans-serif}
 
 /* Header */
-.header{background:var(--indigo);color:#fff;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
+.header{background:linear-gradient(120deg,var(--indigo) 0%,#7B5FE8 60%,var(--pink) 130%);color:#fff;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:100}
 .logo{display:flex;align-items:center;gap:10px}
 .logo-symbol{width:32px;height:32px;background:var(--saffron);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;color:#fff}
-.logo-text{font-size:17px;font-weight:700;letter-spacing:0.3px;font-family:'Baloo 2',sans-serif}
+.logo-text{font-size:20px;font-weight:800;letter-spacing:0.3px;font-family:'Baloo 2',sans-serif}
 .logo-sub{font-size:11px;opacity:0.65;margin-top:1px}
 .header-score{text-align:right}
 .header-score .xp{font-size:15px;font-weight:700;color:#FAC775;font-family:'Baloo 2',sans-serif}
@@ -127,9 +130,9 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 
 /* Quiz modes */
 .mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.mode-card{border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;text-align:center;transition:border-color 0.15s,background 0.15s}
-.mode-card:hover{background:var(--indigo-light);border-color:var(--indigo-mid)}
-.mode-icon{font-size:24px;margin-bottom:6px;display:block}
+.mode-card{border:2px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;text-align:center;transition:border-color 0.15s,background 0.15s,transform 0.12s}
+.mode-card:hover{background:var(--indigo-light);border-color:var(--indigo-mid);transform:translateY(-2px)}
+.mode-icon{font-size:30px;margin-bottom:6px;display:block}
 .mode-title{font-size:14px;font-weight:600;color:var(--text);font-family:'Baloo 2',sans-serif}
 .mode-sub{font-size:11px;color:var(--text-2);margin-top:3px}
 .survival-card{border-color:rgba(226,75,74,0.3);background:#FCEBEB}
@@ -162,7 +165,7 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 
 /* Quiz active */
 .qz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.qz-label{font-size:12px;font-weight:600;color:var(--indigo);background:var(--indigo-light);padding:4px 12px;border-radius:20px}
+.qz-label{font-size:13px;font-weight:700;color:#fff;background:linear-gradient(120deg,var(--indigo),var(--indigo-mid));padding:5px 14px;border-radius:20px;font-family:'Baloo 2',sans-serif}
 .qz-timer{font-size:16px;font-weight:600;color:var(--text);min-width:32px;text-align:right}
 .timer-track{height:5px;background:var(--border);border-radius:3px;margin-bottom:14px;overflow:hidden}
 .timer-fill{height:100%;background:var(--indigo-mid);border-radius:3px;transition:width 1s linear,background 0.3s}
@@ -174,16 +177,16 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .answer-comment.wrong-comment{background:#FCEBEB;color:#A32D2D}
 @keyframes commentPop{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
 .q-sutra{font-size:11px;color:var(--text-3);margin-bottom:8px}
-.q-text{font-size:34px;font-weight:700;color:var(--text);letter-spacing:1px;font-family:'Baloo 2',sans-serif}
+.q-text{font-size:42px;font-weight:800;color:var(--indigo);letter-spacing:0.5px;font-family:'Baloo 2',sans-serif}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.opt-btn{background:var(--surface);border:2px solid var(--border-2);border-radius:var(--radius-sm);padding:14px;font-size:19px;font-weight:700;cursor:pointer;color:var(--text);transition:background 0.12s,border-color 0.12s,transform 0.1s;font-family:'Baloo 2',sans-serif}
+.opt-btn{background:var(--surface);border:3px solid var(--border-2);border-radius:var(--radius-sm);padding:16px;font-size:22px;font-weight:800;cursor:pointer;color:var(--indigo);transition:background 0.12s,border-color 0.12s,transform 0.1s;font-family:'Baloo 2',sans-serif}
 .opt-btn:hover:not(:disabled){background:var(--indigo-light);border-color:var(--indigo-mid);transform:translateY(-1px)}
 .opt-btn.correct{background:var(--green-light);border-color:var(--green);color:var(--green)}
 .opt-btn.wrong{background:#FCEBEB;border-color:#E24B4A;color:#791F1F}
 .opt-btn:disabled{cursor:default}
 .qz-footer{display:flex;justify-content:space-between;align-items:center}
 .dots{display:flex;gap:4px}
-.dot{width:22px;height:5px;border-radius:3px;background:var(--border)}
+.dot{width:24px;height:7px;border-radius:4px;background:var(--border)}
 .dot.ok{background:var(--green)}
 .dot.no{background:#E24B4A}
 .dot.cur{background:var(--indigo-mid)}
@@ -207,7 +210,7 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .sg-status{font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px}
 
 /* Buttons */
-.btn-primary{background:var(--indigo);color:#fff;border:none;border-radius:var(--radius-sm);padding:11px 24px;font-size:14px;font-weight:500;cursor:pointer;font-family:'Noto Sans',sans-serif}
+.btn-primary{background:linear-gradient(120deg,var(--indigo),var(--indigo-mid));color:#fff;border:none;border-radius:var(--radius-sm);padding:12px 26px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Baloo 2',sans-serif}
 .btn-primary:hover{background:var(--indigo-dark,#2d2660)}
 .btn-sec{background:transparent;color:var(--text);border:1px solid var(--border-2);border-radius:var(--radius-sm);padding:10px 20px;font-size:13px;cursor:pointer;font-family:'Noto Sans',sans-serif}
 .btn-sec:hover{background:var(--bg)}
