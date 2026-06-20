@@ -863,6 +863,391 @@ function openSutra(id) {
         <text x="340" y="296" text-anchor="middle" font-size="12" fill="var(--text-2)">last digit uses 10, since there's nothing left to borrow from</text>
       </svg>
     </div>` : ''}
+    ${s.id === 0 ? `
+    <div class="section-title" style="margin-top:1.25rem">See it visually</div>
+    <div class="diagram-card">
+      <svg viewBox="0 0 680 280" width="100%" style="display:block">
+        <defs>
+          <marker id="diag-arrow0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--text-3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+        <text x="340" y="32" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)">35²</text>
+        <text x="340" y="50" text-anchor="middle" font-size="12" fill="var(--text-2)">tens digit times one more, then append 25</text>
+
+        <rect x="120" y="70" width="200" height="100" rx="10" fill="var(--indigo-light)" stroke="var(--indigo-mid)" stroke-width="0.5"/>
+        <text x="220" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--indigo)">tens digit: 3</text>
+        <text x="220" y="120" text-anchor="middle" font-size="12" fill="var(--indigo)">3 × (3+1) = 3 × 4</text>
+        <text x="220" y="148" text-anchor="middle" font-size="20" font-weight="600" fill="var(--indigo)">= 12</text>
+
+        <rect x="360" y="70" width="200" height="100" rx="10" fill="var(--saffron-light)" stroke="var(--saffron)" stroke-width="0.5"/>
+        <text x="460" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--saffron-dark)">last digit is 5</text>
+        <text x="460" y="120" text-anchor="middle" font-size="12" fill="var(--saffron-dark)">always becomes</text>
+        <text x="460" y="148" text-anchor="middle" font-size="20" font-weight="600" fill="var(--saffron-dark)">25</text>
+
+        <line x1="220" y1="170" x2="220" y2="196" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow0)"/>
+        <line x1="460" y1="170" x2="460" y2="196" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow0)"/>
+
+        <rect x="270" y="198" width="200" height="62" rx="10" fill="none" stroke="var(--text)" stroke-width="1"/>
+        <text x="350" y="232" text-anchor="middle" font-size="24" font-weight="600" fill="var(--indigo)">12</text>
+        <text x="425" y="232" text-anchor="middle" font-size="24" font-weight="600" fill="var(--saffron-dark)">25</text>
+        <text x="380" y="254" text-anchor="middle" font-size="12" fill="var(--text-2)">answer: 1225</text>
+    
+      </svg>
+    </div>` : ''}
+    ${s.id === 3 ? `
+    <div class="section-title" style="margin-top:1.25rem">See it visually</div>
+    <div class="diagram-card">
+      <svg viewBox="0 0 680 360" width="100%" style="display:block">
+        <defs>
+          <marker id="diag-arrow3b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--text-3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+        <text x="340" y="32" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)">47 × 99</text>
+        <text x="340" y="50" text-anchor="middle" font-size="12" fill="var(--text-2)">99 is one away from the easy number 100</text>
+
+        <rect x="80" y="70" width="180" height="60" rx="10" fill="var(--saffron-light)" stroke="var(--saffron)" stroke-width="0.5"/>
+        <text x="170" y="92" text-anchor="middle" font-size="14" font-weight="600" fill="var(--saffron-dark)">47 × 99</text>
+        <text x="170" y="112" text-anchor="middle" font-size="12" fill="var(--saffron-dark)">the actual question</text>
+
+        <line x1="260" y1="100" x2="296" y2="100" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow3b)"/>
+        <text x="278" y="88" text-anchor="middle" font-size="12" fill="var(--text-2)">round up</text>
+
+        <rect x="298" y="70" width="180" height="60" rx="10" fill="var(--indigo-light)" stroke="var(--indigo-mid)" stroke-width="0.5"/>
+        <text x="388" y="92" text-anchor="middle" font-size="14" font-weight="600" fill="var(--indigo)">47 × 100</text>
+        <text x="388" y="112" text-anchor="middle" font-size="12" fill="var(--indigo)">an easy multiply</text>
+
+        <line x1="388" y1="130" x2="388" y2="156" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow3b)"/>
+
+        <rect x="298" y="158" width="180" height="50" rx="10" fill="var(--indigo-light)" stroke="var(--indigo-mid)" stroke-width="0.5"/>
+        <text x="388" y="187" text-anchor="middle" font-size="18" font-weight="600" fill="var(--indigo)">= 4700</text>
+
+        <line x1="388" y1="208" x2="388" y2="234" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow3b)"/>
+        <text x="478" y="226" text-anchor="start" font-size="12" fill="var(--text-2)">rounded up by 1,</text>
+        <text x="478" y="242" text-anchor="start" font-size="12" fill="var(--text-2)">so subtract one extra 47</text>
+
+        <rect x="298" y="236" width="180" height="60" rx="10" fill="var(--saffron-light)" stroke="var(--saffron)" stroke-width="0.5"/>
+        <text x="388" y="258" text-anchor="middle" font-size="14" font-weight="600" fill="var(--saffron-dark)">subtract 47</text>
+        <text x="388" y="278" text-anchor="middle" font-size="12" fill="var(--saffron-dark)">undo the rounding</text>
+
+        <line x1="388" y1="296" x2="388" y2="320" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow3b)"/>
+
+        <rect x="280" y="322" width="220" height="36" rx="10" fill="none" stroke="var(--text)" stroke-width="1"/>
+        <text x="390" y="345" text-anchor="middle" font-size="16" font-weight="600" fill="var(--green)">4700 − 47 = 4653</text>
+    
+      </svg>
+    </div>` : ''}
+    ${s.id === 4 ? `
+    <div class="section-title" style="margin-top:1.25rem">See it visually</div>
+    <div class="diagram-card">
+      <svg viewBox="0 0 680 280" width="100%" style="display:block">
+        <defs>
+          <marker id="diag-arrow4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--text-3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+        <text x="340" y="32" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)">63 × 57</text>
+        <text x="340" y="50" text-anchor="middle" font-size="12" fill="var(--text-2)">both numbers sit equally far from 60</text>
+
+        <line x1="80" y1="110" x2="600" y2="110" stroke="var(--text-3)" stroke-width="1"/>
+        <circle cx="200" cy="110" r="5" fill="var(--saffron)"/>
+        <circle cx="340" cy="110" r="6" fill="var(--indigo)"/>
+        <circle cx="480" cy="110" r="5" fill="var(--saffron)"/>
+
+        <text x="200" y="138" text-anchor="middle" font-size="14" font-weight="600" fill="var(--saffron-dark)">57</text>
+        <text x="340" y="138" text-anchor="middle" font-size="14" font-weight="600" fill="var(--indigo)">60</text>
+        <text x="480" y="138" text-anchor="middle" font-size="14" font-weight="600" fill="var(--saffron-dark)">63</text>
+        <text x="270" y="92" text-anchor="middle" font-size="12" fill="var(--text-2)">−3</text>
+        <text x="410" y="92" text-anchor="middle" font-size="12" fill="var(--text-2)">+3</text>
+
+        <line x1="340" y1="150" x2="340" y2="180" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow4)"/>
+
+        <rect x="220" y="182" width="240" height="60" rx="10" fill="var(--indigo-light)" stroke="var(--indigo-mid)" stroke-width="0.5"/>
+        <text x="340" y="206" text-anchor="middle" font-size="14" font-weight="600" fill="var(--indigo)">center² − distance²</text>
+        <text x="340" y="228" text-anchor="middle" font-size="16" font-weight="600" fill="var(--indigo)">60² − 3² = 3600 − 9</text>
+
+        <text x="340" y="266" text-anchor="middle" font-size="14" font-weight="600" fill="var(--green)">answer: 3591</text>
+    
+      </svg>
+    </div>` : ''}
+    ${s.id === 5 ? `
+    <div class="section-title" style="margin-top:1.25rem">See it visually</div>
+    <div class="diagram-card">
+      <svg viewBox="0 0 680 280" width="100%" style="display:block">
+        <defs>
+          <marker id="diag-arrow5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--text-3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+        <text x="340" y="32" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)">x+y=7, x−y=3</text>
+        <text x="340" y="50" text-anchor="middle" font-size="12" fill="var(--text-2)">add to cancel y, subtract to cancel x</text>
+
+        <rect x="60" y="70" width="260" height="100" rx="10" fill="var(--indigo-light)" stroke="var(--indigo-mid)" stroke-width="0.5"/>
+        <text x="190" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--indigo)">add the equations</text>
+        <text x="190" y="120" text-anchor="middle" font-size="12" fill="var(--indigo)">(x+y) + (x−y) = 7+3</text>
+        <text x="190" y="148" text-anchor="middle" font-size="18" font-weight="600" fill="var(--indigo)">2x = 10 → x = 5</text>
+
+        <rect x="360" y="70" width="260" height="100" rx="10" fill="var(--saffron-light)" stroke="var(--saffron)" stroke-width="0.5"/>
+        <text x="490" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--saffron-dark)">subtract the equations</text>
+        <text x="490" y="120" text-anchor="middle" font-size="12" fill="var(--saffron-dark)">(x+y) − (x−y) = 7−3</text>
+        <text x="490" y="148" text-anchor="middle" font-size="18" font-weight="600" fill="var(--saffron-dark)">2y = 4 → y = 2</text>
+
+        <line x1="190" y1="170" x2="190" y2="196" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow5)"/>
+        <line x1="490" y1="170" x2="490" y2="196" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow5)"/>
+
+        <rect x="240" y="198" width="200" height="50" rx="10" fill="none" stroke="var(--text)" stroke-width="1"/>
+        <text x="340" y="228" text-anchor="middle" font-size="18" font-weight="600" fill="var(--green)">x=5, y=2</text>
+    
+      </svg>
+    </div>` : ''}
+    ${s.id === 6 ? `
+    <div class="section-title" style="margin-top:1.25rem">See it visually</div>
+    <div class="diagram-card">
+      <svg viewBox="0 0 680 300" width="100%" style="display:block">
+        <defs>
+          <marker id="diag-arrow6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--text-3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+        <text x="340" y="32" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)">2x+3y=6 and 4x+6y=12</text>
+        <text x="340" y="50" text-anchor="middle" font-size="12" fill="var(--text-2)">check if the coefficients scale together</text>
+
+        <rect x="60" y="70" width="560" height="90" rx="10" fill="var(--indigo-light)" stroke="var(--indigo-mid)" stroke-width="0.5"/>
+        <text x="150" y="100" text-anchor="middle" font-size="16" font-weight="600" fill="var(--indigo)">4÷2 = 2</text>
+        <text x="340" y="100" text-anchor="middle" font-size="16" font-weight="600" fill="var(--indigo)">6÷3 = 2</text>
+        <text x="530" y="100" text-anchor="middle" font-size="16" font-weight="600" fill="var(--indigo)">12÷6 = 2</text>
+        <text x="340" y="135" text-anchor="middle" font-size="13" fill="var(--indigo)">all three ratios match — same equation, just scaled</text>
+
+        <line x1="340" y1="160" x2="340" y2="186" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow6)"/>
+
+        <rect x="120" y="188" width="440" height="70" rx="10" fill="var(--saffron-light)" stroke="var(--saffron)" stroke-width="0.5"/>
+        <text x="340" y="214" text-anchor="middle" font-size="14" font-weight="600" fill="var(--saffron-dark)">so set x = 0 and solve directly</text>
+        <text x="340" y="238" text-anchor="middle" font-size="16" font-weight="600" fill="var(--saffron-dark)">3y = 6 → y = 2</text>
+
+        <text x="340" y="282" text-anchor="middle" font-size="13" fill="var(--text-2)">one equation carries no new information here</text>
+    
+      </svg>
+    </div>` : ''}
+    ${s.id === 7 ? `
+    <div class="section-title" style="margin-top:1.25rem">See it visually</div>
+    <div class="diagram-card">
+      <svg viewBox="0 0 680 280" width="100%" style="display:block">
+        <defs>
+          <marker id="diag-arrow7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--text-3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+        <text x="340" y="32" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)">98²</text>
+        <text x="340" y="50" text-anchor="middle" font-size="12" fill="var(--text-2)">98 is 2 below the base 100</text>
+
+        <rect x="120" y="70" width="200" height="100" rx="10" fill="var(--indigo-light)" stroke="var(--indigo-mid)" stroke-width="0.5"/>
+        <text x="220" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--indigo)">left part</text>
+        <text x="220" y="120" text-anchor="middle" font-size="12" fill="var(--indigo)">98 − 2 (the deficiency)</text>
+        <text x="220" y="148" text-anchor="middle" font-size="20" font-weight="600" fill="var(--indigo)">= 96</text>
+
+        <rect x="360" y="70" width="200" height="100" rx="10" fill="var(--saffron-light)" stroke="var(--saffron)" stroke-width="0.5"/>
+        <text x="460" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--saffron-dark)">right part</text>
+        <text x="460" y="120" text-anchor="middle" font-size="12" fill="var(--saffron-dark)">deficiency squared, 2²</text>
+        <text x="460" y="148" text-anchor="middle" font-size="20" font-weight="600" fill="var(--saffron-dark)">= 04</text>
+
+        <line x1="220" y1="170" x2="220" y2="196" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow7)"/>
+        <line x1="460" y1="170" x2="460" y2="196" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow7)"/>
+
+        <rect x="270" y="198" width="200" height="62" rx="10" fill="none" stroke="var(--text)" stroke-width="1"/>
+        <text x="350" y="232" text-anchor="middle" font-size="24" font-weight="600" fill="var(--indigo)">96</text>
+        <text x="425" y="232" text-anchor="middle" font-size="24" font-weight="600" fill="var(--saffron-dark)">04</text>
+        <text x="380" y="254" text-anchor="middle" font-size="12" fill="var(--text-2)">answer: 9604</text>
+    
+      </svg>
+    </div>` : ''}
+    ${s.id === 8 ? `
+    <div class="section-title" style="margin-top:1.25rem">See it visually</div>
+    <div class="diagram-card">
+      <svg viewBox="0 0 680 280" width="100%" style="display:block">
+        <defs>
+          <marker id="diag-arrow8" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--text-3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+        <text x="340" y="32" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)">63 × 99</text>
+        <text x="340" y="50" text-anchor="middle" font-size="12" fill="var(--text-2)">splits into two simple parts</text>
+
+        <rect x="120" y="70" width="200" height="100" rx="10" fill="var(--indigo-light)" stroke="var(--indigo-mid)" stroke-width="0.5"/>
+        <text x="220" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--indigo)">left part</text>
+        <text x="220" y="120" text-anchor="middle" font-size="12" fill="var(--indigo)">63 − 1</text>
+        <text x="220" y="148" text-anchor="middle" font-size="20" font-weight="600" fill="var(--indigo)">= 62</text>
+
+        <rect x="360" y="70" width="200" height="100" rx="10" fill="var(--saffron-light)" stroke="var(--saffron)" stroke-width="0.5"/>
+        <text x="460" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--saffron-dark)">right part</text>
+        <text x="460" y="120" text-anchor="middle" font-size="12" fill="var(--saffron-dark)">100 − 63</text>
+        <text x="460" y="148" text-anchor="middle" font-size="20" font-weight="600" fill="var(--saffron-dark)">= 37</text>
+
+        <line x1="220" y1="170" x2="220" y2="196" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow8)"/>
+        <line x1="460" y1="170" x2="460" y2="196" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow8)"/>
+
+        <rect x="270" y="198" width="200" height="62" rx="10" fill="none" stroke="var(--text)" stroke-width="1"/>
+        <text x="350" y="232" text-anchor="middle" font-size="24" font-weight="600" fill="var(--indigo)">62</text>
+        <text x="425" y="232" text-anchor="middle" font-size="24" font-weight="600" fill="var(--saffron-dark)">37</text>
+        <text x="380" y="254" text-anchor="middle" font-size="12" fill="var(--text-2)">answer: 6237</text>
+    
+      </svg>
+    </div>` : ''}
+    ${s.id === 9 ? `
+    <div class="section-title" style="margin-top:1.25rem">See it visually</div>
+    <div class="diagram-card">
+      <svg viewBox="0 0 680 320" width="100%" style="display:block">
+        <defs>
+          <marker id="diag-arrow9" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--text-3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+        <text x="340" y="32" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)">12³</text>
+        <text x="340" y="50" text-anchor="middle" font-size="12" fill="var(--text-2)">12 is 2 above the base 10</text>
+
+        <rect x="40" y="70" width="190" height="130" rx="10" fill="var(--indigo-light)" stroke="var(--indigo-mid)" stroke-width="0.5"/>
+        <text x="135" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--indigo)">left</text>
+        <text x="135" y="120" text-anchor="middle" font-size="12" fill="var(--indigo)">12 + 2×2 = 16</text>
+        <text x="135" y="160" text-anchor="middle" font-size="22" font-weight="600" fill="var(--indigo)">16</text>
+
+        <rect x="245" y="70" width="190" height="130" rx="10" fill="var(--saffron-light)" stroke="var(--saffron)" stroke-width="0.5"/>
+        <text x="340" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--saffron-dark)">middle</text>
+        <text x="340" y="120" text-anchor="middle" font-size="12" fill="var(--saffron-dark)">3 × 2² = 12</text>
+        <text x="340" y="160" text-anchor="middle" font-size="22" font-weight="600" fill="var(--saffron-dark)">12</text>
+
+        <rect x="450" y="70" width="190" height="130" rx="10" fill="var(--green-light)" stroke="var(--green)" stroke-width="0.5"/>
+        <text x="545" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--green)">right</text>
+        <text x="545" y="120" text-anchor="middle" font-size="12" fill="var(--green)">2³ = 8</text>
+        <text x="545" y="160" text-anchor="middle" font-size="22" font-weight="600" fill="var(--green)">8</text>
+
+        <line x1="135" y1="200" x2="135" y2="226" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow9)"/>
+        <line x1="340" y1="200" x2="340" y2="226" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow9)"/>
+        <line x1="545" y1="200" x2="545" y2="226" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow9)"/>
+
+        <rect x="220" y="228" width="240" height="62" rx="10" fill="none" stroke="var(--text)" stroke-width="1"/>
+        <text x="340" y="262" text-anchor="middle" font-size="18" font-weight="600" fill="var(--text)">16 | 12 | 8, carry over</text>
+        <text x="340" y="284" text-anchor="middle" font-size="12" fill="var(--text-2)">answer: 1728</text>
+    
+      </svg>
+    </div>` : ''}
+    ${s.id === 10 ? `
+    <div class="section-title" style="margin-top:1.25rem">See it visually</div>
+    <div class="diagram-card">
+      <svg viewBox="0 0 680 260" width="100%" style="display:block">
+        <defs>
+          <marker id="diag-arrow10" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--text-3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+        <text x="340" y="32" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)">x² + 5x + 6</text>
+        <text x="340" y="50" text-anchor="middle" font-size="12" fill="var(--text-2)">find two numbers that meet both conditions</text>
+
+        <rect x="80" y="70" width="240" height="80" rx="10" fill="var(--indigo-light)" stroke="var(--indigo-mid)" stroke-width="0.5"/>
+        <text x="200" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--indigo)">multiply to 6</text>
+        <text x="200" y="120" text-anchor="middle" font-size="16" font-weight="600" fill="var(--indigo)">p × q = 6</text>
+
+        <rect x="360" y="70" width="240" height="80" rx="10" fill="var(--saffron-light)" stroke="var(--saffron)" stroke-width="0.5"/>
+        <text x="480" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--saffron-dark)">add to 5</text>
+        <text x="480" y="120" text-anchor="middle" font-size="16" font-weight="600" fill="var(--saffron-dark)">p + q = 5</text>
+
+        <line x1="200" y1="150" x2="300" y2="186" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow10)"/>
+        <line x1="480" y1="150" x2="380" y2="186" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow10)"/>
+
+        <rect x="240" y="188" width="200" height="56" rx="10" fill="var(--green-light)" stroke="var(--green)" stroke-width="0.5"/>
+        <text x="340" y="212" text-anchor="middle" font-size="16" font-weight="600" fill="var(--green)">p=2, q=3</text>
+        <text x="340" y="232" text-anchor="middle" font-size="13" fill="var(--green)">factors: (x+2)(x+3)</text>
+    
+      </svg>
+    </div>` : ''}
+    ${s.id === 11 ? `
+    <div class="section-title" style="margin-top:1.25rem">See it visually</div>
+    <div class="diagram-card">
+      <svg viewBox="0 0 680 220" width="100%" style="display:block">
+        <defs>
+          <marker id="diag-arrow11" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--text-3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+        <text x="340" y="32" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)">last digit of 7 × 8</text>
+        <text x="340" y="50" text-anchor="middle" font-size="12" fill="var(--text-2)">strip everything except the last digits</text>
+
+        <rect x="120" y="70" width="100" height="70" rx="10" fill="var(--indigo-light)" stroke="var(--indigo-mid)" stroke-width="0.5"/>
+        <text x="170" y="112" text-anchor="middle" font-size="22" font-weight="600" fill="var(--indigo)">7</text>
+
+        <text x="250" y="112" text-anchor="middle" font-size="20" fill="var(--text-2)">×</text>
+
+        <rect x="280" y="70" width="100" height="70" rx="10" fill="var(--indigo-light)" stroke="var(--indigo-mid)" stroke-width="0.5"/>
+        <text x="330" y="112" text-anchor="middle" font-size="22" font-weight="600" fill="var(--indigo)">8</text>
+
+        <line x1="400" y1="105" x2="436" y2="105" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow11)"/>
+
+        <rect x="440" y="70" width="100" height="70" rx="10" fill="var(--saffron-light)" stroke="var(--saffron)" stroke-width="0.5"/>
+        <text x="490" y="112" text-anchor="middle" font-size="20" font-weight="600" fill="var(--saffron-dark)">56</text>
+
+        <text x="340" y="172" text-anchor="middle" font-size="14" fill="var(--text-2)">keep only the last digit</text>
+        <rect x="290" y="180" width="100" height="36" rx="10" fill="none" stroke="var(--green)" stroke-width="1"/>
+        <text x="340" y="204" text-anchor="middle" font-size="20" font-weight="600" fill="var(--green)">6</text>
+    
+      </svg>
+    </div>` : ''}
+    ${s.id === 12 ? `
+    <div class="section-title" style="margin-top:1.25rem">See it visually</div>
+    <div class="diagram-card">
+      <svg viewBox="0 0 680 220" width="100%" style="display:block">
+        <defs>
+          <marker id="diag-arrow12" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--text-3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+        <text x="340" y="32" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)">last=2, second-last=3</text>
+        <text x="340" y="50" text-anchor="middle" font-size="12" fill="var(--text-2)">last plus twice the second-to-last</text>
+
+        <rect x="100" y="70" width="180" height="80" rx="10" fill="var(--indigo-light)" stroke="var(--indigo-mid)" stroke-width="0.5"/>
+        <text x="190" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--indigo)">last term</text>
+        <text x="190" y="122" text-anchor="middle" font-size="18" font-weight="600" fill="var(--indigo)">2</text>
+
+        <rect x="400" y="70" width="180" height="80" rx="10" fill="var(--saffron-light)" stroke="var(--saffron)" stroke-width="0.5"/>
+        <text x="490" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--saffron-dark)">second-last, doubled</text>
+        <text x="490" y="122" text-anchor="middle" font-size="18" font-weight="600" fill="var(--saffron-dark)">2 × 3 = 6</text>
+
+        <line x1="190" y1="150" x2="290" y2="180" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow12)"/>
+        <line x1="490" y1="150" x2="390" y2="180" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow12)"/>
+
+        <rect x="250" y="182" width="160" height="36" rx="10" fill="none" stroke="var(--green)" stroke-width="1"/>
+        <text x="330" y="206" text-anchor="middle" font-size="18" font-weight="600" fill="var(--green)">2 + 6 = 8</text>
+    
+      </svg>
+    </div>` : ''}
+    ${s.id === 13 ? `
+    <div class="section-title" style="margin-top:1.25rem">See it visually</div>
+    <div class="diagram-card">
+      <svg viewBox="0 0 680 240" width="100%" style="display:block">
+        <defs>
+          <marker id="diag-arrow13" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--text-3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+        <text x="340" y="32" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)">x² − 5x + 6 = 0, one root = 2</text>
+        <text x="340" y="50" text-anchor="middle" font-size="12" fill="var(--text-2)">the two roots always add to 5</text>
+
+        <rect x="80" y="70" width="200" height="80" rx="10" fill="var(--indigo-light)" stroke="var(--indigo-mid)" stroke-width="0.5"/>
+        <text x="180" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--indigo)">sum of roots = 5</text>
+        <text x="180" y="122" text-anchor="middle" font-size="16" font-weight="600" fill="var(--indigo)">5 − 2 = 3</text>
+
+        <rect x="360" y="70" width="240" height="80" rx="10" fill="var(--green-light)" stroke="var(--green)" stroke-width="0.5"/>
+        <text x="480" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--green)">check: product of roots</text>
+        <text x="480" y="122" text-anchor="middle" font-size="16" font-weight="600" fill="var(--green)">2 × 3 = 6 ✓</text>
+
+        <line x1="180" y1="150" x2="180" y2="180" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow13)"/>
+
+        <rect x="100" y="182" width="160" height="36" rx="10" fill="none" stroke="var(--text)" stroke-width="1"/>
+        <text x="180" y="206" text-anchor="middle" font-size="16" font-weight="600" fill="var(--text)">other root = 3</text>
+    
+      </svg>
+    </div>` : ''}
+    ${s.id === 15 ? `
+    <div class="section-title" style="margin-top:1.25rem">See it visually</div>
+    <div class="diagram-card">
+      <svg viewBox="0 0 680 260" width="100%" style="display:block">
+        <defs>
+          <marker id="diag-arrow15" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--text-3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+        <text x="340" y="32" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)">(x+2)(x+3) = x² + 5x + 6</text>
+        <text x="340" y="50" text-anchor="middle" font-size="12" fill="var(--text-2)">treat every x as the number 1</text>
+
+        <rect x="60" y="70" width="260" height="80" rx="10" fill="var(--indigo-light)" stroke="var(--indigo-mid)" stroke-width="0.5"/>
+        <text x="190" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--indigo)">factored side at x=1</text>
+        <text x="190" y="122" text-anchor="middle" font-size="16" font-weight="600" fill="var(--indigo)">(1+2)×(1+3) = 12</text>
+
+        <rect x="360" y="70" width="260" height="80" rx="10" fill="var(--saffron-light)" stroke="var(--saffron)" stroke-width="0.5"/>
+        <text x="490" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--saffron-dark)">expanded side at x=1</text>
+        <text x="490" y="122" text-anchor="middle" font-size="16" font-weight="600" fill="var(--saffron-dark)">1+5+6 = 12</text>
+
+        <line x1="190" y1="150" x2="290" y2="186" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow15)"/>
+        <line x1="490" y1="150" x2="390" y2="186" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow15)"/>
+
+        <rect x="250" y="188" width="180" height="54" rx="10" fill="var(--green-light)" stroke="var(--green)" stroke-width="1"/>
+        <text x="340" y="212" text-anchor="middle" font-size="16" font-weight="600" fill="var(--green)">both sides give 12</text>
+        <text x="340" y="232" text-anchor="middle" font-size="12" fill="var(--green)">factoring checks out</text>
+    
+      </svg>
+    </div>` : ''}
     ${s.proof ? `
     <div class="proof-toggle" onclick="toggleProof(${s.id})">
       <div class="proof-toggle-label">
