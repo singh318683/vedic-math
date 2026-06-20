@@ -110,6 +110,13 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .wrong-explain-title svg{width:15px;height:15px;stroke:#791F1F;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .wrong-explain-step{font-size:12.5px;color:#5A3030;line-height:1.65;padding:3px 0}
 .wrong-explain-step b{font-weight:600;color:#791F1F}
+.qtext-label{color:#791F1F}
+.correct-explain{background:var(--green-light);border:1px solid rgba(26,122,82,0.25);border-radius:var(--radius-sm);padding:12px 14px;margin-top:12px;animation:fadeIn 0.25s ease-out}
+.correct-explain .wrong-explain-title{color:var(--green)}
+.correct-explain .wrong-explain-title svg{stroke:var(--green)}
+.correct-explain .wrong-explain-step{color:#0F4A36}
+.correct-explain .wrong-explain-step b{color:var(--green)}
+.correct-explain .qtext-label{color:var(--green) !important}
 @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
 .ex-q{font-size:16px;font-weight:600;color:var(--saffron-dark);margin-bottom:8px}
 .ex-step{font-size:13px;color:var(--text);padding:3px 0;border-bottom:1px solid rgba(224,123,57,0.15);line-height:1.6}
@@ -911,6 +918,7 @@ function pickSurvivalAns(chosen, correct, btn) {
     document.getElementById('survival-current').textContent = qStreak;
     document.getElementById('survival-best-display').textContent = Math.max(survivalBest, qStreak);
     showAnswerComment(true);
+    showExplanation(q, true);
     document.getElementById('qz-next-row').style.display = 'block';
     document.getElementById('qz-next-btn').textContent = 'Next question →';
     document.getElementById('qz-next-btn').onclick = advanceSurvival;
@@ -920,7 +928,7 @@ function pickSurvivalAns(chosen, correct, btn) {
       if (parseInt(b.textContent.replace(/,/g, '')) === correct) b.classList.add('correct');
     });
     showAnswerComment(false);
-    showExplanation(q);
+    showExplanation(q, false);
     document.getElementById('qz-next-row').style.display = 'block';
     document.getElementById('qz-next-btn').textContent = 'See results →';
     document.getElementById('qz-next-btn').onclick = endSurvival;
@@ -1097,34 +1105,39 @@ function generateDynamicSteps(sutraId, qtext) {
   return null;
 }
 
-function showExplanation(q) {
+function showExplanation(q, isCorrect) {
   const s = sutrasFull.find(x => x.id === q.sutraId);
   if (!s) return;
   const box = document.getElementById('qz-explain');
 
   const dynamicSteps = generateDynamicSteps(q.sutraId, q.q);
+  const wrapClass = isCorrect ? 'correct-explain' : 'wrong-explain';
+  const heading = isCorrect ? `Here's why this works — ${s.name}` : `How to solve it — ${s.name}`;
+  const checkIcon = isCorrect
+    ? `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`
+    : `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
 
   if (dynamicSteps) {
     box.innerHTML = `
-      <div class="wrong-explain">
+      <div class="${wrapClass}">
         <div class="wrong-explain-title">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          How to solve it — ${s.name}
+          ${checkIcon}
+          ${heading}
         </div>
-        <div style="font-size:13px;font-weight:600;color:#791F1F;margin:4px 0 6px">${q.q}</div>
+        <div class="qtext-label" style="font-size:13px;font-weight:600;margin:4px 0 6px">${q.q}</div>
         ${dynamicSteps.map((st, i) => `<div class="wrong-explain-step"><b>${i+1}.</b> ${st}</div>`).join('')}
       </div>`;
   } else {
     // Fallback: show stored examples if dynamic generation isn't available for this sutra
     box.innerHTML = `
-      <div class="wrong-explain">
+      <div class="${wrapClass}">
         <div class="wrong-explain-title">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          How to solve it — ${s.name}
+          ${checkIcon}
+          ${heading}
         </div>
         ${s.examples.map(ex => `
           <div style="margin-top:8px">
-            <div style="font-size:13px;font-weight:600;color:#791F1F;margin-bottom:4px">Example: ${ex.q}</div>
+            <div class="qtext-label" style="font-size:13px;font-weight:600;margin-bottom:4px">Example: ${ex.q}</div>
             ${ex.steps.map((st, i) => `<div class="wrong-explain-step"><b>${i+1}.</b> ${st}</div>`).join('')}
           </div>`).join('')}
       </div>`;
@@ -1143,6 +1156,7 @@ function pickAns(chosen, correct, btn) {
     qScore += 100 + (lastMode === 'challenge' ? 50 : 0);
     document.getElementById('qz-score').textContent = qScore;
     showAnswerComment(true);
+    showExplanation(q, true);
   } else {
     btn.classList.add('wrong');
     document.querySelectorAll('.opt-btn').forEach(b => {
@@ -1151,7 +1165,7 @@ function pickAns(chosen, correct, btn) {
     qStreak = 0;
     document.getElementById('qz-score').textContent = qScore;
     showAnswerComment(false);
-    showExplanation(q);
+    showExplanation(q, false);
   }
   document.getElementById('qz-next-row').style.display = 'block';
   document.getElementById('qz-next-btn').textContent = (qIdx + 1 >= qList.length) ? 'See results →' : 'Next question →';
