@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vedic Math — Learn & Quiz</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --saffron: #E07B39;
@@ -23,8 +23,8 @@
   --surface: #FFFFFF;
   --border: rgba(60,52,128,0.12);
   --border-2: rgba(60,52,128,0.22);
-  --radius: 12px;
-  --radius-sm: 8px;
+  --radius: 16px;
+  --radius-sm: 12px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
@@ -34,10 +34,10 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .header{background:var(--indigo);color:#fff;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100}
 .logo{display:flex;align-items:center;gap:10px}
 .logo-symbol{width:32px;height:32px;background:var(--saffron);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;color:#fff}
-.logo-text{font-size:16px;font-weight:600;letter-spacing:0.3px}
+.logo-text{font-size:17px;font-weight:700;letter-spacing:0.3px;font-family:'Baloo 2',sans-serif}
 .logo-sub{font-size:11px;opacity:0.65;margin-top:1px}
 .header-score{text-align:right}
-.header-score .xp{font-size:14px;font-weight:600;color:#FAC775}
+.header-score .xp{font-size:15px;font-weight:700;color:#FAC775;font-family:'Baloo 2',sans-serif}
 .header-score .lv{font-size:11px;opacity:0.65}
 .about-info-btn{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;padding:0}
 .about-info-btn:hover{background:rgba(255,255,255,0.2)}
@@ -91,6 +91,7 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .detail-back{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-2);cursor:pointer;margin-bottom:1rem;background:none;border:none;padding:0}
 .detail-back svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .detail-header{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
+.s-num{display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:700;font-family:'Baloo 2',sans-serif;flex-shrink:0}
 .step-block{background:var(--bg);border-radius:var(--radius-sm);padding:10px 14px;margin:6px 0;font-size:13px;color:var(--text);line-height:1.7;display:flex;gap:10px}
 .step-n{width:22px;height:22px;border-radius:50%;background:var(--indigo-mid);color:#fff;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 .ex-card{background:var(--saffron-light);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px}
@@ -129,7 +130,7 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .mode-card{border:1px solid var(--border);border-radius:var(--radius);padding:14px;cursor:pointer;text-align:center;transition:border-color 0.15s,background 0.15s}
 .mode-card:hover{background:var(--indigo-light);border-color:var(--indigo-mid)}
 .mode-icon{font-size:24px;margin-bottom:6px;display:block}
-.mode-title{font-size:13px;font-weight:500;color:var(--text)}
+.mode-title{font-size:14px;font-weight:600;color:var(--text);font-family:'Baloo 2',sans-serif}
 .mode-sub{font-size:11px;color:var(--text-2);margin-top:3px}
 .survival-card{border-color:rgba(226,75,74,0.3);background:#FCEBEB}
 .tier-back-btn{background:none;border:none;color:var(--text-2);font-size:13px;cursor:pointer;padding:0;margin-bottom:6px}
@@ -137,7 +138,7 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .tier-grid{display:flex;flex-direction:column;gap:10px}
 .tier-card{border-radius:var(--radius);padding:1rem 1.1rem;cursor:pointer;border:1px solid var(--border);background:var(--surface);transition:transform 0.1s}
 .tier-card:hover{transform:translateY(-1px)}
-.tier-label{font-size:15px;font-weight:600;margin-bottom:2px}
+.tier-label{font-size:16px;font-weight:700;margin-bottom:2px;font-family:'Baloo 2',sans-serif}
 .tier-desc{font-size:12px;color:var(--text-2)}
 .tier-easy{border-color:rgba(26,122,82,0.25);background:var(--green-light)}
 .tier-easy .tier-label{color:var(--green)}
@@ -173,10 +174,10 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .answer-comment.wrong-comment{background:#FCEBEB;color:#A32D2D}
 @keyframes commentPop{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
 .q-sutra{font-size:11px;color:var(--text-3);margin-bottom:8px}
-.q-text{font-size:32px;font-weight:600;color:var(--text);letter-spacing:2px}
+.q-text{font-size:34px;font-weight:700;color:var(--text);letter-spacing:1px;font-family:'Baloo 2',sans-serif}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.opt-btn{background:var(--surface);border:1px solid var(--border-2);border-radius:var(--radius-sm);padding:14px;font-size:18px;font-weight:600;cursor:pointer;color:var(--text);transition:background 0.12s,border-color 0.12s;font-family:'Noto Sans',sans-serif}
-.opt-btn:hover:not(:disabled){background:var(--indigo-light);border-color:var(--indigo-mid)}
+.opt-btn{background:var(--surface);border:2px solid var(--border-2);border-radius:var(--radius-sm);padding:14px;font-size:19px;font-weight:700;cursor:pointer;color:var(--text);transition:background 0.12s,border-color 0.12s,transform 0.1s;font-family:'Baloo 2',sans-serif}
+.opt-btn:hover:not(:disabled){background:var(--indigo-light);border-color:var(--indigo-mid);transform:translateY(-1px)}
 .opt-btn.correct{background:var(--green-light);border-color:var(--green);color:var(--green)}
 .opt-btn.wrong{background:#FCEBEB;border-color:#E24B4A;color:#791F1F}
 .opt-btn:disabled{cursor:default}
@@ -211,7 +212,7 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 .btn-sec{background:transparent;color:var(--text);border:1px solid var(--border-2);border-radius:var(--radius-sm);padding:10px 20px;font-size:13px;cursor:pointer;font-family:'Noto Sans',sans-serif}
 .btn-sec:hover{background:var(--bg)}
 .flex-gap{display:flex;gap:8px;justify-content:center;margin-top:1rem}
-.section-title{font-size:14px;font-weight:600;color:var(--text);margin:1rem 0 8px}
+.section-title{font-size:15px;font-weight:700;color:var(--text);margin:1rem 0 8px;font-family:'Baloo 2',sans-serif}
 .loading{text-align:center;padding:2rem;color:var(--text-3);font-size:14px}
 
 /* HOOK / LANDING SCREEN */
