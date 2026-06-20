@@ -30,7 +30,7 @@
   --yellow: #FFC93C;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body{font-family:'Noto Sans',sans-serif;background:linear-gradient(135deg,#FFF9F0 0%,#FFEFE2 45%,#FFE4E8 75%,#F3EFFF 100%);background-attachment:fixed;color:var(--text);min-height:100vh}
 .devanagari{font-family:'Noto Sans Devanagari',sans-serif}
 
 /* Header */
@@ -48,7 +48,7 @@ body{font-family:'Noto Sans',sans-serif;background:var(--bg);color:var(--text);m
 
 .about-modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,26,46,0.55);z-index:200;align-items:flex-start;justify-content:center;padding:0;overflow-y:auto}
 .about-modal-overlay.open{display:flex}
-.about-modal{background:var(--bg);max-width:680px;width:100%;min-height:100vh;position:relative}
+.about-modal{background:linear-gradient(135deg,#FFF9F0 0%,#FFEFE2 45%,#FFE4E8 75%,#F3EFFF 100%);max-width:680px;width:100%;min-height:100vh;position:relative}
 .about-modal-close{position:sticky;top:0;z-index:5;display:flex;justify-content:flex-end;padding:14px 18px 0;background:linear-gradient(to bottom, var(--bg) 60%, transparent)}
 .about-modal-close-btn{width:34px;height:34px;border-radius:50%;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer}
 .about-modal-close-btn:hover{background:var(--bg)}
