@@ -825,6 +825,44 @@ function openSutra(id) {
         <text x="340" y="284" text-anchor="middle" font-size="12" fill="var(--text-2)">answer: 322</text>
       </svg>
     </div>` : ''}
+    ${s.id === 1 ? `
+    <div class="section-title" style="margin-top:1.25rem">See it visually</div>
+    <div class="diagram-card">
+      <svg viewBox="0 0 680 320" width="100%" style="display:block">
+        <defs>
+          <marker id="diag-arrow3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--text-3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+        </defs>
+        <text x="340" y="32" text-anchor="middle" font-size="15" font-weight="600" fill="var(--text)">1000 − 764</text>
+        <text x="340" y="50" text-anchor="middle" font-size="12" fill="var(--text-2)">each digit pairs with its complement</text>
+
+        <rect x="40" y="70" width="190" height="100" rx="10" fill="var(--green-light)" stroke="var(--green)" stroke-width="0.5"/>
+        <text x="135" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--green)">digit 7</text>
+        <text x="135" y="120" text-anchor="middle" font-size="12" fill="var(--green)">9 − 7</text>
+        <text x="135" y="148" text-anchor="middle" font-size="20" font-weight="600" fill="var(--green)">= 2</text>
+
+        <rect x="245" y="70" width="190" height="100" rx="10" fill="var(--green-light)" stroke="var(--green)" stroke-width="0.5"/>
+        <text x="340" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="var(--green)">digit 6</text>
+        <text x="340" y="120" text-anchor="middle" font-size="12" fill="var(--green)">9 − 6</text>
+        <text x="340" y="148" text-anchor="middle" font-size="20" font-weight="600" fill="var(--green)">= 3</text>
+
+        <rect x="450" y="70" width="190" height="100" rx="10" fill="var(--pink-light)" stroke="var(--pink)" stroke-width="0.5"/>
+        <text x="545" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#993556">last digit 4</text>
+        <text x="545" y="120" text-anchor="middle" font-size="12" fill="#993556">10 − 4</text>
+        <text x="545" y="148" text-anchor="middle" font-size="20" font-weight="600" fill="#993556">= 6</text>
+
+        <line x1="135" y1="170" x2="135" y2="196" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow3)"/>
+        <line x1="340" y1="170" x2="340" y2="196" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow3)"/>
+        <line x1="545" y1="170" x2="545" y2="196" stroke="var(--text-3)" stroke-width="1" marker-end="url(#diag-arrow3)"/>
+
+        <rect x="240" y="198" width="200" height="62" rx="10" fill="none" stroke="var(--text)" stroke-width="1"/>
+        <text x="280" y="232" text-anchor="middle" font-size="24" font-weight="600" fill="var(--green)">2</text>
+        <text x="340" y="232" text-anchor="middle" font-size="24" font-weight="600" fill="var(--green)">3</text>
+        <text x="400" y="232" text-anchor="middle" font-size="24" font-weight="600" fill="#993556">6</text>
+        <text x="340" y="254" text-anchor="middle" font-size="12" fill="var(--text-2)">answer: 236</text>
+
+        <text x="340" y="296" text-anchor="middle" font-size="12" fill="var(--text-2)">last digit uses 10, since there's nothing left to borrow from</text>
+      </svg>
+    </div>` : ''}
     ${s.proof ? `
     <div class="proof-toggle" onclick="toggleProof(${s.id})">
       <div class="proof-toggle-label">
